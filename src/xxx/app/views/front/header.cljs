@@ -6,7 +6,7 @@
    ))
 
 (defn nav-root [x]
-  [:> Nav/Root {:className "absolute flex justify-center w-screen z-10"} x])
+  [:> Nav/Root {:className "absolute flex justify-center w-full z-10"} x])
 
 (defn nav-item [x]
   [:> Nav/Item x])
@@ -46,7 +46,7 @@
 (defn ui []
   [:header.sticky.top-0
    [nav-root
-    [:> Nav/List {:className "flex justify-between w-screen px-9.375rem py-4"}
+    [:> Nav/List {:className "flex justify-between w-full px-9.375rem py-4"}
      ^{:key 'left} [:> Nav/List {:className "flex justify-center items-center"}
                     ^{:key 'logo} [nav-link {:href "/"} [logo]]
                     ^{:key 'twitter} [nav-link {:href "https://twitter.com/"} [twitter]]

@@ -131,8 +131,8 @@
    [apply raw-card {:style {:visibility (if left? "hidden" "visible")}} children]])
 
 (defn ui []
-  [:main.flex.flex-col.items-center.w-screen
-   [:section.section-1.w-screen.flex.flex-col.items-center.pt-287px.pb-60.mb-7rem.bg-no-repeat.bg-scroll
+  [:main.flex.flex-col.items-center.w-full
+   [:section.section-1.w-full.flex.flex-col.items-center.pt-287px.pb-60.mb-7rem.bg-no-repeat.bg-scroll
     {:style {:backgroundImage    "url(\"/images/bg-1.png\")"
              :backgroundSize     "100%"
              :backgroundPosition "center center"
@@ -143,11 +143,11 @@
     [:div.flex.flex-row.mt-10
      [app-btn]
      [whitepaper-btn]]]
-   [:section.section-2.w-screen.flex.flex-col.items-center.py-20.bg-center.bg-no-repeat.bg-scroll.bg-cover
+   [:section.section-2.w-full.flex.flex-col.items-center.py-20.bg-center.bg-no-repeat.bg-scroll.bg-cover
     {:style {:backgroundImage "url(\"/images/bg-2.png\")"
              :marginTop       "-7rem"}}
     [letter]]
-   [:section.section-3.w-screen.flex.flex-col.items-center.pt-20
+   [:section.section-3.w-full.flex.flex-col.items-center.pt-20
     {:style {:paddingBottom "6.125rem"}}
     [h2]
     [card {:left? true :last? false}

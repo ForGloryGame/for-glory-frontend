@@ -10,7 +10,7 @@
 
 (defn main-panel []
   (let [current-route                      @(rf/subscribe [::routes/current-route])
-        {:keys [name view] :as route-data} (get #p current-route :data {})]
+        {:keys [name view] :as route-data} (get current-route :data {})]
     (case name
       :route/front [view route-data]
       [:div

@@ -1,7 +1,7 @@
 (ns xxx.app.views.front.footer)
 
 (defn ui []
-  [:footer.flex.flex-row.justify-between.w-screen
+  [:footer.flex.flex-row.justify-between.w-full
    {:className "px-9.375rem py-4"}
    [:span "FORGLORY 2022."]
    [:div.flex.flex-row.justify-between
