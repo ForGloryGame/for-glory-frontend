@@ -64,17 +64,19 @@
              (p/then #(do
                         (if (and (.-hash %) (.-wait %))
                           (do
-                            (on-success
-                             {:title "Tx Executed"
-                              :desc  [:a {:href (scan-tx-url (.-hash %))}
-                                      "View On Blockchain Explorer"]})
+                            ;; (on-success
+                            ;;  {:title "Tx Executed"
+                            ;;   :desc  [:a {:href (scan-tx-url (.-hash %))}
+                            ;;           "View On Blockchain Explorer"]})
                             (p/then
-                             (.-wait %)
+                             (.wait % 7)
                              (fn [receipt]
                                (on-success
                                 {:title "Tx Confirmed"
                                  :desc  [:a
-                                         {:href (scan-tx-url (.-hash receipt))}
+                                         (log/spy {:href   (scan-tx-url (.-transactionHash (log/spy receipt)))
+                                                   :rel    "noopener noreferrer"
+                                                   :target "_blank"})
                                          "View On Blockchain Explorer"]}))))
 
                           (on-success {:title "Tx Succeeded"}))))

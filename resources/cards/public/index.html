@@ -5,6 +5,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style type="text/css" media="screen">
+        html {
+            --base-font-size: 16px;
+            font-size: var(--base-font-size);
+        }
+
+        @media (min-width: 120rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 1.4);
+            }
+        }
+
+        @media (min-width: 160rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 1.6);
+            }
+        }
+
+        @media (min-width: 180rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 1.8);
+            }
+        }
+
+        @media (min-width: 200rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 2);
+            }
+        }
+
+        @media (min-width: 240rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 2.2);
+            }
+        }
+
+        @media (min-width: 280rem) {
+            html {
+                font-size: calc(var(--base-font-size) * 2.4);
+            }
+        }
+
+        body {
+            background-color: #000;
+            color: white;
+        }
+
+        body::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            border-radius: 0.25rem;
+            background-color: gray;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+    <!-- <link rel="preload" href="css/compiled/main.css" as="style">
+         <link rel="stylesheet" href="css/compiled/main.css" type="text/css" media="print" onload="this.media='all'"> -->
+    <noscript>
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    </noscript>
 </head>
 
 <body>
@@ -13,6 +78,7 @@
     <script src="/js/compiled/main.js" type="text/javascript"></script>
     <link rel="stylesheet" href="/css/compiled/main.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+    <link rel="stylesheet" href="/fonts/family.css">
 </body>
 
 </html>

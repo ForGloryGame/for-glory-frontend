@@ -25,3 +25,5 @@
 /resources/app/public/css/compiled
 /resources/app/ssr.js
 /.env
+/resources/cards/public/images
+/resources/cards/public/fonts/

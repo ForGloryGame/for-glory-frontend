@@ -35,7 +35,7 @@
     [:div.cs1.ce3.rs2.re3.grid.border
      [:div.cs1.ce2.rs1.re4 "avatar1 missing logic here"]
      [:div.cs2.ce4.rs1.re2 addr]
-     [:div.cs2.ce3.rs2.re3 [:a {:href (scan-addr-url addr) :target :_blank} "View on explorer"]]
+     [:div.cs2.ce3.rs2.re3 [:a {:href (scan-addr-url addr) :target "_blank"} "View on explorer"]]
      [:div.cs3.ce4.rs2.re3 [:button {:on-click #(do (copy-to-clipboard addr)
                                                     (rf/dispatch [:toast/success {:title "Copied!" :no-close true}]))} "Copy Address"]]
      [:div.cs4.ce5.rs1.re3 "kingdom avatar missing logic here"]

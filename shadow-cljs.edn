@@ -145,7 +145,7 @@
    :asset-path  "/js/compiled"
    :preloads    [;; day8.re-frame-10x.preload
                  hashp.core]                   ; optional, list namespaces to be pre loaded
-   :build-hooks [(hooks.css/build)]
+   :build-hooks []
    :dev
    {:compiler-options
     {:closure-defines

@@ -15,4 +15,5 @@
      {:style {:gridTemplate    "\"header\" min-content \"main\""
               :backgroundImage "url(\"/images/bg@2x.png\""}}
      [header/ui]
-     [body/ui (if view [view route-data] [:div])]]))
+     [body/ui (if view [view route-data] [:div])]
+     [:link {:rel "stylesheet" :href "/fonts/family.css"}]]))

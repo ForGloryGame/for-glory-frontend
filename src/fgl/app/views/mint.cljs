@@ -136,6 +136,8 @@
       ;;       ;; addr
       ;;       ]])}
       ;;  "Grant mint Glory Token transfer role"]
+      ;; [:li>button.border {:on-click  #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-battlefield]}])}
+      ;;  "Grant Battlefield to mint NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :updateKindoms :params [conf/contract-addr-kingdoms]}])}
@@ -149,6 +151,15 @@
                          "GAME_PROXY_ROLE"))
                        conf/contract-addr-battlefield-proxy]}])}
        "Grant Battlefield Proxy GAME_PROXY_ROLE role"]
+      [:li>button.border
+       {:on-click #(rf/dispatch
+                    [::battlefield/send
+                     {:method :grantRole :params
+                      [(ethers/utils.keccak256
+                        (ethers/utils.toUtf8Bytes
+                         "GAME_PROXY_ROLE"))
+                       conf/contract-addr-minter]}])}
+       "Grant minter Proxy GAME_PROXY_ROLE role"]
       [:li>button.border
        {:on-click #(rf/dispatch
                     [::glory/send
