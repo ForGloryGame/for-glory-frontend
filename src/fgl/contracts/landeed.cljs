@@ -53,7 +53,7 @@
               (rf/dispatch [::set (ethers/BigNumber.from 1) ::eth-gold-ratio])
               (rf/dispatch [::set (.div gold weth) ::eth-gold-ratio])))))))
 
-   {}))
+   {::w/raddrnet ::pair-init-raw}))
 
 (reg-event-pfx
  ::init
@@ -84,6 +84,6 @@
          (p/then (r :maxGoldAmount)
                  #(rf/dispatch [::set % ::maxGoldAmount])))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

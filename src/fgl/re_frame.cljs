@@ -44,8 +44,7 @@
      (rf/reg-event-fx raw-id interceptors handler)
      (rf/reg-event-fx
       id
-      ;; interceptors handler
-
+      ;; interceptors
       (fn [_ _]
         {:dispatch-p {:id id :ms ms :dispatch [raw-id]}})))))
 

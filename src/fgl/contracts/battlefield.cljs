@@ -48,7 +48,7 @@
                (recur (rest ids) (rest rs))))
            (rf/dispatch [::set token-ids addr ::token-ids])))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 ;; join
 ;; commitUnstake

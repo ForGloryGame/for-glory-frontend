@@ -42,6 +42,6 @@
      (when addr
        (ctc/with-provider c provider
          (p/then (r :balanceOf addr) #(rf/dispatch [::set % addr ::balance])))))
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

@@ -8,6 +8,8 @@
 
 (declare connect!)
 (defonce provider (atom nil))
+(defonce addr-cache (atom #{}))
+(defonce network-cache (atom #{}))
 
 (defn request
   ([method] (request method []))
@@ -50,17 +52,20 @@
     (p/let [chainId (request "eth_chainId")]
       (rf/dispatch [::chain-changed chainId]))))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  ::connected
  [rf/trim-v]
- (fn [db [addr]]
+ (fn [{:keys [db]} [addr]]
    (let [addr (if (string? addr) addr (first addr))]
-     (assoc db ::state :connected ::addr addr))))
+     (log/debug :connected addr)
+     {:db (assoc db ::state :connected ::addr addr)
+      :fx (mapv #(vector :dispatch [%]) @addr-cache)})))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  ::disconnected
- (fn [db _]
-   (assoc db ::state :installed ::addr nil)))
+ (fn [{:keys [db]} _]
+   {:db (assoc db ::state :installed ::addr nil)
+    :fx (mapv #(vector :dispatch [%]) @addr-cache)}))
 
 (rf/reg-event-fx
  ::accounts-changed
@@ -70,36 +75,40 @@
      {:fx [[:dispatch [::connected (first addrs)]]]}
      {:fx [[:dispatch [::disconnected (first addrs)]]]})))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  ::chain-changed
  [rf/trim-v]
- (fn [db [chainId]]
+ (fn [{:keys [db]} [chainId]]
    (reinit-provider)
    (let [target-chain (::target-chain db)]
-     (assoc db ::current-chain chainId
-            ::provider @provider
-            ::wrong-network (and target-chain (not (= target-chain chainId)))))))
+     ;; (when-not (and target-chain (not (= target-chain chainId)))
+     ;;   (log/debug :right-network chainId))
+     {:db (assoc db
+                 ::current-chain chainId
+                 ::provider @provider
+                 ::wrong-network (and target-chain (not (= target-chain chainId))))
+      :fx (mapv #(vector :dispatch [%]) @network-cache)})))
 
 (rf/reg-event-db
  ::installed
  [(rf/after check-connection)
   (rf/after check-chain)]
  (fn [db _]
-   (assoc db
-          ::state :installed
+   (assoc db ::state :installed
           ::provider @provider)))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  ::init!
  [rf/trim-v
   (rf/after check-installation)]
- (fn [db [target-chain-id]]
-   (when-not (::state db)
-     (assoc db
-            ::state :uninstalled
-            ::addr nil
-            ::provider nil
-            ::target-chain target-chain-id))))
+ (fn [{:keys [db]} [target-chain-id]]
+   (if-not (::state db)
+     {:db (assoc db
+                 ::state :uninstalled
+                 ::addr nil
+                 ::provider nil
+                 ::target-chain target-chain-id)}
+     {})))
 
 (rf/reg-sub
  ::state
@@ -160,3 +169,22 @@
                (rf/assoc-coeffect context :wallet/accounts-changed true)))))
 
 (rf/reg-global-interceptor accounts-changed-interceptor)
+
+(rf/reg-fx
+ ::raddrnet
+ (fn [value]
+   (when (qualified-keyword? value)
+     (swap! addr-cache conj value)
+     (swap! network-cache conj value))))
+
+(rf/reg-fx
+ ::raddr
+ (fn [value]
+   (when (qualified-keyword? value)
+     (swap! addr-cache conj value))))
+
+(rf/reg-fx
+ ::rnet
+ (fn [value]
+   (when (qualified-keyword? value)
+     (swap! network-cache conj value))))

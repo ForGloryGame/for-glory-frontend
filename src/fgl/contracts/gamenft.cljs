@@ -72,6 +72,6 @@
            (doseq [id token-ids]
              (rf/dispatch [::get-token-traits id]))))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

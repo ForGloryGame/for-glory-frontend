@@ -37,6 +37,6 @@
            ;; (rf/dispatch [::set balance addr ::balance])
            ))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

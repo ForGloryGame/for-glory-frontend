@@ -21,13 +21,14 @@
  ::init
  10000
  (fn [{:keys [db]} _]
-   (let [{::w/keys [provider]} db]
-     (ctc/with-provider c provider
-       (p/then (r :getReserves)
-               (fn [[gold glory]]
-                 (rf/dispatch [::set gold ::rgold])
-                 (rf/dispatch [::set glory ::rglory])
-                 (rf/dispatch [::set (.div glory gold) ::ratio])))))
-   {}))
+   (let [{::w/keys [addr provider]} db]
+     (when addr
+       (ctc/with-provider c provider
+         (p/then (r :getReserves)
+                 (fn [[gold glory]]
+                   (rf/dispatch [::set gold ::rgold])
+                   (rf/dispatch [::set glory ::rglory])
+                   (rf/dispatch [::set (.div glory gold) ::ratio]))))))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

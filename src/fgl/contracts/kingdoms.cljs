@@ -72,7 +72,7 @@
              (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
              (rf/dispatch [::set role addr ::role]))))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (reg-event-pfx
  ::init-all
@@ -106,6 +106,6 @@
              (rf/dispatch [::set (js->clj (nth senators (dec kingdom-id))) ::kingdom kingdom-id :senators])
              (rf/dispatch [::set (nth membersCount (dec kingdom-id)) ::kingdom kingdom-id :member-count]))))))
 
-   {}))
+   {::w/raddrnet ::init-all-raw}))
 
 (ctc/reg-send c ::send)

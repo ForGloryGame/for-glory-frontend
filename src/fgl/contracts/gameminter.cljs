@@ -29,6 +29,6 @@
            (when-not (= height "0")
              (rf/dispatch [::set true addr ::to-reveal]))))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

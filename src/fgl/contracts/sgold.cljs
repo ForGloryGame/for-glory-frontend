@@ -76,6 +76,6 @@
               (rf/dispatch [::set unlocked addr ::unlocked])
               (rf/dispatch [::set user-gold-info addr ::info])))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 (ctc/reg-send c ::send)

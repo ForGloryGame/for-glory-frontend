@@ -29,7 +29,7 @@
            (when-not (-> height .toString (= "0"))
              (rf/dispatch [::set height addr ::to-reveal]))))))
 
-   {}))
+   {::w/raddrnet ::init-raw}))
 
 ;; join
 ;; commitUnstake
