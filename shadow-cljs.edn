@@ -72,5 +72,5 @@
    :ns-regexp  "-?cards?$"
    :output-dir "resources/cards/public/js/compiled"
    :asset-path "/js/compiled"
-   :preloads   []                   ; optional, list namespaces to be pre loaded
+   :preloads   [hashp.core]                   ; optional, list namespaces to be pre loaded
    }}}
