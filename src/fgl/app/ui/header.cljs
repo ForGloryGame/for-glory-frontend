@@ -8,7 +8,8 @@
    [re-frame.core :as rf]
    [fgl.app.ui.connect-btn :as cbtn]
    ["@radix-ui/react-navigation-menu" :as Nav]
-   [fgl.app.ui.logo :as logo]))
+   [fgl.app.ui.logo :as logo]
+   [fgl.app.ui.balance :as balance]))
 
 (defn init-balances []
   (rf/dispatch [::gold/init])
@@ -21,9 +22,18 @@
                 :backgroundSize  "100% 80%"}}
    x])
 
+(rf/reg-sub
+ ::data
+ (fn [db _]
+   (let [{::w/keys [addr]} db
+         addr-db           (get db addr)
+         gold-balance      (::gold/balance addr-db)
+         glory-balance     (::glory/balance addr-db)]
+     [gold-balance glory-balance])))
+
 (defn ui []
   (init-balances)
-  (let [addr @(rf/subscribe [::w/addr])]
+  (let [[gold-balance glory-balance] @(rf/subscribe [::data])]
     [:header.grid-area-header
      [nav-root
       [:> Nav/List
@@ -37,11 +47,11 @@
 
        ^{:key 'glory}
        [:> Nav/Item {:className "cs7 ce9"}
-        [:span (str "Glory: " @(rf/subscribe [::glory/balance addr]))]]
+        [:span "Glory: " [balance/ui glory-balance]]]
 
        ^{:key 'gold}
        [:> Nav/Item {:className "cs9 ce11"}
-        [:span (str "Gold: " @(rf/subscribe [::gold/balance addr]))]]
+        [:span "Gold: " [balance/ui gold-balance]]]
 
        ^{:key 'ratio}
        [:> Nav/Item {:className "cs11 ce13"}

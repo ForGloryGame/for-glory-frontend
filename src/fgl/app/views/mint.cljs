@@ -1,6 +1,7 @@
 (ns fgl.app.views.mint
   (:require
    ["ethers" :as ethers]
+   [re-frame.db :as rdb]
    [fgl.contracts.gamepass :as gamepass]
    [fgl.contracts.bfproxy :as bfproxy]
    [fgl.contracts.gold :as gold]
@@ -14,6 +15,7 @@
    [fgl.contracts.landeed :as landeed]
    [fgl.wallet.core :as w]
    [re-frame.core :as rf]
+   [fgl.app.ui.balance :as balance]
    [lambdaisland.glogi :as log]))
 
 (defn controllers []
@@ -29,11 +31,11 @@
 
 (rf/reg-sub
  ::data
- (fn [db _]
+ (fn [db]
    (let [{::w/keys [addr]} db
-         addr-db                    (get db addr)
+         addr-db           (get db addr)
 
-         {nft-balance ::nft/balance
+         {nft-balance   ::nft/balance
           nft-token-ids ::nft/token-ids
 
           landeed-balance   ::landeed/balance
@@ -54,10 +56,12 @@
           sgold-info     ::sgold/info
 
           battlefield-token-ids ::battlefield/token-ids}
-         addr-db]
+         addr-db
+
+         sgold-info (sgold/->unlock-info sgold-info)]
      {:addr addr
 
-      :nft-balance nft-balance
+      :nft-balance   nft-balance
       :nft-token-ids nft-token-ids
 
       :landeed-balance   landeed-balance
@@ -170,11 +174,11 @@
                                                                                (.pow 18))]}])}
        "Mint Glory"]]
      [:ul.list-disc.mt-10 "Gold Token"
-      [:li>span (str "balance: " gold-balance)]]
+      [:li>span "balance: " [balance/ui gold-balance]]]
      [:ul.list-disc.mt-10 "Glory Token"
-      [:li>span (str "balance: " glory-balance)]]
+      [:li>span "balance: " [balance/ui glory-balance]]]
      [:ul.list-disc.mt-10 "Game Pass Token"
-      [:li>span (str "balance: " gamepass-balance)]]
+      [:li>span "balance: " [balance/ui gamepass-balance]]]
      [:ul.list-disc.mt-10 "Minter"
       [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :commitMint :params [1 false]}])}
        "Mint Glory NFT"]
@@ -182,10 +186,10 @@
        "Mint Glory NFT and Stake"]
       [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :revealMint :params [addr]}])} "revealMint"]]
      [:ul.list-disc.mt-10 "Glory NFT"
-      [:li>span (str "glory nft balance: " nft-balance)]
+      [:li>span "glory nft balance: " [balance/ui nft-balance]]
       [:li>span (str "glory nft token ids: " nft-token-ids)]]
      [:ul.list-disc.mt-10 "Landeed NFT"
-      [:li>span (str "Landeed nft balance: " landeed-balance)]
+      [:li>span "Landeed nft balance: " [balance/ui landeed-balance]]
       [:li>span (str "Landeed nft token ids: " landeed-token-ids)]]
      [:ul.list-disc.mt-10 "Kingdom"
       [:li (str "Kingdoms: " kingdoms)]
@@ -193,10 +197,15 @@
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :join :params [2]}])} "Join kingdom 2"]
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :leave}])} "Leave current kingdom"]]
      [:ul.list-disc.mt-10 "sGold"
-      [:li (str "User balance: " sgold-balance)]
-      [:li (str "User locked: " sgold-locked)]
-      [:li (str "User unlocked: " sgold-unlocked)]
-      [:li (str "User UnlockInfo Info: " sgold-info)]
+      [:li "User balance: " [balance/ui sgold-balance]]
+      [:li "User locked: " [balance/ui sgold-locked]]
+      [:li "User unlocked: " [balance/ui sgold-unlocked]]
+      [into [:li "User UnlockInfo Info: "]
+       (map (fn [{:keys [amount date]}]
+              [:ul
+               [:li "Amount: " [balance/ui amount]]
+               [:li (str "Date: " date)]])
+            sgold-info)]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 1]}])} "Lock 1 sgold for 1 week"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sgold"]]
      [:ul.list-disc.mt-10 "Battlefield"

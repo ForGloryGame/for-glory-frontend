@@ -34,22 +34,23 @@
 (defonce CYCLE_TIMESTAMP_OFFSET 324000)
 (defonce SECONDS_IN_WEEK (* SECONDS_IN_DAY 7))
 
+(defn ->unlock-info [info]
+  (map
+   (fn [[amount week]]
+     (let [date (-> week
+                    .toNumber
+                    (* SECONDS_IN_WEEK)
+                    (+ CYCLE_TIMESTAMP_OFFSET)
+                    (* 1000)
+                    (js/Date.))]
+       {:amount amount :date date}))
+   info))
+
 (rf/reg-sub
  ::info
  (fn [db [_ addr]]
-   (let [unlockInfos (get-in db [addr ::info] [])
-         unlockInfos
-
-         (map
-          (fn [[amount week]]
-            (let [date (-> week
-                           .toNumber
-                           (* SECONDS_IN_WEEK)
-                           (+ CYCLE_TIMESTAMP_OFFSET)
-                           (js/Date.))]
-              {:amount amount :date date}))
-          unlockInfos)]
-     unlockInfos)))
+   (let [unlockInfos (get-in db [addr ::info] [])]
+     (->unlock-info unlockInfos))))
 
 (reg-event-pfx
  ::init

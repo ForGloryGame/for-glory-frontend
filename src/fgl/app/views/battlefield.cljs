@@ -8,6 +8,7 @@
    [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
    [fgl.utils :refer [->display-token ->token-ids]]
+   [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
@@ -134,8 +135,8 @@
       [:li (str "Selected: " (if checked true false))]
       (and staked? [:li "staked"])
       [:li name]
-      (and staked? [:li (str "Gold earned: " (->display-token gold))])
-      (and staked? is-lord [:li (str "Glory earned: " (->display-token glory))])]
+      (and staked? [:li "Gold earned: " [balance/ui gold]])
+      (and staked? is-lord [:li "Glory earned: " [balance/ui glory]])]
      [:> C/Indicator [:span checked]]]))
 
 (defn cards []

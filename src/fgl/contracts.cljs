@@ -7,7 +7,7 @@
    [lambdaisland.glogi :as log]
    ["ethers" :refer [Contract]]
    [promesa.core :as p]
-   [oops.core :refer [oapply+ ocall]]))
+   [oops.core :refer [oget oapply+ ocall]]))
 
 (defonce cache (atom nil))
 
@@ -62,7 +62,6 @@
        (with-provider c provider
          (-> (apply r method params)
              (p/then #(do
-                        (js/console.log "haha" %)
                         (if (and (.-hash %) (.-wait %))
                           (do
                             (on-success
@@ -82,6 +81,6 @@
 
              (p/catch #(if (instance? js/Error %)
                          (on-failure {:title "Tx Failed"
-                                      :desc  (or (.-reason %) (.-message %))})
+                                      :desc  (or (oget % "?.error.message") (oget % "?.reason") (oget % "message"))})
                          (on-failure {:title "Tx Failed"}))))))
      {})))
