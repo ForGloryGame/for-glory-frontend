@@ -1,5 +1,6 @@
 (ns fgl.app.ui.connect-btn
   (:require
+   [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [fgl.wallet.core :as w]
    [oops.core :refer [ocall oget]]
@@ -59,8 +60,8 @@
  :<- [::elr/nodes :connect-btn]
  (fn [[s addrs {:keys [width]}] _]
    (case s
-     :installed   "Connect"
-     :uninstalled "Wallet not installed"
+     :installed   (repeat 2 "Connect Wallet")
+     :uninstalled (repeat 2 "Wallet not installed")
      (if addrs [addrs (shorten-addr width (first addrs))] ["" ""]))))
 
 (defn ui []

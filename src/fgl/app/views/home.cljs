@@ -9,8 +9,9 @@
     :stop  #(info "stop" "home controller")}])
 
 (defn main [_]
-  [:div
+  [:div.grid
+   {:style {:gridTemplate "\"header\" \"main\""}}
    [header/ui]
-   [:main
+   [:main.grid-area-main.grid
     [:section "Home page"
      [:p>button {:on-click #(rf/dispatch [:navigate :route/front])} "> Front"]]]])

@@ -7,30 +7,36 @@
 
 (defn nav-root [x]
   [:> Nav/Root
-   {:style {:backgroundImage     "radial-gradient(circle at top left, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 31%),url(\"/images/header-bg.png\")"
-            :backgroundBlendMode "darken"
-            :backgroundPosition  "top"
-            :backgroundSize      "100% 100%"}} x])
-
-(defn nav-item [x]
-  [:> Nav/Item x])
-
-(defn nav-link [{:keys [className] :as opts} children]
-  [nav-item
-   [:> Nav/Link (assoc opts :className (str (or className "") " " "block p-2"))
-    children]])
+   {:className "bg-no-repeat bg-top"
+    :style     {:backgroundImage "url(\"/images/header-bg.png\")"
+                :backgroundSize  "100% 80%"}}
+   x])
 
 (defn ui []
-  [:header
+  [:header.grid-area-header
    [nav-root
     [:> Nav/List
+     {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}
 
-     ^{:key 'left}
-     [:> Nav/List
-      ^{:key 'logo}
-      [nav-link {:className "cursor-pointer"
-                 :on-click  #(rf/dispatch [:navigate :route/front])} [logo/ui]]]
+     ^{:key 'logo}
+     [:> Nav/Item {:className "col-start-1 col-end-3 row-start-1 row-end-3"
+                   :style     {}}
+      [:> Nav/Link {:className "cursor-pointer block p-2"
+                    :on-click  #(rf/dispatch [:navigate :route/front])}
+       [logo/ui {:style {:minWidth "8.8125rem"}}]]]
 
-     ^{:key 'right}
-     [:> Nav/List
+     ^{:key 'gold}
+     [:> Nav/Item {:className "col-start-7 col-end-9"}
+      [:span "gold"]]
+
+     ^{:key 'glory}
+     [:> Nav/Item {:className "col-start-9 col-end-11"}
+      [:span "glory"]]
+
+     ^{:key 'ratio}
+     [:> Nav/Item {:className "col-start-11 col-end-13"}
+      [:span "ratio"]]
+
+     ^{:key 'connect-btn}
+     [:> Nav/Item {:className "col-start-13 col-end-15"}
       [fgl.app.ui.connect-btn/ui]]]]])

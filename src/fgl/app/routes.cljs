@@ -1,9 +1,9 @@
 (ns fgl.app.routes
   (:require
-   ;; TODO: check promesa
    ;; [promesa.core :as p]
+   [reitit.core :as r]
    [shadow.loader :as loader]
-   [fgl.app.views.front :as front]
+   ;; [fgl.app.views.front :as front]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rfe]
    [reitit.frontend.controllers :as rfc]
@@ -15,6 +15,20 @@
    ;; [reitit.core :as r]
    [re-frame.core :as rf]
    [lambdaisland.glogi :as log]))
+
+(comment
+  ;; cljs.core.subs(location.hash, 1)
+  (subs (.. js/window -location -hash) 1)
+  (r/route-names router)
+  (-> (r/match-by-path router (subs (.. js/window -location -hash) 1))
+      :data
+      :name)
+  (-> (r/match-by-path router "")
+      :data
+      :name)
+  (-> (r/match-by-path router "/")
+      :data
+      :name))
 
 ;; https://github.com/russmatney/starters/blob/master/fullstack/src/fullstack/ui/routes.cljs
 ;;; Subs
@@ -55,49 +69,49 @@
 
 ;;; Routes
 (def routes
-  ["/"
-   ;; [""
-   ;;  {:name        :route/front
-   ;;   :view        front/main
-   ;;   :controllers (front/controllers)
-   ;;   :lazy        false}]
-   [""
-    {:name        :route/home
-     :view        home/main
-     :controllers (home/controllers)
-     ;; :lazy        true
-     :conflicting true}]
-   ["login"
-    {:name        :route/login
-     :view        #(resolve 'fgl.app.views.login/main)
-     :controllers #(resolve 'fgl.app.views.login/controllers)
-     :lazy        true
-     :conflicting true}]
-   ;; ["about"
-   ;;  {:name        :route/about
-   ;;   :view        front/main
-   ;;   :controllers (front/controllers)
-   ;;   :lazy        false}]
-   ;; ["roadmap"
-   ;;  {:name        :route/roadmap
-   ;;   :view        front/main
-   ;;   :controllers (front/controllers)
-   ;;   :lazy        false}]
-   ["404"
-    {:name        :route/not-found
-     :view        #(resolve 'fgl.app.views.v404/main)
-     :lazy        true
-     :conflicting true}]
-   ["500"
-    {:name        :route/server-error
-     :view        #(resolve 'fgl.app.views.v500/main)
-     :lazy        true
-     :conflicting true}]
-   [":fallback"
-    {:name        :route/fallback
-     :view        #(resolve 'fgl.app.views.v404/main)
-     :lazy        true
-     :conflicting true}]
+  [""
+   {:name        :route/home
+    :view        home/main
+    :controllers (home/controllers)
+    ;; :lazy        true
+    :conflicting true}
+   ["/"
+    ["" {:name        :route/home
+         :view        home/main
+         :controllers (home/controllers)
+         ;; :lazy        true
+         :conflicting true}]
+    ["login"
+     {:name        :route/login
+      :view        #(resolve 'fgl.app.views.login/main)
+      :controllers #(resolve 'fgl.app.views.login/controllers)
+      :lazy        true
+      :conflicting true}]
+    ;; ["about"
+    ;;  {:name        :route/about
+    ;;   :view        front/main
+    ;;   :controllers (front/controllers)
+    ;;   :lazy        false}]
+    ;; ["roadmap"
+    ;;  {:name        :route/roadmap
+    ;;   :view        front/main
+    ;;   :controllers (front/controllers)
+    ;;   :lazy        false}]
+    ["404"
+     {:name        :route/not-found
+      :view        #(resolve 'fgl.app.views.v404/main)
+      :lazy        true
+      :conflicting true}]
+    ["500"
+     {:name        :route/server-error
+      :view        #(resolve 'fgl.app.views.v500/main)
+      :lazy        true
+      :conflicting true}]
+    [":fallback"
+     {:name        :route/fallback
+      :view        #(resolve 'fgl.app.views.v404/main)
+      :lazy        true
+      :conflicting true}]]
    ;; [":id"
    ;;  {:name        :route/profile
    ;;   :view        #(resolve 'fgl.app.views.profile/main)
@@ -134,6 +148,7 @@
 (defn on-navigate [new-match]
   (when new-match
     (let [{:keys [name lazy]} (:data new-match)]
+      (log/debug :route-match name)
       (if lazy
         (fetch-router-view! name #(rf/dispatch [::navigated new-match]))
         (rf/dispatch [::navigated new-match])))))
