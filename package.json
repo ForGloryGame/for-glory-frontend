@@ -7,6 +7,10 @@
     "build-report": "npx shadow-cljs run shadow.cljs.build-report app target/build-report.html",
     "ci": "npx shadow-cljs compile karma-test && npx karma start --single-run --reporters junit,dots"
   },
+  "resolutions": {
+    "minimist": "^1.2.6",
+    "node-fetch": "^2.6.7"
+  },
   "dependencies": {
     "@cljs-oss/module-deps": "^1.1.1",
     "@fluree/sjcl": "^1.0.8-3",
