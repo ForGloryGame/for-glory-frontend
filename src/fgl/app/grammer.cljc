@@ -30,13 +30,22 @@
               {:background-image "linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red)"
                :background-clip "text"
                ;:-webkit-background-clip "text"
-               :color "transparent"})}]);})}])
+               :color "transparent"})}])
+
+(def my-grid-components
+  (conj grid/components
+        {:id     :grid-area
+         :rules  "
+         grid-area = <'grid-area-'> (#'[\\w-]+')
+         "
+         :garden (fn [{[param] :component-data}]
+                   {:grid-area param})}))
 
 (def my-chosen-components
   [common/components
    layout/components
    flexbox/components
-   grid/components
+   my-grid-components
    box-alignment/components
    spacing/components
    sizing/components
@@ -65,5 +74,5 @@
   (:class-name->garden
    (make-api
     my-chosen-components
-    {:color-map my-color-map
+    {:color-map       my-color-map
      :font-family-map typography/default-font-family-map})))
