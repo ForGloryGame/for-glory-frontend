@@ -136,37 +136,42 @@
         :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))))
 
 (defn select []
-  (let [set-type #(rf/dispatch [::set-type (keyword %)])]
+  (let [set-type #(rf/dispatch [::set-type (keyword %)])
+        ;; op       (r/atom false)
+        ]
     (fn []
       (let [{:keys [type]} @(rf/subscribe [::data])]
         [:> S/Root
          {:name          "Token Type"
           :defaultValue  "Staked"
           :value         type
-          ;; :open true
+          ;; :open          @op
+          ;; :onOpenChange  #(reset! op true)
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "text-xl text-center pl-14 pr-10 py-0.5 rounded fb"
+          {:className "text-xl text-center fb rounded fb py-0.5 w-14rem relative"
            :style     {:backgroundColor "#355661"}}
           [:> S/Value (if (= type :staked) " Staked " "Unstaked")]
           [:> S/Icon [:img.inline-block.ml-6
                       {:style {:width "0.825rem"}
                        :src   "/images/select-down-arrow.svg"}]]]
          [:> S/Content
-          {:className "text-xl text-center rounded fb pl-14 pr-10"
+          {:className "text-xl text-center fb rounded"
            :style     {:backgroundColor "#355661"}}
           [:> S/Viewport
            ^{:key 'staked}
            [:> S/Item
-            {:value :staked}
+            {:value     :staked
+             :className "py-0.5 w-14rem"}
             [:> S/ItemText " Staked "]
-            [:> S/ItemIndicator (or (nil? type) (= type :staked))]
+            ;; [:> S/ItemIndicator (or (nil? type) (= type :staked))]
             [:img.inline-block.ml-6
              {:style {:width "0.825rem" :visibility (if (or (nil? type) (= type :staked)) "visible" "hidden")}
               :src   "/images/select-down-arrow.svg"}]]
            ^{:key 'unstaked}
            [:> S/Item
-            {:value :unstaked}
+            {:value     :unstaked
+             :className "py-0.5  w-14rem"}
             [:> S/ItemText "Unstaked"]
             [:img.inline-block.ml-6
              {:style {:width "0.825rem" :visibility (if (= type :unstaked) "visible" "hidden")}

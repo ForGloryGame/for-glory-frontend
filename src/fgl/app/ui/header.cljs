@@ -23,15 +23,21 @@
 (defn nav-root [x]
   [:> Nav/Root
    {:className "bg-no-repeat"
-    :style     {:backgroundImage "
-linear-gradient(to right, rgba(0,0,0,.302),rgba(0,0,0,.302)),
+    :style     {:backgroundImage
+                "
 linear-gradient(to right, rgba(0,0,0,.302),rgba(0,0,0,.302)),
 url(\"/images/header-bg.svg\")
 "
 
                 :backgroundBlendMode "multiply"
-                :backgroundPosition  "100% 37%, -8% -16%, 63% -33%"
-                :backgroundSize      "8.5% 44%, 100% 57%, 100% 77%"}}
+                :backgroundPosition
+                "
+ -8% -16%,
+63% -33%"
+                :backgroundSize
+                "
+100% 57%,
+100% 77%"}}
    x])
 
 (rf/reg-sub
