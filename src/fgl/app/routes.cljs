@@ -90,12 +90,6 @@
       :controllers #(resolve 'fgl.app.views.dashboard/controllers)
       :lazy        true
       :conflicting true}]
-    ["entry"
-     {:name        :route/the-map
-      :view        #(resolve 'fgl.app.views.map/main)
-      :controllers #(resolve 'fgl.app.views.map/controllers)
-      :lazy        true
-      :conflicting true}]
     ["battlefield"
      {:name        :route/battlefield
       :panel-name  "Battlefield"
