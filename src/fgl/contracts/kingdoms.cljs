@@ -55,7 +55,7 @@
        (reset! kingdoms-cache kingdoms)))))
 
 (reg-event-pfx
- ::get
+ ::init
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]
@@ -80,7 +80,7 @@
    {}))
 
 (reg-event-pfx
- ::get-all
+ ::init-all
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]

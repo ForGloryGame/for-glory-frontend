@@ -26,7 +26,7 @@
        ethers/utils.commify)))
 
 (reg-event-pfx
- ::get-balance
+ ::init
  10000
  (fn [{:keys [db]} _]
    (let [{::w/keys [addr provider]} db]

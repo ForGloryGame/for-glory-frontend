@@ -30,6 +30,12 @@
    (if @token-ids-cache @token-ids-cache
        (reset! token-ids-cache (get-in db [addr ::token-ids])))))
 
+(rf/reg-sub
+ ::approved-for-all-bf?
+ (fn [db _]
+   (let [{::w/keys [addr]} db]
+     (get-in db [addr ::bf-approved] false))))
+
 (rf/reg-event-fx
  ::get-token-traits
  (fn [{:keys [db]} [_ token-id]]
@@ -44,7 +50,7 @@
    {}))
 
 (reg-event-pfx
- ::get
+ ::init
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]
@@ -52,9 +58,11 @@
      (when addr
        (ctc/with-provider c provider
          (p/let [balance (r :balanceOf addr)
-                 token-ids (r :tokensOfOwner addr)]
+                 token-ids (r :tokensOfOwner addr)
+                 bf-approved (r :isApprovedForAll addr conf/contract-addr-battlefield)]
            (rf/dispatch [::set token-ids addr ::token-ids])
            (rf/dispatch [::set balance addr ::balance])
+           (rf/dispatch [::set bf-approved addr ::bf-approved])
            (doseq [id token-ids]
              (rf/dispatch [::get-token-traits id]))))))
 

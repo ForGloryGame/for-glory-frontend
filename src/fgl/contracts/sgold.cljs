@@ -54,7 +54,7 @@
          (reset! unlock-info-cache unlockInfos)))))
 
 (reg-event-pfx
- ::get
+ ::init
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]

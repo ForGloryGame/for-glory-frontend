@@ -34,7 +34,7 @@
         (get-in db [addr ::reward (.toString token-id) type] (ethers/BigNumber.from 0)))))
 
 (reg-event-pfx
- ::get
+ ::init
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]
@@ -61,7 +61,6 @@
  ::send
  (fn [{:keys [db]} [_ method & params]]
    (let [{::w/keys [provider]} db]
-     ;; TODO: handle write contract result
      (ctc/with-provider c provider
        (apply r method params)))
    {}))

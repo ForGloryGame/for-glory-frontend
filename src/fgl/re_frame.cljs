@@ -11,12 +11,12 @@
 
 (defn dispatch-periodically
   [{:keys [ms dispatch id] :as effect}]
-  (when-not (get @cache id)
-    (swap! cache #(assoc % id true))
+  (when (or (not (get @cache id)) (::dispatch-periodically effect))
     (if (or (empty? dispatch) (not (number? ms)) (not id))
       (console :error "re-frame: ignoring bad :dispatch-later value:" effect)
       (do (router/dispatch dispatch)
-          (rfi/set-timeout! #(dispatch-periodically effect) ms)))))
+          (rfi/set-timeout! #(dispatch-periodically (assoc effect ::dispatch-periodically true)) ms))))
+  (when-not (get @cache id) (swap! cache #(assoc % id true))))
 
 (rf/reg-fx
  :dispatch-p

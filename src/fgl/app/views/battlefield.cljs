@@ -8,6 +8,7 @@
    [reagent.core :as r]
    [fgl.app.ui.panel-layout]
    [re-frame.core :as rf]
+   [fgl.config :as conf]
    [fgl.contracts.gamenft :as nft]
    [fgl.contracts.battlefield :as battlefield]
    [fgl.contracts.bfproxy :as bfproxy]
@@ -17,9 +18,9 @@
   [{:start
     #(do
        ;; get staked info
-       (rf/dispatch [::battlefield/get])
+       (rf/dispatch [::battlefield/init])
        ;; get unstaked info
-       (rf/dispatch [::nft/get]))
+       (rf/dispatch [::nft/init]))
     :stop  identity}])
 
 (rf/reg-event-db
@@ -57,7 +58,9 @@
          traits (::nft/traits db)
 
          unstaked-token-ids
-         (::nft/token-ids addr-db)]
+         (::nft/token-ids addr-db)
+
+         bf-approved (::nft/bf-approved addr-db)]
 
      [type
       (get
@@ -72,7 +75,13 @@
                            (-> {:id id}
                                (merge (get traits id)))))
                        unstaked-token-ids)}
-       type)])))
+       type)
+      bf-approved])))
+
+(defn close []
+  (let [to-home #(rf/dispatch [:navigate :route/home])]
+    (fn []
+      [:button.cs4.ce5.rs1.re2 {:on-click to-home} "x"])))
 
 (defn select []
   (let [set-type #(rf/dispatch [::set-type (keyword %)])]
@@ -129,7 +138,9 @@
                 data)))))))
 
 (defn btns []
-  (let [enter
+  (let [approve
+        #(rf/dispatch [::nft/send :setApprovalForAll conf/contract-addr-battlefield true])
+        enter
         (fn [token-ids] #(rf/dispatch [::bfproxy/send :join (->token-ids token-ids)]))
         claim
         (fn [token-ids] #(rf/dispatch [::bfproxy/send :claim (->token-ids token-ids)]))
@@ -138,14 +149,15 @@
         unstake
         (fn [token-ids] #(rf/dispatch [::bfproxy/send :commitUnstake (->token-ids token-ids)]))]
     (fn []
-      (let [[type]       @(rf/subscribe [::data])
-            selected     @(rf/subscribe [::selected])
-            staked?      (= type :staked)
-            no-selected? (not (seq selected))]
+      (let [[type _ approved?] @(rf/subscribe [::data])
+            selected           @(rf/subscribe [::selected])
+            staked?            (= type :staked)
+            no-selected?       (not (seq selected))]
         [:div.cs2.ce4.rs4.re5.justify-self-end.grid.grid-cols-3
-         (and (not staked?)  [:button {:on-click (enter selected) :disabled no-selected?} "ENTER"])
-         (and staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
-         (and staked? [:button {:on-click (claim selected) :disabled no-selected?} "CLAIM"])]))))
+         (and (not approved?) [:button {:on-click approve} "APPROVE"])
+         (and approved? (not staked?)  [:button {:on-click (enter selected) :disabled no-selected?} "ENTER"])
+         (and approved? staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
+         (and approved? staked? [:button {:on-click (claim selected) :disabled no-selected?} "CLAIM"])]))))
 
 (defn main [_]
   (let []
@@ -155,11 +167,10 @@
         (fn []
           (let [[type] @(rf/subscribe [::data])
                 staked?     (= type :staked)]
-            [fgl.app.ui.panel-layout/ui
-             [:div.grid.p-1.border
-              [:h1.cs1.ce3.rs1.re2 "Battlefield"]
-              [:span.cs4.ce5.rs1.re2 "x"]
-              [select]
-              [:div.cs2.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-               [cards]]
-              [btns]]]))}))))
+            [:div.grid.p-1.border
+             [:h1.cs1.ce3.rs1.re2 "Battlefield"]
+             [close]
+             [select]
+             [:div.cs2.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+              [cards]]
+             [btns]]))}))))

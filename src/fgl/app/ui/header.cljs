@@ -11,8 +11,8 @@
    [fgl.app.ui.logo :as logo]))
 
 (defn init-balances []
-  (rf/dispatch [::gold/get-balance])
-  (rf/dispatch [::glory/get-balance]))
+  (rf/dispatch [::gold/init])
+  (rf/dispatch [::glory/init]))
 
 (defn nav-root [x]
   [:> Nav/Root

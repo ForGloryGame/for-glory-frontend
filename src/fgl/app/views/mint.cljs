@@ -21,11 +21,11 @@
     :stop identity}])
 
 (defn init-data []
-  (rf/dispatch [::nft/get])
-  (rf/dispatch [::kingdoms/get])
-  (rf/dispatch [::sgold/get])
-  (rf/dispatch [::battlefield/get])
-  (rf/dispatch [::landeed/get]))
+  (rf/dispatch [::nft/init])
+  (rf/dispatch [::kingdoms/init])
+  (rf/dispatch [::sgold/init])
+  (rf/dispatch [::battlefield/init])
+  (rf/dispatch [::landeed/init]))
 
 (defn main [_]
   (init-data)
@@ -70,6 +70,20 @@
                        "GAME_PROXY_ROLE"))
                      conf/contract-addr-battlefield-proxy])}
        "Grant Battlefield Proxy GAME_PROXY_ROLE role"]
+      [:li>button.border
+       {:on-click #(rf/dispatch
+                    [::glory/send
+                     :grantRole
+                     minter-role
+                     conf/contract-addr-battlefield])}
+       "Grant Battlefield To Mint Glory"]
+      [:li>button.border
+       {:on-click #(rf/dispatch
+                    [::gold/send
+                     :grantRole
+                     minter-role
+                     conf/contract-addr-battlefield])}
+       "Grant Battlefield To Mint Gold"]
       [:li>button.border
        {:on-click #(rf/dispatch [::gold/send :mint addr (-> "10"
                                                             ethers/BigNumber.from
