@@ -159,15 +159,36 @@
       :style     {:flexShrink 0}}]))
 
 (defn cards []
-  (fn []
-    (let [[type data] @(rf/subscribe [::data])
-          staked?     (= type :staked)
-          selected    @(rf/subscribe [::selected])]
-      (into
-       [:div.overflow-x-auto.flex.pb-8.min-h-21rem]
-       (map (fn [{:keys [id is-lord gold glory]}]
-              ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
-            data)))))
+  (let [!cards (r/atom nil)
+        on-wheel
+        (fn [e]
+          (when-let [!cards-div @!cards]
+            (.preventDefault e)
+            (and (.-deltaY e)
+                 (set!
+                  (.-scrollLeft !cards-div)
+                  (+ (.-scrollLeft !cards-div)
+                     (.-deltaY e))))))]
+    (r/create-class
+     {:component-did-mount
+      (fn []
+        (when-let [!cards-div @!cards]
+          (.addEventListener !cards-div "wheel" on-wheel #js {:passive false})))
+      :component-will-unmount
+      (fn []
+        (when-let [!cards-div @!cards]
+          (.removeEventListener !cards-div "wheel" on-wheel)))
+      :reagent-render
+      (fn []
+        (let [[type data] @(rf/subscribe [::data])
+              staked?     (= type :staked)
+              selected    @(rf/subscribe [::selected])]
+          (into
+           [:div.overflow-x-auto.flex.pb-8.min-h-21rem
+            {:ref #(reset! !cards %)}]
+           (map (fn [{:keys [id is-lord gold glory]}]
+                  ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
+                data))))})))
 
 (defn select-all []
   (let [select-all #(rf/dispatch [::select-all %])]
