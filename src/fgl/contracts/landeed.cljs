@@ -12,6 +12,8 @@
 
 (def c (ctc/init :id :landeed :address conf/contract-addr-landeed :abi abi/data))
 
+(defonce DeedType {0 :standard 1 :medium 2 :large 3 :mega})
+
 (rf/reg-event-db
  ::set
  (fn [db [_ v & paths]]
@@ -36,7 +38,14 @@
      (when addr
        (ctc/with-provider c provider
          (p/let [balance (r :balanceOf addr)
-                 token-ids (r :tokensOfOwner addr)]
+                 token-ids (r :tokensOfOwner addr)
+                 deedsInfo (p/all (map #(r :deesInfo %) (keys DeedType)))]
+           (map-indexed
+            (fn  [idx [price cap minted]]
+              (rf/dispatch [::set price ::info idx :price])
+              (rf/dispatch [::set cap ::info idx :cap])
+              (rf/dispatch [::set minted ::info idx :minted]))
+            deedsInfo)
            (rf/dispatch [::set token-ids addr ::token-ids])
            (rf/dispatch [::set balance addr ::balance])))))
 

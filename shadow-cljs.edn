@@ -36,28 +36,36 @@
    :asset-path    "/js/compiled"
    :module-loader true
    :modules
-   {:shared      {:entries []
-                  :default true}
-    :main        {:init-fn    fgl.app.home-core/init
-                  :depends-on #{:shared}}
-    :profile     {:entries    [fgl.app.views.profile]
-                  :depends-on #{:shared}}
-    :dashboard   {:entries    [fgl.app.views.dashboard]
-                  :depends-on #{:shared}}
-    :battlefield {:entries    [fgl.app.views.battlefield]
-                  :depends-on #{:shared}}
-    :guild-basic {:entries    [fgl.app.views.guild-basic]
-                  :depends-on #{:shared}}
-    :guild-alter {:entries    [fgl.app.views.guild-alter]
-                  :depends-on #{:shared}}
-    :council     {:entries    [fgl.app.views.council]
-                  :depends-on #{:shared}}
-    :mint        {:entries    [fgl.app.views.mint]
-                  :depends-on #{:shared}}
-    :404         {:entries    [fgl.app.views.v404]
-                  :depends-on #{:shared}}
-    :500         {:entries    [fgl.app.views.v500]
-                  :depends-on #{:shared}}}
+   {:shared            {:entries []
+                        :default true}
+    :main              {:init-fn    fgl.app.home-core/init
+                        :depends-on #{:shared}}
+    :profile           {:entries    [fgl.app.views.profile]
+                        :depends-on #{:shared}}
+    :dashboard         {:entries    [fgl.app.views.dashboard]
+                        :depends-on #{:shared}}
+    :battlefield       {:entries    [fgl.app.views.battlefield]
+                        :depends-on #{:shared}}
+    :guild-basic       {:entries    [fgl.app.views.guild-basic]
+                        :depends-on #{:shared}}
+    :guild-alter       {:entries    [fgl.app.views.guild-alter]
+                        :depends-on #{:shared}}
+    :merchant-mint     {:entries    [fgl.app.views.merchant-mint]
+                        :depends-on #{:shared}}
+    :merchant-burn     {:entries    [fgl.app.views.merchant-burn]
+                        :depends-on #{:shared}}
+    :merchant-landeeds {:entries    [fgl.app.views.merchant-landeeds]
+                        :depends-on #{:shared}}
+    :merchant-swap     {:entries    [fgl.app.views.merchant-swap]
+                        :depends-on #{:shared}}
+    :council           {:entries    [fgl.app.views.council]
+                        :depends-on #{:shared}}
+    :mint              {:entries    [fgl.app.views.mint]
+                        :depends-on #{:shared}}
+    :404               {:entries    [fgl.app.views.v404]
+                        :depends-on #{:shared}}
+    :500               {:entries    [fgl.app.views.v500]
+                        :depends-on #{:shared}}}
    :devtools
    {:preloads        [;; day8.re-frame-10x.preload
                       hashp.core

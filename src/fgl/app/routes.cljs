@@ -118,6 +118,34 @@
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
+    ["merchant/mint"
+     {:name        :route/merchant-mint
+      :panel-name  "MERCHANT"
+      :view        #(resolve 'fgl.app.views.merchant-mint/main)
+      :controllers #(resolve 'fgl.app.views.merchant-mint/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["merchant/landdeeds"
+     {:name        :route/merchant-landeeds
+      :panel-name  "MERCHANT"
+      :view        #(resolve 'fgl.app.views.merchant-landeeds/main)
+      :controllers #(resolve 'fgl.app.views.merchant-landeeds/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["merchant/burn"
+     {:name        :route/merchant-burn
+      :panel-name  "MERCHANT"
+      :view        #(resolve 'fgl.app.views.merchant-burn/main)
+      :controllers #(resolve 'fgl.app.views.merchant-burn/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["merchant/swap"
+     {:name        :route/merchant-swap
+      :panel-name  "MERCHANT"
+      :view        #(resolve 'fgl.app.views.merchant-swap/main)
+      :controllers #(resolve 'fgl.app.views.merchant-swap/controllers)
+      :lazy        true
+      :conflicting true}]
     ["mint"
      {:name        :route/mint
       :view        #(resolve 'fgl.app.views.mint/main)

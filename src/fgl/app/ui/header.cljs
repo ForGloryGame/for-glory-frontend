@@ -7,6 +7,7 @@
    [fgl.contracts :as c]
    [fgl.contracts.gold :as gold]
    [fgl.contracts.glory :as glory]
+   [fgl.contracts.exchange :as exchange]
    [fgl.wallet.core :as w]
    [re-frame.core :as rf]
    [fgl.app.ui.connect-btn :as cbtn]
@@ -16,7 +17,8 @@
 
 (defn init-balances []
   (rf/dispatch [::gold/init])
-  (rf/dispatch [::glory/init]))
+  (rf/dispatch [::glory/init])
+  (rf/dispatch [::exchange/init]))
 
 (defn nav-root [x]
   [:> Nav/Root
@@ -37,13 +39,14 @@ url(\"/images/header-bg.svg\")
  (fn [db _]
    (let [{::w/keys [addr]} db
          addr-db           (get db addr)
+         ratio             (.toString (get db ::exchange/ratio 0))
          gold-balance      (::gold/balance addr-db)
          glory-balance     (::glory/balance addr-db)]
-     [gold-balance glory-balance])))
+     [gold-balance  glory-balance ratio])))
 
 (defn ui []
   (init-balances)
-  (let [[gold-balance glory-balance] @(rf/subscribe [::data])]
+  (let [[gold-balance glory-balance ratio] @(rf/subscribe [::data])]
     [:header.grid-area-header
      [nav-root
       [:> Nav/List
@@ -78,7 +81,7 @@ url(\"/images/header-bg.svg\")
           [:div.flex.flex-col
            [:img.w-6 {:src "/images/ratio.svg"}]
            [:img.w-6 {:style {:transform "rotate(180deg)"} :src "/images/ratio.svg"}]]
-          "100"
+          ratio
           [gloryimg/ui "2rem" {:className "mx-1"}]]]]
 
        ^{:key 'connect-btn}

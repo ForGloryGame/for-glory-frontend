@@ -18,4 +18,6 @@
    [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/guild-basic])} "-> guild"]
    [:br]
+   [:button {:on-click #(rf/dispatch [:navigate :route/merchant-mint])} "-> merchant"]
+   [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/mint])} "-> mint"]])
