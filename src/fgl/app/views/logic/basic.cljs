@@ -14,7 +14,7 @@
  ::init
  [rf/trim-v]
  (fn [{:keys [db]} extra-inits]
-   (if (first (get db ::w/addrs))
+   (if (get db ::w/addr)
      {:fx
       (mapv #(vector :dispatch (if (keyword? %) [%] %))
             (concat [::init-gold ::int-glory] extra-inits))}

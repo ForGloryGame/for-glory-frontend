@@ -51,6 +51,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --immutable
+      - run: cp .env.example .env
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v1.0.2
       - run: npx shadow-cljs release app front app-ssr front-ssr
       - run: mkdir -p test
       - run: clojure -X:css-prod

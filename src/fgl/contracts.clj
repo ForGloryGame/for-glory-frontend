@@ -1,6 +1,7 @@
 (ns fgl.contracts)
 
 (defmacro with-provider [contract provider & body]
-  `(let [('(name ~contract)) (connect (symbol (name ~contract)) ~provider)
-         '(name ~contract)   (if (string? maybe-address) (.attach ~contract maybe-address) contract)]
-     ~@body))
+  `(when ~provider
+     (let [~(symbol (name contract)) (fgl.contracts/connect ~contract ~provider)
+           ~'r                       (fgl.contracts/get-request-fn ~(symbol (name contract)))]
+       ~@body)))

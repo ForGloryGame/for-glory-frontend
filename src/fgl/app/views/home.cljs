@@ -2,16 +2,11 @@
   (:require
    [fgl.app.ui.header :as header]
    [re-frame.core :as rf]
-   [taoensso.timbre :refer [info]]))
+   [lambdaisland.glogi :as log]))
 
 (defn controllers []
-  [{:start #(info "start" "home controller")
-    :stop  #(info "stop" "home controller")}])
+  [{:start identity
+    :stop  identity}])
 
 (defn main [_]
-  [:div.grid
-   {:style {:gridTemplate "\"header\" \"main\""}}
-   [header/ui]
-   [:main.grid-area-main.grid
-    [:section "Home page"
-     [:p>button {:on-click #(rf/dispatch [:navigate :route/front])} "> Front"]]]])
+  [:div "home"])

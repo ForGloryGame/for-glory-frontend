@@ -1,5 +1,6 @@
 (ns fgl.wallet.core
   (:require
+   [lambdaisland.glogi :as log]
    ["ethers" :as ethers]
    [oops.core :refer [ocall]]
    [promesa.core :as p]
@@ -11,7 +12,8 @@
 (defn request
   ([method] (request method []))
   ([method params]
-   (ocall @provider "send" method (clj->js params))))
+   (let [p @provider]
+     (and p (ocall p "send" method (clj->js params))))))
 
 (defn check-installation [_]
   (when (and js/ethereum js/ethereum.isMetaMask)
@@ -28,7 +30,7 @@
   (when (= (::state db) :installed)
     (p/let [addrs (request "eth_accounts")]
       (if (count-addrs addrs)
-        (rf/dispatch [::connected addrs])
+        (rf/dispatch [::connected (first addrs)])
         (rf/dispatch [::disconnected])))))
 
 (defn check-chain [db]
@@ -39,21 +41,21 @@
 (rf/reg-event-db
  ::connected
  [rf/trim-v]
- (fn [db [addrs]]
-   (assoc db ::state :connected ::addrs addrs)))
+ (fn [db [addr]]
+   (assoc db ::state :connected ::addr addr)))
 
 (rf/reg-event-db
  ::disconnected
  (fn [db _]
-   (assoc db ::state :installed :addrs [])))
+   (assoc db ::state :installed :addr nil)))
 
 (rf/reg-event-fx
  ::accounts-changed
  [rf/trim-v]
  (fn [_ [addrs]]
    (if (count-addrs addrs)
-     {:fx [[:dispatch [::connected addrs]]]}
-     {:fx [[:dispatch [::disconnected addrs]]]})))
+     {:fx [[:dispatch [::connected (first addrs)]]]}
+     {:fx [[:dispatch [::disconnected (first addrs)]]]})))
 
 (rf/reg-event-db
  ::chain-changed
@@ -68,7 +70,10 @@
  [(rf/after check-connection)
   (rf/after check-chain)]
  (fn [db _]
-   (assoc db ::state :installed)))
+   (log/debug :wallet ::installed :provider @provider)
+   (assoc db
+          ::state :installed
+          ::provider @provider)))
 
 (rf/reg-event-db
  ::init!
@@ -77,7 +82,7 @@
  (fn [db [target-chain-id]]
    (assoc db
           ::state :uninstalled
-          ::addrs []
+          ::addr nil
           ::provider nil
           ::target-chain target-chain-id)))
 
@@ -107,9 +112,14 @@
    (get db ::wrong-network)))
 
 (rf/reg-sub
- ::addrs
+ ::addr
  (fn [db _]
-   (get db ::addrs)))
+   (get db ::addr)))
+
+(rf/reg-sub
+ ::provider
+ (fn [db _]
+   (get db ::provider)))
 
 (rf/reg-event-fx
  ::connect!

@@ -55,22 +55,23 @@
                       hashp.core
                       cljs-devtool]
     :console-support false}
+   :compiler-options
+   {:closure-defines
+    {re-frame.trace.trace-enabled?              true
+     day8.re-frame.tracing.trace-enabled?       true
+     fgl.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
+     fgl.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
+     fgl.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
+     fgl.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
+     fgl.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
+     fgl.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
+     fgl.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
+     fgl.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
+     fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
+     fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
+     fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}
    :dev
-   {:compiler-options
-    {:closure-defines
-     {re-frame.trace.trace-enabled?              true
-      day8.re-frame.tracing.trace-enabled?       true
-      fgl.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
-      fgl.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
-      fgl.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
-      fgl.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
-      fgl.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
-      fgl.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
-      fgl.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
-      fgl.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
-      fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
-      fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
-      fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}}
+   {}
    :release
    {:closure-defines {goog.DEBUG                 false
                       goog.debug.LOGGING_ENABLED true}

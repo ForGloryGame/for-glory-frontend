@@ -3,10 +3,18 @@
    [fgl.config :as conf]
    [fgl.contracts :as c]
    [fgl.contracts.gold :as gold]
+   [fgl.contracts.glory :as glory]
+   [fgl.wallet.core :as w]
    [re-frame.core :as rf]
    [fgl.app.ui.connect-btn :as cbtn]
    ["@radix-ui/react-navigation-menu" :as Nav]
    [fgl.app.ui.logo :as logo]))
+
+(defn init-balances []
+  (let [p    @(rf/subscribe [::w/provider])
+        addr @(rf/subscribe [::w/addr])]
+    (rf/dispatch [::gold/get-balance p addr])
+    (rf/dispatch [::glory/get-balance p addr])))
 
 (defn nav-root [x]
   [:> Nav/Root
@@ -16,6 +24,7 @@
    x])
 
 (defn ui []
+  (init-balances)
   [:header.grid-area-header
    [nav-root
     [:> Nav/List
@@ -28,13 +37,13 @@
                     :on-click  #(rf/dispatch [:navigate :route/front])}
        [logo/ui {:style {:minWidth "8.8125rem"}}]]]
 
-     ^{:key 'gold}
-     [:> Nav/Item {:className "col-start-7 col-end-9"}
-      [:span "gold"]]
-
      ^{:key 'glory}
+     [:> Nav/Item {:className "col-start-7 col-end-9"}
+      [:span (str "Glory: " @(rf/subscribe [::glory/balance]))]]
+
+     ^{:key 'gold}
      [:> Nav/Item {:className "col-start-9 col-end-11"}
-      [:span "glory"]]
+      [:span (str "Gold: " @(rf/subscribe [::gold/balance]))]]
 
      ^{:key 'ratio}
      [:> Nav/Item {:className "col-start-11 col-end-13"}

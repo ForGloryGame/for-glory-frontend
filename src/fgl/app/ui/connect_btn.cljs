@@ -5,97 +5,34 @@
    [fgl.wallet.core :as w]
    [oops.core :refer [ocall oget]]
    [reagent.core :as r]
-   [element-resize.core :as elr]))
+   ;; [element-resize.core :as elr]
+   ))
 
 (w/init!)
-
-(defonce max-content-style (atom nil))
-
-(defn- get-width [el]
-  (-> el
-      (ocall "getBoundingClientRect")
-      (oget "width")))
-
-(defn- get-computed-style [el]
-  (let [style (-> el (ocall "computedStyleMap"))]
-    {:width              (get-width el)
-     :border-left-width  (-> style
-                             (ocall "get" "border-left-width")
-                             (oget "value"))
-     :border-right-width (-> style
-                             (ocall "get" "border-right-width")
-                             (oget "value"))
-     :padding-left       (-> style
-                             (ocall "get" "padding-left")
-                             (oget "value"))
-     :padding-right      (-> style
-                             (ocall "get" "padding-right")
-                             (oget "value"))}))
-
-(defn- get-px-of-each-char [computed-styles num]
-  (let [{:keys [width border-left-width border-right-width padding-left padding-right]}
-        computed-styles
-        width (- width border-left-width border-right-width padding-left padding-right)]
-    (when-not (zero? num)
-      [width (/ (- width border-left-width border-right-width padding-left padding-right) num)])))
-
-(defn- shorten-addr [width addr]
-  (if (or (not @max-content-style) (>= width (first @max-content-style)))
-    addr
-    (let [[max-width px-each-char] @max-content-style
-          each-trucate
-          (-> max-width
-              (- width)
-              (/ px-each-char)
-              (/ 2)
-              (as-> each-trucate (js/Math.max 1.5 each-trucate))
-              js/Math.ceil)]
-      (str "0x" (.slice addr 2 (- 22 each-trucate))
-           "..." (.slice addr 23 (- 42 each-trucate))))))
 
 (rf/reg-sub
  ::text
  :<- [::w/state]
  :<- [::w/wrong-network]
- :<- [::w/current-chain]
- :<- [::w/target-chain]
- :<- [::w/addrs]
- :<- [::elr/nodes :connect-btn]
- (fn [[s wrong-network addrs {:keys [width]}] _]
-   (if wrong-network
-     (repeat 2 "Wrong Network")
-     (case s
-       :installed   (repeat 2 "Connect Wallet")
-       :uninstalled (repeat 2 "Wallet not installed")
-       (if addrs [addrs (shorten-addr width (first addrs))] ["" ""])))))
+ :<- [::w/addr]
+ (fn [[s wrong-network addr] _]
+   (cond (= s :installed)
+         ["Connect Wallet" "Connect Wallet" false w/connect!]
+         wrong-network
+         ["Wrong Network" "Wrong Network" false #(rf/dispatch [::w/switch-to-target-chain!])]
+         :else
+         [(or addr "") "Address" true identity])))
 
 (defn ui [target-chain-id]
   (r/create-class
    {:component-did-mount
     (fn [_]
-      (and target-chain-id (w/init! {:target-chain-id target-chain-id}))
-      (elr/observe! :connect-btn (js/document.getElementById "connect-btn")))
+      (and target-chain-id (w/init! {:target-chain-id target-chain-id})))
     :reagent-render
     (fn []
-      (let [state               (rf/subscribe [::w/state])
-            [text shorten-text] @(rf/subscribe [::text ;; trucate-length
-                                                ])
-            wrong-network       @(rf/subscribe [::w/wrong-network])
-            disabled            (not (or (= @state :installed) wrong-network))
-            x @(rf/subscribe [::elr/nodes :connect-btn])]
-        (js/setTimeout
-         #(reset! max-content-style
-                  (let [el              (js/document.getElementById "connect-btn-span")
-                        computed-styles (get-computed-style el)]
-                    (get-px-of-each-char computed-styles 42)))
-         0)
-        [:div#connect-btn-wrapper.min-w-0.break-all
-         [:button#connect-btn
-          {:disabled disabled
-           :name     (if wrong-network "Wrong Network" "Connect wallet")
-           :on-click (if wrong-network #(rf/dispatch [::w/switch-to-target-chain!]) w/connect!)}
-          shorten-text]
-         [:span#connect-btn-span.invisible.absolute.w-max text]]))}))
-
-(comment
-  (js/console.log (js->clj (:current @(rf/subscribe [::elr/nodes :connect-btn])) :keywordize-keys true)))
+      (let [[text name disabled on-click] @(rf/subscribe [::text])]
+        [:button#connect-btn
+         {:disabled disabled
+          :name     name
+          :on-click on-click}
+         text]))}))

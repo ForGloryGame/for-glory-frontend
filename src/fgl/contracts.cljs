@@ -1,6 +1,7 @@
 (ns fgl.contracts
   (:require-macros [fgl.contracts :refer [with-provider]])
   (:require
+   [lambdaisland.glogi :as log]
    ["ethers" :refer [Contract]]
    [promesa.core :as p]
    [oops.core :refer [oapply+ ocall]]))
@@ -28,5 +29,6 @@
 (defn get-request-fn [contract]
   (assert contract "Invalid contract instance")
   (fn [method-name & args]
+    (log/debug :contract-call [(name method-name) args])
     (p/let [rst (oapply+ contract (name method-name) args)]
       rst)))
