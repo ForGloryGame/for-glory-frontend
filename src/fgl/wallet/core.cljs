@@ -28,7 +28,7 @@
   (reset! provider (ethers/providers.Web3Provider. js/ethereum)))
 
 (defn check-installation [_]
-  (when (and js/ethereum js/ethereum.isMetaMask)
+  (when (and js/window.ethereum js/ethereum.isMetaMask)
     (reinit-provider)
     (rf/dispatch [::installed])
     (ocall js/ethereum "?.removeAllListeners")

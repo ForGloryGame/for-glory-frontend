@@ -15,12 +15,15 @@
  :<- [::w/wrong-network]
  :<- [::w/addr]
  (fn [[s wrong-network addr] _]
-   (cond (= s :installed)
-         ["Connect Wallet" "Connect Wallet" false w/connect!]
-         wrong-network
-         ["Wrong Network" "Wrong Network" false #(rf/dispatch [::w/switch-to-target-chain!])]
-         :else
-         [(or addr "") "Address" true identity])))
+   (cond
+     (= s :uninstalled)
+     ["Wallet not detected" "Wallet not detected" false #(js/open "https://metamask.io/")]
+     (= s :installed)
+     ["Connect Wallet" "Connect Wallet" false w/connect!]
+     wrong-network
+     ["Wrong Network" "Wrong Network" false #(rf/dispatch [::w/switch-to-target-chain!])]
+     :else
+     [(or addr "") "Address" true identity])))
 
 (defn ui [target-chain-id]
   (r/create-class
