@@ -91,8 +91,8 @@
    :ns-default girouette.processor
    :exec-fn    process
    :exec-args  {:css           {:output-file "resources/app/public/css/compiled/main.css"}
-                :garden-fn     xxx.app.grammer/class-name->garden
-                :apply-classes xxx.app.css/composed-classes
+                :garden-fn     fgl.app.grammer/class-name->garden
+                :apply-classes fgl.app.css/composed-classes
                 :watch?        true
                 #_#_:dry-run? true}}
   :css-prod
@@ -101,8 +101,8 @@
    :ns-default girouette.processor
    :exec-fn    process
    :exec-args  {:css           {:output-file "resources/app/public/css/compiled/main.css"}
-                :garden-fn     xxx.app.grammer/class-name->garden
-                :apply-classes xxx.app.css/composed-classes
+                :garden-fn     fgl.app.grammer/class-name->garden
+                :apply-classes fgl.app.css/composed-classes
                 #_#_:dry-run? true}}
   :css-cards
   {; clojure -X:girouette-processor-cards
@@ -110,8 +110,8 @@
    :ns-default girouette.processor
    :exec-fn    process
    :exec-args  {:css           {:output-file "resources/cards/public/css/compiled/main.css"}
-                :garden-fn     xxx.app.grammer/class-name->garden
-                :apply-classes xxx.app.css/composed-classes
+                :garden-fn     fgl.app.grammer/class-name->garden
+                :apply-classes fgl.app.css/composed-classes
                 :watch?        true
                 #_#_:dry-run? true}}
 

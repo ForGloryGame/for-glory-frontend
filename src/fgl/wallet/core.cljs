@@ -1,4 +1,4 @@
-(ns xxx.wallet.core
+(ns fgl.wallet.core
   (:require
    ["ethers" :as ethers]
    [oops.core :refer [ocall]]

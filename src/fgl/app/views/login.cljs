@@ -1,8 +1,8 @@
-(ns xxx.app.views.login
+(ns fgl.app.views.login
   (:require
    [re-frame.core :as rf]
    [taoensso.timbre :refer [info]]
-   [xxx.config :as conf]))
+   [fgl.config :as conf]))
 
 (defn controllers []
   [{:start identity

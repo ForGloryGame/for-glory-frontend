@@ -1,7 +1,7 @@
-(ns xxx.app.ui.connect-btn
+(ns fgl.app.ui.connect-btn
   (:require
    [re-frame.core :as rf]
-   [xxx.wallet.core :as w]
+   [fgl.wallet.core :as w]
    [oops.core :refer [ocall oget]]
    [reagent.core :as r]
    [element-resize.core :as elr]))

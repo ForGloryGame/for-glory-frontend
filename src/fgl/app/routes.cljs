@@ -1,9 +1,9 @@
-(ns xxx.app.routes
+(ns fgl.app.routes
   (:require
    ;; TODO: check promesa
    ;; [promesa.core :as p]
    [shadow.loader :as loader]
-   [xxx.app.views.front :as front]
+   [fgl.app.views.front :as front]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rfe]
    [reitit.frontend.controllers :as rfc]
@@ -63,14 +63,14 @@
      :lazy        false}]
    ["home"
     {:name        :route/home
-     :view        #(resolve 'xxx.app.views.home/main)
-     :controllers #(resolve 'xxx.app.views.home/controllers)
+     :view        #(resolve 'fgl.app.views.home/main)
+     :controllers #(resolve 'fgl.app.views.home/controllers)
      :lazy        true
      :conflicting true}]
    ["login"
     {:name        :route/login
-     :view        #(resolve 'xxx.app.views.login/main)
-     :controllers #(resolve 'xxx.app.views.login/controllers)
+     :view        #(resolve 'fgl.app.views.login/main)
+     :controllers #(resolve 'fgl.app.views.login/controllers)
      :lazy        true
      :conflicting true}]
    ["about"
@@ -79,8 +79,8 @@
      :controllers (front/controllers)
      :lazy        false}
     ;; {:name        :route/about
-    ;;  :view        #(resolve 'xxx.app.views.about/main)
-    ;;  :controllers #(resolve 'xxx.app.views.about/controllers)
+    ;;  :view        #(resolve 'fgl.app.views.about/main)
+    ;;  :controllers #(resolve 'fgl.app.views.about/controllers)
     ;;  :lazy        true
     ;;  :conflicting true}
     ]
@@ -91,23 +91,23 @@
      :lazy        false}]
    ["404"
     {:name        :route/not-found
-     :view        #(resolve 'xxx.app.views.v404/main)
+     :view        #(resolve 'fgl.app.views.v404/main)
      :lazy        true
      :conflicting true}]
    ["500"
     {:name        :route/server-error
-     :view        #(resolve 'xxx.app.views.v500/main)
+     :view        #(resolve 'fgl.app.views.v500/main)
      :lazy        true
      :conflicting true}]
    [":fallback"
     {:name        :route/fallback
-     :view        #(resolve 'xxx.app.views.v404/main)
+     :view        #(resolve 'fgl.app.views.v404/main)
      :lazy        true
      :conflicting true}]
    ;; [":id"
    ;;  {:name        :route/profile
-   ;;   :view        #(resolve 'xxx.app.views.profile/main)
-   ;;   :controllers #(resolve 'xxx.app.views.profile/controllers)
+   ;;   :view        #(resolve 'fgl.app.views.profile/main)
+   ;;   :controllers #(resolve 'fgl.app.views.profile/controllers)
    ;;   :lazy        true
    ;;   :parameters  {:path [:map [:id string?]]}
    ;;   :conflicting true}]

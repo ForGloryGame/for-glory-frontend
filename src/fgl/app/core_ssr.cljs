@@ -1,6 +1,6 @@
-(ns xxx.app.core-ssr
+(ns fgl.app.core-ssr
   (:require
-   [xxx.app.views :as views]
+   [fgl.app.views :as views]
    [reagent.dom.server :as rs]))
 
 (defn -main []

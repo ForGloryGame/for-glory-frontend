@@ -1,4 +1,4 @@
-(ns xxx.app.views.front.footer)
+(ns fgl.app.views.front.footer)
 
 (defn ui []
   [:footer.flex.flex-row.justify-between.w-full

@@ -1,10 +1,10 @@
-(ns xxx.app.views.front
+(ns fgl.app.views.front
   (:require
    ;; [re-frame.core :as rf]
    ;; [taoensso.timbre :as log]
-   [xxx.app.views.front.header :as header]
-   [xxx.app.views.front.body :as body]
-   [xxx.app.views.front.footer :as footer]))
+   [fgl.app.views.front.header :as header]
+   [fgl.app.views.front.body :as body]
+   [fgl.app.views.front.footer :as footer]))
 
 (defn jump []
   (when-let [el (and (not (= "" js/location.hash)) (js/document.getElementById (.slice js/location.hash 1)))]

@@ -1,13 +1,13 @@
-(ns xxx.app.core
+(ns fgl.app.core
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as rf]
    [re-pressed.core :as rp]
    [breaking-point.core :as bp]
-   [xxx.app.routes :as routes]
-   [xxx.app.events :as events]
-   [xxx.app.views :as views]
-   [xxx.config :as config]))
+   [fgl.app.routes :as routes]
+   [fgl.app.events :as events]
+   [fgl.app.views :as views]
+   [fgl.config :as config]))
 
 (defn dev-setup []
   (when config/debug?

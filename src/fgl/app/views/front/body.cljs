@@ -1,4 +1,4 @@
-(ns xxx.app.views.front.body
+(ns fgl.app.views.front.body
   (:require
    ["@radix-ui/react-avatar" :as Avatar]))
 

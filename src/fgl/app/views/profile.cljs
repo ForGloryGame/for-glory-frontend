@@ -1,4 +1,4 @@
-(ns xxx.app.views.profile
+(ns fgl.app.views.profile
   (:require
    [re-frame.core :as rf]
    [taoensso.timbre :refer [info]]))

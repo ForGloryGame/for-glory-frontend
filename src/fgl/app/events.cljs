@@ -1,8 +1,8 @@
-(ns xxx.app.events
+(ns fgl.app.events
   (:require
    [re-frame.core :as rf]
    [re-pressed.core :as rp]
-   [xxx.app.db :as db]
+   [fgl.app.db :as db]
    [day8.re-frame.tracing :refer-macros [fn-traced]]))
 
 (rf/reg-event-db

@@ -1,4 +1,4 @@
-(ns xxx.app.ui.toast
+(ns fgl.app.ui.toast
   (:require
    ["@radix-ui/react-toast" :as Toast]))
 

@@ -1,9 +1,9 @@
-(ns xxx.app.ui.toast-card
+(ns fgl.app.ui.toast-card
   (:require
    [reagent.core :as reagent]
    [nubank.workspaces.core :as ws]
    [nubank.workspaces.card-types.react :as ct.react]
-   [xxx.app.ui.toast :as toast]))
+   [fgl.app.ui.toast :as toast]))
 
 (enable-console-print!)
 

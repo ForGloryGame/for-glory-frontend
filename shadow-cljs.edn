@@ -11,7 +11,7 @@
                 ;; (hooks.css/build)
                 ]
   :closure-defines
-  {xxx.config/version :shadow-git-inject/version}
+  {fgl.config/version :shadow-git-inject/version}
   :compiler-options
   {:infer-externs      :auto
    :shadow-keywords    true
@@ -36,21 +36,21 @@
    :module-loader true
    :modules
    {;; :shared  {:entries []}
-    :main    {:init-fn xxx.app.core/init
+    :main    {:init-fn fgl.app.core/init
               :default true}
-    ;; :front   {:entries    [xxx.app.views.front]
+    ;; :front   {:entries    [fgl.app.views.front]
     ;;           :depends-on #{:main}}
-    :home    {:entries    [xxx.app.views.home]
+    :home    {:entries    [fgl.app.views.home]
               :depends-on #{:main}}
-    :profile {:entries    [xxx.app.views.profile]
+    :profile {:entries    [fgl.app.views.profile]
               :depends-on #{:main}}
-    :about   {:entries    [xxx.app.views.about]
+    :about   {:entries    [fgl.app.views.about]
               :depends-on #{:main}}
-    :login   {:entries    [xxx.app.views.login]
+    :login   {:entries    [fgl.app.views.login]
               :depends-on #{:main}}
-    :404     {:entries    [xxx.app.views.v404]
+    :404     {:entries    [fgl.app.views.v404]
               :depends-on #{:main}}
-    :500     {:entries    [xxx.app.views.v500]
+    :500     {:entries    [fgl.app.views.v500]
               :depends-on #{:main}}}
    :devtools
    {:preloads [day8.re-frame-10x.preload hashp.core]}

@@ -1,4 +1,4 @@
-(ns xxx.app.views.front.header
+(ns fgl.app.views.front.header
   (:require
    ;; ["@radix-ui/react-visually-hidden" :as Invisible]
    ["@radix-ui/react-navigation-menu" :as Nav]

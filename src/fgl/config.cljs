@@ -1,4 +1,4 @@
-(ns xxx.config)
+(ns fgl.config)
 
 (def debug?
   ^boolean goog.DEBUG)

@@ -1,4 +1,4 @@
-(ns xxx.app.css)
+(ns fgl.app.css)
 
 (def composed-classes
   {"btn" ["p-2" "rounded"]

@@ -3,10 +3,10 @@
    ;; [lambdaisland.ornament :as o]
    ;; [garden.compiler :as gc]
    ;; [girouette.tw.preflight :as girouette-preflight]
-   [xxx.app.grammer]
+   [fgl.app.grammer]
    [clojure.string :as str]
-   [xxx.app.css]
-   ;; [xxx.app.styles]
+   [fgl.app.css]
+   ;; [fgl.app.styles]
    [girouette.processor :as css-processor]))
 
 ;; (defn write-styles-hook
@@ -14,7 +14,7 @@
 ;;   [build-state & args]
 ;;   ;; In case your global-styles is in a separate clj file you will have to
 ;;   ;; reload it yourself, shadow only reloads/recompiles cljs/cljc files
-;;   (require 'xxx.app.styles :reload)
+;;   (require 'fgl.app.styles :reload)
 ;;   ;; Just writing out the CSS is enough, shadow will pick it up (make sure you
 ;;   ;; have a <link href=styles.css rel=stylesheet>)
 ;;   (spit "resources/app/public/css/compiled/main.css"
@@ -24,7 +24,7 @@
 ;;          ;; is optional.
 ;;          (gc/compile-css (concat
 ;;                           girouette-preflight/preflight
-;;                           xxx.app.styles/global-styles))
+;;                           fgl.app.styles/global-styles))
 ;;          "\n"
 ;;          (o/defined-styles)))
 ;;   build-state)
@@ -43,8 +43,8 @@
     (prn "hahaha" (some #{build-id} [:cards :app]))
     (when (some #{build-id} [:cards :app])
       (css-processor/process {:css           {:output-file (css-resource-output-file build-state)}
-                              :garden-fn     'xxx.app.grammer/class-name->garden
-                              :apply-classes 'xxx.app.css/composed-classes
+                              :garden-fn     'fgl.app.grammer/class-name->garden
+                              :apply-classes 'fgl.app.css/composed-classes
                               :watch?        (= mode :dev)
                               :verbose?      true}))
     build-state))
