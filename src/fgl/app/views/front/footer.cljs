@@ -1,7 +1,7 @@
 (ns fgl.app.views.front.footer)
 
 (defn ui []
-  [:footer.flex.flex-row.justify-between.w-full.mx-auto.py-4.max-w-screen-2xl
+  [:footer.flex.flex-row.justify-between.w-full.mx-auto.p-4.max-w-screen-2xl
    [:span "FORGLORY 2022."]
    [:div.flex.flex-row.justify-between
     [:a.block.mr-20px {:href "https://twitter.com/GloryGameNFT"} [:img {:style {:width "1.5rem" :minWidth "24px"} :src "/images/twitter-2.svg" :alt "link to twitter"}]]

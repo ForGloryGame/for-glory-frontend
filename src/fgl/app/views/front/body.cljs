@@ -3,15 +3,15 @@
    ["@radix-ui/react-avatar" :as Avatar]))
 
 (defn h1 []
-  [:h1.font-bold.text-center {:style {:fontSize "3.125rem"}} "Explore Middle Ages in Metaverse"])
+  [:h1.font-bold.text-center {:style {:fontSize "3.125rem"}} "The Future of Community-Driven Strategic MMO"])
 
 (defn h3 []
-  [:h3.font-bold.text-lg.mb-5 "A brand new experience"])
+  [:h3.font-bold.text-lg.mb-5 "To Spark In Glory, One Must Enter Chaos"])
 
 (defn p1 []
   [:p.text-sm.text-center
    {:style {:maxWidth "50rem"}}
-   "A continent in the metaverse is going through its Middle Ages. Noble Knights are determined to go to the Battlefield, slaying enemies together in every cycle, and earning their $GLORY. With enough $GLORY in hand, they are able to recruit more Knights to strengthen themselves. They even have chances to become a Lord themselves."])
+   "Tales in GloryLand once told, Five Kingdoms derived from beliefs of five Mythical Creatures. Greatest heroes gather as rising of the Kingdoms. Lords who voice themselves in council, and noble Knights who slay enemies fearlessly on the Battlefields, joining together inside the Five Kingdoms. Learn to fight alongside comrades who share the same belief and earn $Glory and $Gold via this Community-Driven Strategic gameplay you've never experienced before."])
 
 (defn app-btn []
   [:a.block.font-bold.text-white.text-center.py-1
@@ -37,13 +37,16 @@
 (defn avatar [src]
   [:> Avatar/Root
    {:className "block border-0.125rem border-rgb-8f816a"
-    :style     {:borderRadius "50%"}}
+    :style     {:borderRadius "50%"
+                :width        "6.75rem"}}
    [:> Avatar/Image
     {:src       src
      :alt       "avatar"
-     :className "border-0.125rem border-rgb-4f3926 w-6.75rem"
+     :className "border-0.125rem border-rgb-4f3926"
      :style     {:borderRadius "50%"
-                 :boxShadow    "inset 0 0 3px 0 rgba(0,0,0,0.50)"}}]])
+                 :boxShadow    "inset 0 0 3px 0 rgba(0,0,0,0.50)"
+                 :width        "6.5rem"
+                 :height       "6.5rem"}}]])
 
 (defn avatar-info [t1 t2]
   [:figcaption
@@ -88,21 +91,23 @@
    [letter-h1 "The Team"]
    [:br]
    [:ul.avatars.flex.flex-row.justify-between
-    [:li [ava "/images/avatar-1.png" "Michael Scott" "Founder"]]
-    [:li [ava "/images/avatar-2.png" "Jim Helpert" "Co-Founder"]]
-    [:li [ava "/images/avatar-3.png" "Pam Beesly" "Head of Marketing"]]
+    [:li [ava "/images/avatar-1.png" "0xP" "Founder"]]
+    [:li [ava "/images/avatar-2.png" "0xChiaki" "Head of Devs"]]
+    [:li [ava "/images/avatar-3.png" "0xCT" "Game Design"]]
     [:li [ava "/images/avatar-4.png" "Angella Philip" "Head of Operations"]]]])
 
 (defn h2 []
-  [:h2.font-bold {:id "roadmap"
+  [:h2.font-bold {:id    "roadmap"
                   :style {:fontSize     "2.375rem"
                           :marginBottom "2.375rem"}}
    "Roadmap"])
 
 (defn card-h1 [x]
   [:h1.font-semibold.text-3xl x])
-(defn card-h2 [x]
-  [:h2.font-semibold.text-xl x])
+(defn card-h2
+  ([x] (card-h2 {} x))
+  ([opts x]
+   [:h2.font-semibold.text-xl opts x]))
 (defn card-ul [& x]
   [into [:ul.font-medium.text-sm] x])
 
@@ -141,7 +146,8 @@
              :backgroundSize      "cover"
              ;; :backgroundSize      "100%"
              :backgroundBlendMode "normal, darken"
-             :backgroundPosition  "center center"
+             :backgroundPositionY "4rem"
+             :backgroundPositionX "center"
              :marginTop           "-7rem"
              :height              "calc(100vh + 7rem)"
              :z-index             "-1"}}]
@@ -160,36 +166,36 @@
      [whitepaper-btn]]]
    [:section.section-2.w-full.flex.flex-col.items-center.py-20.bg-center.bg-no-repeat.bg-scroll.bg-cover
     {:style {;; :backgroundImage "url(\"/images/bg-2.png\")"
-             :marginTop       "-7rem"}}
+             :marginTop "-7rem"}}
     [letter]]
    [:section.section-3.w-full.flex.flex-col.items-center.pt-20
     {:style {:paddingBottom "6.125rem"}}
     [h2]
     [card {:left? true :last? false}
-     [card-h2 "2022 Q2 - Pre-Launch"]
-     [card-h1 "March - May"]
+     [card-h1 "2022 Q2 - Pre-Launch"]
+     [card-h2 {:className "mb-2"} "March - May"]
      [card-h2 "Launch of Social Media"]
      [card-ul
       [:li "Incentivized Rinkeby Testnet"]
       [:li "Bug testing and Rewarding Early Contributor"]]]
     [card {:left? false :last? false}
-     [card-h2 "2022 Q2 - Glory Game"]
-     [card-h1 "May - June"]
+     [card-h1 "2022 Q2 - Glory Game"]
+     [card-h2 {:className "mb-2"} "May - June"]
      [card-h2 "Genesis Collection Minted Out"]
      [card-ul
       [:li "Public Launch of For Glory Dapp on Ethereum Mainnet"]
       [:li "Cleaning the BattleField Feature Open"]]]
     [card {:left? true :last? false}
-     [card-h2 "2022 Q3"]
-     [card-h1 "July - Sept"]
+     [card-h1 "2022 Q3"]
+     [card-h2 {:className "mb-2"} "July - Sept"]
      [card-h2 "Refinement of Graphics and Gameplay Interface"]
      [card-ul
       [:li "Clash of Kingdoms"]
       [:li "Weapons Feature"]
       [:li "Kingdom Construction Feature"]]]
     [card {:left? false :last? true}
-     [card-h2 "2022 Q4"]
-     [card-h1 "Oct - Dec"]
+     [card-h1 "2022 Q4"]
+     [card-h2 {:className "mb-2"} "Oct - Dec"]
      [card-h2 "Partnership"]
      [card-ul
       [:li "Explore Gloryverse"]
