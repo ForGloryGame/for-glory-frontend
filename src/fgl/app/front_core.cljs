@@ -10,6 +10,7 @@
    [fgl.app.events :as events]
    [fgl.app.views.front :as front-view]
    [fgl.config :as config]))
+
 (glogi-console/install!)
 (log/set-levels {:glogi/root (if goog.DEBUG :all :info)})
 

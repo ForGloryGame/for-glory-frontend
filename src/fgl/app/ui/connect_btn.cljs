@@ -56,28 +56,33 @@
 (rf/reg-sub
  ::text
  :<- [::w/state]
+ :<- [::w/wrong-network]
+ :<- [::w/current-chain]
+ :<- [::w/target-chain]
  :<- [::w/addrs]
  :<- [::elr/nodes :connect-btn]
- (fn [[s addrs {:keys [width]}] _]
-   (case s
-     :installed   (repeat 2 "Connect Wallet")
-     :uninstalled (repeat 2 "Wallet not installed")
-     (if addrs [addrs (shorten-addr width (first addrs))] ["" ""]))))
+ (fn [[s wrong-network addrs {:keys [width]}] _]
+   (if wrong-network
+     (repeat 2 "Wrong Network")
+     (case s
+       :installed   (repeat 2 "Connect Wallet")
+       :uninstalled (repeat 2 "Wallet not installed")
+       (if addrs [addrs (shorten-addr width (first addrs))] ["" ""])))))
 
-(defn ui []
+(defn ui [target-chain-id]
   (r/create-class
    {:component-did-mount
     (fn [_]
+      (and target-chain-id (w/init! {:target-chain-id target-chain-id}))
       (elr/observe! :connect-btn (js/document.getElementById "connect-btn")))
     :reagent-render
     (fn []
       (let [state               (rf/subscribe [::w/state])
             [text shorten-text] @(rf/subscribe [::text ;; trucate-length
                                                 ])
-            disabled            (case @state
-                                  :installed false
-                                  true)
-            x                   @(rf/subscribe [::elr/nodes :connect-btn])]
+            wrong-network       @(rf/subscribe [::w/wrong-network])
+            disabled            (not (or (= @state :installed) wrong-network))
+            x @(rf/subscribe [::elr/nodes :connect-btn])]
         (js/setTimeout
          #(reset! max-content-style
                   (let [el              (js/document.getElementById "connect-btn-span")
@@ -87,8 +92,8 @@
         [:div#connect-btn-wrapper.min-w-0.break-all
          [:button#connect-btn
           {:disabled disabled
-           :name     "Connect wallet"
-           :on-click w/connect!}
+           :name     (if wrong-network "Wrong Network" "Connect wallet")
+           :on-click (if wrong-network #(rf/dispatch [::w/switch-to-target-chain!]) w/connect!)}
           shorten-text]
          [:span#connect-btn-span.invisible.absolute.w-max text]]))}))
 

@@ -1,5 +1,8 @@
 (ns fgl.app.ui.header
   (:require
+   [fgl.config :as conf]
+   [fgl.contracts :as c]
+   [fgl.contracts.gold :as gold]
    [re-frame.core :as rf]
    [fgl.app.ui.connect-btn :as cbtn]
    ["@radix-ui/react-navigation-menu" :as Nav]
@@ -39,4 +42,4 @@
 
      ^{:key 'connect-btn}
      [:> Nav/Item {:className "col-start-13 col-end-15"}
-      [fgl.app.ui.connect-btn/ui]]]]])
+      [fgl.app.ui.connect-btn/ui conf/target-chain-id]]]]])

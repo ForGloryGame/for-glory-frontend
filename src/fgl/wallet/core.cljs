@@ -5,6 +5,7 @@
    [promesa.core :as p]
    [re-frame.core :as rf]))
 
+(declare connect!)
 (defonce provider (atom nil))
 
 (defn request
@@ -30,7 +31,6 @@
         (rf/dispatch [::connected addrs])
         (rf/dispatch [::disconnected])))))
 
-;; TODO: target chain
 (defn check-chain [db]
   (when (= (::state db) :installed)
     (p/let [chainId (request "eth_chainId")]
@@ -59,11 +59,14 @@
  ::chain-changed
  [rf/trim-v]
  (fn [db [chainId]]
-   (assoc db ::current-chain chainId)))
+   (let [target-chain (::target-chain db)]
+     (assoc db ::current-chain chainId
+            ::wrong-network (and target-chain (not (= target-chain chainId)))))))
 
 (rf/reg-event-db
  ::installed
- [(rf/after check-connection)]
+ [(rf/after check-connection)
+  (rf/after check-chain)]
  (fn [db _]
    (assoc db ::state :installed)))
 
@@ -76,7 +79,7 @@
           ::state :uninstalled
           ::addrs []
           ::provider nil
-          ::target-chain-id target-chain-id)))
+          ::target-chain target-chain-id)))
 
 (rf/reg-sub
  ::path
@@ -89,9 +92,35 @@
    (get db ::state)))
 
 (rf/reg-sub
+ ::current-chain
+ (fn [db _]
+   (get db ::current-chain)))
+
+(rf/reg-sub
+ ::target-chain
+ (fn [db _]
+   (get db ::target-chain)))
+
+(rf/reg-sub
+ ::wrong-network
+ (fn [db _]
+   (get db ::wrong-network)))
+
+(rf/reg-sub
  ::addrs
  (fn [db _]
    (get db ::addrs)))
+
+(rf/reg-event-fx
+ ::connect!
+ (fn [_ _]
+   (connect!) {}))
+
+(rf/reg-event-fx
+ ::switch-to-target-chain!
+ (fn [{:keys [db]} _]
+   (request "wallet_switchEthereumChain" [{:chainId (::target-chain db)}])
+   {}))
 
 (defn init!
   ([] (init! {}))
