@@ -60,8 +60,9 @@ url(\"/images/header-bg.svg\")
         [:> Nav/Link {:className "cursor-pointer block p-2"
                       :on-click  #(rf/dispatch [:navigate :route/home])}
          [logo/ui {:style {:minWidth "8.8125rem"
-                           :marginTop "-0.5rem"
-                           :marginBottom "-0.5rem"}}]]]
+                           ;; :marginTop "-0.1rem"
+                           ;; :marginBottom "-0.1rem"
+                           }}]]]
 
        ^{:key 'glory}
        [:> Nav/Item {:className "cs6 ce8"}

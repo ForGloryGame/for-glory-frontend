@@ -24,7 +24,8 @@
              management? (= @hover :management)
              vote?       (= @hover :vote)
              allocation? (= @hover :allocation)
-             alter?      (= @hover :alter)]
+             alter?      (= @hover :alter)
+             back?      (= @hover :back)]
          [:div.fixed.top-50%.left-50%.overflow-clip.fi
           {:style {:minWidth  "1000vw"
                    :minHeight "calc(1000vw * 0.5625)"
@@ -133,12 +134,13 @@
           (and fg?
                ;; back
                [:button.absolute
-                {:on-click #(rf/dispatch [:navigate :route/home])
-                 ;; :onMouseEnter #(fg-reset! :back)
-                 ;; :onMouseLeave #(fg-reset! nil)
+                {:on-click #(rf/dispatch [:navigate :route/map])
+                 :onMouseEnter #(fg-reset! :back)
+                 :onMouseLeave #(fg-reset! nil)
                  :style    {:width "calc(1000vw * 373 / 5120)"
                             :left  "calc(1000vw * 409 / 5120)"
                             :top   "calc(1000vw * 0.5625 * 2680 / 2880)"}}
                 [:img
                  {:src   "/images/kingdom-back-btn.png"
-                  :style {:width "calc(1000vw * 473 / 5120)"}}]])])))))
+                  :style {:width "calc(1000vw * 473 / 5120)"
+                          :transform  (if back? "scale(1.1) translate(-1%,-1%)" "")}}]])])))))

@@ -1,13 +1,13 @@
 (ns fgl.app.views.home
   (:require
-   [fgl.app.ui.map :as uimap]))
+   [fgl.app.views.start :as start]))
 
 (defn controllers []
   [{:start identity
     :stop  identity}])
 
 (defn main [_]
-  [uimap/ui true])
+  [start/main])
 
 ;; (defn main [_]
 ;;   [:div

@@ -41,7 +41,7 @@
                         :default true}
     :main              {:init-fn    fgl.app.home-core/init
                         :depends-on #{:shared}}
-    :start             {:entries    [fgl.app.views.start]
+    :map               {:entries    [fgl.app.views.map]
                         :depends-on #{:shared}}
     :profile           {:entries    [fgl.app.views.profile]
                         :depends-on #{:shared}}

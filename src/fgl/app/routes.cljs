@@ -83,17 +83,18 @@
          :controllers (home/controllers)
          ;; :lazy        true
          :conflicting true}]
+    ["map"
+     {:name        :route/map
+      :shadow-module "map"
+      :view        #(resolve 'fgl.app.views.map/main)
+      :controllers #(resolve 'fgl.app.views.map/controllers)
+      :lazy        true
+      :conflicting true}]
     ["dashboard"
      {:name        :route/dashboard
       :panel-name  "Personal Center"
       :view        #(resolve 'fgl.app.views.dashboard/main)
       :controllers #(resolve 'fgl.app.views.dashboard/controllers)
-      :lazy        true
-      :conflicting true}]
-    ["start"
-     {:name        :route/start
-      :view        #(resolve 'fgl.app.views.start/main)
-      :controllers #(resolve 'fgl.app.views.start/controllers)
       :lazy        true
       :conflicting true}]
     ["council"
