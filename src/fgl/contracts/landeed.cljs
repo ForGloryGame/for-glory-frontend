@@ -39,7 +39,7 @@
        (ctc/with-provider c provider
          (p/let [balance (r :balanceOf addr)
                  token-ids (r :tokensOfOwner addr)
-                 deedsInfo (p/all (map #(r :deesInfo %) (keys DeedType)))]
+                 deedsInfo (p/all (map #(r :deedsInfo %) (keys DeedType)))]
            (map-indexed
             (fn  [idx [price cap minted]]
               (rf/dispatch [::set price ::info idx :price])

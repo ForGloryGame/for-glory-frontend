@@ -33,7 +33,11 @@
     :reagent-render
     (fn []
       (let [[text name disabled on-click] @(rf/subscribe [::text])]
-        (if (and (string? text) (.startsWith text "0x"))
-          [:span {:style {:textShadow "1.364px 1.463px 1px rgba(0, 0, 0, 0.64)"}} text]
-          [btn/ui {:id "connect-btn" :disabled disabled :name name :on-click on-click}
-           [:span {:style {:textShadow "1.364px 1.463px 1px rgba(0, 0, 0, 0.64)"}} text]])))}))
+        (cond (not disabled)
+              [btn/ui {:id       "connect-btn"
+                       :t        :blg
+                       :name     name
+                       :on-click on-click}
+               [:span text]]
+              disabled
+              [:span text])))}))

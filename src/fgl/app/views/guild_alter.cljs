@@ -119,7 +119,7 @@
      [:div.flexr.w-full.bg-C81c6dd1a.py-3.text-4xl [gloryimg/ui "2.5rem"] [balance/ui output {:style {:maxWidth "40rem"}}]]
      [btn/ui
       {:className "absolute bottom-12 transform left-1/2 -translate-x-1/2 bg-Ced8e28 border-Cffd386 w-14rem text-xl"
-       :c         :orange
+       :t         :olg
        :on-click  #(rf/dispatch (if approved? [::sgold/send {:method :lock :params [input weeks]
                                                              :on-success
                                                              (fn []
@@ -158,6 +158,7 @@
      [:p.guild-font-family.text-4xl.mt-6.flexr [goldimg/ui "2.5rem"] (balance/ui unlocked)]
      [btn/ui
       {:className "absolute bottom-12 left-1/2 transform -translate-x-1/2 text-xl"
+       :t         :bsm
        :style     {:width "10rem"}}
       "REDEEM"]]))
 

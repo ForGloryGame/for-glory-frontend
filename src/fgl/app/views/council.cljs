@@ -166,7 +166,7 @@
               staked?     (= type :staked)
               selected    @(rf/subscribe [::selected])]
           (into
-           [:div.overflow-x-auto.flex.pb-8]
+           [:div.overflow-x-auto.flex.pb-8.min-h-21rem]
            (map (fn [{:keys [id is-lord gold glory]}]
                   ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
                 data)))))))
@@ -211,24 +211,30 @@
             className             (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
         [:div.cs3.ce4.rs5.re6.justify-self-end
          {:className className}
-         (and (not approved?) [:button {:on-click approve} "APPROVE"])
+         (and (not approved?) [btn/ui
+                               {:t         :bsm
+                                :className "mr-4"
+                                :disabled  no-selected?
+                                :on-click  approve}
+                               "APPROVE"])
          (and approved?
               [btn/ui
-               {:s         :sm
+               {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (enter selected)}
                "ENTER"])
          (and approved? staked?
               [btn/ui
-               {:s         :sm
+               {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (unstake selected)}
                "FLEE"])
          (and approved? staked?
               [btn/ui
-               {:disabled no-selected?
+               {:t        :olg
+                :disabled no-selected?
                 :on-click (claim selected)
                 :c        :orange}
                "CLAIM"])]))))

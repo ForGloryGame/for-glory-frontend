@@ -18,7 +18,7 @@
     ; [girouette.tw.table :as table]
     ; [girouette.tw.animation :as animation]
    [girouette.tw.transform :as transform]
-    ; [girouette.tw.interactivity :as interactivity]
+   [girouette.tw.interactivity :as interactivity]
     ; [girouette.tw.svg :as svg]
     ; [girouette.tw.accessibility :as accessibility]
    ))
@@ -90,7 +90,7 @@
    ;table/components
    ;animation/components
    transform/components
-   ;interactivity/components
+   interactivity/components
    ;svg/components
    ;accessibility/components
    my-custom-components])

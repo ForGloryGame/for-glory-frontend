@@ -85,6 +85,7 @@
      fgl.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
      fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
      fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
+     fgl.config.contract-addr-exchange          #shadow/env "CONTRACT_EXCHANGE"
      fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}
    :dev
    {}

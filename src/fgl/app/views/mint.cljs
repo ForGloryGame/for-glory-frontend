@@ -127,17 +127,15 @@
       ;;  {:on-click
       ;;   #(rf/dispatch
       ;;     [::glory/send
-      ;;      :method :grantRole
-      ;;      :params
-      ;;      [(ethers/utils.keccak256
-      ;;        (ethers/utils.toUtf8Bytes
-      ;;         "WHITELIST_TRANSFER_ROLE"))
-      ;;       "0x28B19b15AbD3B20C71C7c808403AB934f2fd9Cb1"
-      ;;       ;; addr
-      ;;       ]])}
+      ;;      {:method :grantRole
+      ;;       :params
+      ;;       [(ethers/utils.keccak256
+      ;;         (ethers/utils.toUtf8Bytes
+      ;;          "WHITELIST_TRANSFER_ROLE"))
+      ;;        addr]}])}
       ;;  "Grant mint Glory Token transfer role"]
-      ;; [:li>button.border {:on-click  #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-battlefield]}])}
-      ;;  "Grant Battlefield to mint NFT"]
+      [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-battlefield]}])}
+       "Grant Battlefield to mint NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :updateKindoms :params [conf/contract-addr-kingdoms]}])}
@@ -175,14 +173,14 @@
                        conf/contract-addr-battlefield]}])}
        "Grant Battlefield To Mint Gold"]
       [:li>button.border
-       {:on-click #(rf/dispatch [::gold/send {:method :mint :params [addr (-> "10"
+       {:on-click #(rf/dispatch [::gold/send {:method :mint :params [addr (-> "1000"
                                                                               ethers/BigNumber.from
-                                                                              (.pow 18))]}])}
+                                                                              (.mul (ethers/BigNumber.from "1000000000000000000")))]}])}
        "Mint Gold"]
       [:li>button.border
-       {:on-click #(rf/dispatch [::glory/send {:method :mint :params [addr (-> "10"
+       {:on-click #(rf/dispatch [::glory/send {:method :mint :params [addr (-> "200"
                                                                                ethers/BigNumber.from
-                                                                               (.pow 18))]}])}
+                                                                               (.mul (ethers/BigNumber.from "1000000000000000000")))]}])}
        "Mint Glory"]]
      [:ul.list-disc.mt-10 "Gold Token"
       [:li>span "balance: " [balance/ui gold-balance]]]

@@ -160,16 +160,14 @@
 
 (defn cards []
   (fn []
-    (let []
-      (fn []
-        (let [[type data] @(rf/subscribe [::data])
-              staked?     (= type :staked)
-              selected    @(rf/subscribe [::selected])]
-          (into
-           [:div.overflow-x-auto.flex.pb-8]
-           (map (fn [{:keys [id is-lord gold glory]}]
-                  ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
-                data)))))))
+    (let [[type data] @(rf/subscribe [::data])
+          staked?     (= type :staked)
+          selected    @(rf/subscribe [::selected])]
+      (into
+       [:div.overflow-x-auto.flex.pb-8.min-h-21rem]
+       (map (fn [{:keys [id is-lord gold glory]}]
+              ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
+            data)))))
 
 (defn select-all []
   (let [select-all #(rf/dispatch [::select-all %])]
@@ -211,17 +209,23 @@
             className             (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
         [:div.cs3.ce4.rs5.re6.justify-self-end
          {:className className}
-         (and (not approved?) [:button {:on-click approve} "APPROVE"])
+         (and (not approved?)
+              [btn/ui
+               {:t         :bsm
+                :disabled  no-selected?
+                :className "mr-4"
+                :on-click  approve}
+               "APPROVE"])
          (and approved?
               [btn/ui
-               {:s         :sm
+               {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (enter selected)}
                "ENTER"])
          (and approved? staked?
               [btn/ui
-               {:s         :sm
+               {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (unstake selected)}
@@ -230,8 +234,7 @@
               [btn/ui
                {:disabled no-selected?
                 :on-click (claim selected)
-                :c        :orange
-                :style    {:width "14rem"}}
+                :t        :olg}
                "CLAIM"])]))))
 
 (defn main [_]

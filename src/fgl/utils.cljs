@@ -8,18 +8,30 @@
   (str "calc(" w " * " x ")"))
 
 (defn keep-fixed [x n]
-  (if (and (> n 1) (.endsWith x ".0"))
-    (.join (clj->js (into [x] (repeat (dec n) "0"))) "")
-    (.join (clj->js (into [x] (repeat n "0"))) "")))
+  (cond (and (> n 1) (.endsWith x ".0"))
+        (.join (clj->js (into [x] (repeat (dec n) "0"))) "")
+        (.test #"\." x)
+        (let [a              (.lastIndexOf x ".")
+              b              (count x)
+              decimal-length (- b (inc a))
+              n              (- n decimal-length)]
+          (.join (clj->js (into [x] (repeat n "0"))) ""))
+        :else
+        (.join (clj->js (into [x "."] (repeat n "0"))) "")))
 
-(defn stip-ends-zero
-  ([n] (stip-ends-zero n {}))
+(defn strip-ends-zero
+  ([n] (strip-ends-zero n {}))
   ([n {:keys [keep-end fixed]}]
-   (cond (and (not keep-end) (string? n) (.test #"\.0+" n))
+   (cond (and (not keep-end) (string? n) (.test #"\.0+$" n))
          (.replace n #"\.0+" "")
          keep-end
          (keep-fixed n fixed)
          :else n)))
+
+(comment
+  (strip-ends-zero "0.01" {:keep-end true :fixed 4})
+  (strip-ends-zero "0" {:keep-end true :fixed 4})
+  (strip-ends-zero "1" {:keep-end true :fixed 4}))
 
 (defn ->display-token
   ([bignumberish] (->display-token bignumberish {}))
@@ -33,7 +45,7 @@
              (.sub sub)
              (ethers/utils.formatUnits 18)
              ethers/utils.commify
-             (stip-ends-zero {:keep-end keep-end :fixed fixed}))]
+             (strip-ends-zero {:keep-end keep-end :fixed fixed}))]
      rst)))
 
 (defn ->token-ids [token-ids-in-str-or-int]

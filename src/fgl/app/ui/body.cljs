@@ -16,8 +16,8 @@
 (defn ui [route-data children]
   (let [{:keys [panel-name] n :name} route-data
 
-        guild? (log/spy (-> n (or :_) name (.startsWith "guild")))
-        merchant? (log/spy (-> n (or :_) name (.startsWith "merchant")))
+        guild?    (-> n (or :_) name (.startsWith "guild"))
+        merchant? (-> n (or :_) name (.startsWith "merchant"))
 
         sub-wrapper
         (cond guild?

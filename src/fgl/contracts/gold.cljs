@@ -29,8 +29,9 @@
  ::allowance
  (fn [{:keys [db]} [_ spender]]
    (let [{::w/keys [addr provider]} db]
-     (ctc/with-provider c provider
-       (p/then (r :allowance addr spender) #(rf/dispatch [::set % addr ::allowance spender]))))
+     (when addr
+       (ctc/with-provider c provider
+         (p/then (r :allowance addr spender) #(rf/dispatch [::set % addr ::allowance spender])))))
    {}))
 
 (reg-event-pfx

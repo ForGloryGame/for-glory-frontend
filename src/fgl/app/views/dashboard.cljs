@@ -68,11 +68,11 @@
       [:div.flex.flex-row.justify-between.items-center
        [btn/ui
         {:on-click  #(js/open (scan-addr-url addr))
-         :s         :xs
+         :t         :bxs
          :className "mr-4"}
         [:span.flexr [:img.w-4.mr-2 {:src "/images/share.png"}] "View on explorer"]]
        [btn/ui
-        {:s :xs
+        {:t :bxs
          :on-click
          #(do (copy-to-clipboard addr)
               (rf/dispatch [:toast/success {:title "Copied!" :no-close true}]))}
@@ -86,7 +86,7 @@
         [:div.text-xl "ROLE:XXXXX"]]
        [btn/ui
         {:on-click #(js/open (scan-addr-url addr))
-         :s        :xs}
+         :t        :bxs}
         [:span.flexr [:img.w-4.mr-2 {:src "/images/share.png"}] "View on explorer"]]]]]))
 
 (defn balances []
