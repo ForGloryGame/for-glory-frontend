@@ -32,19 +32,23 @@ jobs:
           cli: latest
       # - run: sudo apt install rlwrap -y
 
+      - uses: actions/cache@v3
+        id: maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ~/.m2/
+          key: ${{ runner.os }}-maven-${{ hashFiles('./deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - uses: actions/cache@v2
-        id: yarn-and-maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
         with:
-          path: |
-            ~/.m2/repository
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            ./.shadow-cljs
-          key: ${{ runner.os }}-yarn-and-maven-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('./shadow-cljs.edn') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-and-maven-
+            ${{ runner.os }}-yarn-
       - run: yarn install --immutable
       - run: npx shadow-cljs release app
       - run: mkdir -p test
