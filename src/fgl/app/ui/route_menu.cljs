@@ -97,4 +97,4 @@
     [item :route/battlefield "battlefield"]
     [item :route/council "council"]
     [item :route/merchant-mint "merchant"]
-    [item :route/rank "rank"]]])
+    [item :route/rank-personal "rank"]]])

@@ -4,6 +4,7 @@
    [fgl.app.ui.guild-panel :as gpanel]
    [fgl.app.ui.merchant-panel :as mpanel]
    [fgl.app.ui.panel :as panel]
+   [fgl.app.ui.rank-panel :as rpanel]
    [fgl.app.ui.toast :as toast]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
@@ -18,15 +19,18 @@
   (let [route-data                   (:data cur-route)
         {:keys [panel-name] n :name} route-data
 
+        global?   (-> n (or :_) name (.startsWith "the-map"))
         guild?    (-> n (or :_) name (.startsWith "guild"))
         merchant? (-> n (or :_) name (.startsWith "merchant"))
-        global?   (-> n (or :_) name (.startsWith "the-map"))
+        rank?     (-> n (or :_) name (.startsWith "rank"))
 
         sub-wrapper
         (cond guild?
               #(vector gpanel/ui cur-route %)
               merchant?
               #(vector mpanel/ui cur-route %)
+              rank?
+              #(vector rpanel/ui cur-route %)
               :else identity)
 
         panel-wrapper
