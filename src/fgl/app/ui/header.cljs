@@ -61,14 +61,32 @@ url(\"/images/header-bg.svg\")
        ^{:key 'glory}
        [:> Nav/Item {:className "cs7 ce9"}
         [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl
+         [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
+          {:on-click #(w/request
+                       "wallet_watchAsset"
+                       {:type    :ERC20
+                        :options {:address  (.-address glory/c)
+                                  :symbol   "GLORY"
+                                  :decimals 18
+                                  :image "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/glory-token.png"}}
+                       identity
+                       js/console.log)}
           [gloryimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
           [balance/ui glory-balance {:className "fi mr-1"}]]]]
 
        ^{:key 'gold}
        [:> Nav/Item {:className "cs9 ce11"}
         [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl
+         [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
+          {:on-click #(w/request
+                       "wallet_watchAsset"
+                       {:type    :ERC20
+                        :options {:address  (.-address gold/c)
+                                  :symbol   "GOLD"
+                                  :decimals 18
+                                  :image "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/gold-token.png"}}
+                       identity
+                       js/console.log)}
           [goldimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
           [balance/ui gold-balance {:className "fi mr-1"}]]]]
 
