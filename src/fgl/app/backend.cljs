@@ -30,6 +30,16 @@
       (p/then cb)
       (p/catch js/console.error)))
 
+(defn res->err-txt [res]
+  (p/let [res (or (ocall res "json")
+                  (ocall res "text"))
+          res (if (instance? js/Object res)
+                (or
+                 (oget res "error")
+                 (js/JSON.stringify res))
+                res)]
+    res))
+
 (defn post [uri body cb]
   (-> (js/fetch
        (str "" uri)
@@ -41,9 +51,10 @@
       (p/then (fn [res]
                 (if (oget res "ok")
                   (ocall res "json")
-                  (do
-                    (js/console.error "Error in response" res)
-                    (throw (js/Error. res))))))
+                  (p/then (res->err-txt res)
+                          (fn [errmsg]
+                            (js/console.error "Error in response" errmsg)
+                            (throw (js/Error. errmsg)))))))
       (p/then cb)
       (p/catch (fn [err]
                  (js/console.error err)

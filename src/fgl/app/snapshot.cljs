@@ -5,8 +5,6 @@
    [promesa.core :as p]
    [re-frame.core :as rf]))
 
-(defonce id 10762643)
-
 (defn- ->body [x]
   (-> x clj->js js/JSON.stringify))
 

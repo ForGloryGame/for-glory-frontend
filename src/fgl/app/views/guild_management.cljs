@@ -53,22 +53,21 @@
            db
            kingdom-id   (get-in db [addr ::kingdom/kingdom-id])
            kingdom-name (get kingdom/kingdoms-name-2 kingdom-id)
+           block_number (w/request "eth_blockNumber")
+           block_number (-> block_number
+                            (js/parseInt 16))
            message      {:account     addr
                          :kind        (or type "AvatarChange")
                          :kingdom     kingdom-name
-                         :snapshot    snapshot/id
+                         :snapshot    block_number
                          :description desc}
            ;; network (ocall provider "getNetwork")
            ;; chainId (oget network "chainId")
-           block_number (w/request "eth_blockNumber")
            _ (dialog/submitting)
-           ;; _ (enc/log (clj->js backend/proposal-domain) (clj->js backend/proposal-types) (clj->js message))
            signature (-> provider
                          (ocall "getSigner")
                          (ocall "_signTypedData"
                                 (clj->js backend/proposal-domain)
-                                ;; (clj->js (assoc backend/proposal-domain
-                                ;;                 :chainId chainId))
                                 (clj->js backend/proposal-types)
                                 (clj->js message))
                          (p/catch #(dialog/failed {:title "Typed Sign Failed" :desc "User rejected typed sign in wallet"})))
@@ -78,10 +77,10 @@
                                   [:span "Message signed"]
                                   [:br]
                                   [ld/text "Submitting proposal"]]])
-           message (assoc message
-                          :blockNumber (-> block_number
-                                           (js/parseInt 16))
-                          :signature signature)]
+           message (-> message (assoc
+                                :blockNumber block_number
+                                :signature signature)
+                       (dissoc :snapshot))]
      (rf/dispatch [::backend/new-proposal message
                    (fn [res] (if (instance? js/Error res)
                                (rf/dispatch [::dialog/set
@@ -91,8 +90,8 @@
                                              [:<>
                                               [:span "Message signed"]
                                               [:br]
-                                              [:span (oget res "message")]
-                                              [:span "Failed to create proposal, please try again"]]])
+                                              [:span "Failed to create proposal, please try again"]
+                                              [:span (oget res "message")]]])
                                (rf/dispatch [::dialog/set
                                              :open true
                                              :close true
