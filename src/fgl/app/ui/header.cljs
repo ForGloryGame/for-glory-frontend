@@ -25,30 +25,31 @@
 
 (defn ui []
   (init-balances)
-  [:header.grid-area-header
-   [nav-root
-    [:> Nav/List
-     {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}
+  (let [addr @(rf/subscribe [::w/addr])]
+    [:header.grid-area-header
+     [nav-root
+      [:> Nav/List
+       {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}
 
-     ^{:key 'logo}
-     [:> Nav/Item {:className "col-start-1 col-end-3 row-start-1 row-end-3"
-                   :style     {}}
-      [:> Nav/Link {:className "cursor-pointer block p-2"
-                    :on-click  #(rf/dispatch [:navigate :route/front])}
-       [logo/ui {:style {:minWidth "8.8125rem"}}]]]
+       ^{:key 'logo}
+       [:> Nav/Item {:className "col-start-1 col-end-3 row-start-1 row-end-3"
+                     :style     {}}
+        [:> Nav/Link {:className "cursor-pointer block p-2"
+                      :on-click  #(rf/dispatch [:navigate :route/front])}
+         [logo/ui {:style {:minWidth "8.8125rem"}}]]]
 
-     ^{:key 'glory}
-     [:> Nav/Item {:className "col-start-7 col-end-9"}
-      [:span (str "Glory: " @(rf/subscribe [::glory/balance]))]]
+       ^{:key 'glory}
+       [:> Nav/Item {:className "col-start-7 col-end-9"}
+        [:span (str "Glory: " @(rf/subscribe [::glory/balance addr]))]]
 
-     ^{:key 'gold}
-     [:> Nav/Item {:className "col-start-9 col-end-11"}
-      [:span (str "Gold: " @(rf/subscribe [::gold/balance]))]]
+       ^{:key 'gold}
+       [:> Nav/Item {:className "col-start-9 col-end-11"}
+        [:span (str "Gold: " @(rf/subscribe [::gold/balance addr]))]]
 
-     ^{:key 'ratio}
-     [:> Nav/Item {:className "col-start-11 col-end-13"}
-      [:span "ratio"]]
+       ^{:key 'ratio}
+       [:> Nav/Item {:className "col-start-11 col-end-13"}
+        [:span "ratio"]]
 
-     ^{:key 'connect-btn}
-     [:> Nav/Item {:className "col-start-13 col-end-15"}
-      [fgl.app.ui.connect-btn/ui conf/target-chain-id]]]]])
+       ^{:key 'connect-btn}
+       [:> Nav/Item {:className "col-start-13 col-end-15"}
+        [fgl.app.ui.connect-btn/ui conf/target-chain-id]]]]]))

@@ -1,6 +1,5 @@
 (ns fgl.app.views.home
   (:require
-   [fgl.app.ui.header :as header]
    [re-frame.core :as rf]
    [lambdaisland.glogi :as log]))
 
@@ -9,4 +8,6 @@
     :stop  identity}])
 
 (defn main [_]
-  [:div "home"])
+  [:div
+   [:p "Home"]
+   [:button {:on-click #(rf/dispatch [:navigate :route/mint])} "-> mint"]])

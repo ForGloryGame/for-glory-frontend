@@ -1,5 +1,6 @@
 (ns fgl.contracts.battlefield
   (:require
+   ["ethers" :as ethers]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
    [fgl.wallet.core :as w]
@@ -14,17 +15,24 @@
 (rf/reg-event-db
  ::set
  (fn [db [_ v & paths]]
+   (tap> (assoc-in db paths v))
    (assoc-in db paths v)))
+
+(defonce token-ids-cache (atom nil))
 
 (rf/reg-sub
  ::token-ids
  (fn [db [_ addr]]
-   (get-in db [addr ::token-ids])))
+   (if @token-ids-cache @token-ids-cache
+       (reset! token-ids-cache (get-in db [addr ::token-ids])))))
 
 (rf/reg-sub
- ::rewards
- (fn [db [_ addr]]
-   (get-in db [addr ::rewards])))
+ ::reward
+ (fn [db [_ addr token-id type]]
+   (and token-id
+        (-> (get-in db [addr ::reward (.toString token-id) type] (ethers/BigNumber.from 0))
+            (ethers/utils.formatUnits 18)
+            ethers/utils.commify))))
 
 (rf/reg-event-fx
  ::get
@@ -32,10 +40,15 @@
  (fn [_ [provider addr]]
    (and addr
         (ctc/with-provider c provider
-          (p/let [token-ids (first (r :depositsOf addr))
-                  _ (rf/dispatch [::set token-ids addr ::token-ids])
+          (p/let [token-ids (r :depositsOf addr)
                   rewards (p/all (map #(r :pendingReward %) token-ids))]
-            (rf/dispatch [::set (log/spy rewards) addr ::rewards]))))
+            (loop [ids token-ids
+                   rs  rewards]
+              (when-let [id (first ids)]
+                (rf/dispatch [::set (first (first rs)) addr ::reward (-> id .toString) :gold])
+                (rf/dispatch [::set (second (first rs)) addr ::reward (-> id .toString) :glory])
+                (recur (rest ids) (rest rs))))
+            (rf/dispatch [::set token-ids addr ::token-ids]))))
 
    {}))
 
@@ -47,4 +60,5 @@
  (fn [_ [_ provider method & params]]
    ;; TODO: handle write contract result
    (ctc/with-provider c provider
-     (apply r method params))))
+     (apply r method params))
+   {}))

@@ -81,22 +81,12 @@
          :controllers (home/controllers)
          ;; :lazy        true
          :conflicting true}]
-    ["login"
-     {:name        :route/login
-      :view        #(resolve 'fgl.app.views.login/main)
-      :controllers #(resolve 'fgl.app.views.login/controllers)
+    ["mint"
+     {:name        :route/mint
+      :view        #(resolve 'fgl.app.views.mint/main)
+      :controllers #(resolve 'fgl.app.views.mint/controllers)
       :lazy        true
       :conflicting true}]
-    ;; ["about"
-    ;;  {:name        :route/about
-    ;;   :view        front/main
-    ;;   :controllers (front/controllers)
-    ;;   :lazy        false}]
-    ;; ["roadmap"
-    ;;  {:name        :route/roadmap
-    ;;   :view        front/main
-    ;;   :controllers (front/controllers)
-    ;;   :lazy        false}]
     ["404"
      {:name        :route/not-found
       :view        #(resolve 'fgl.app.views.v404/main)

@@ -1,5 +1,5 @@
 (ns fgl.contracts
-  (:require-macros [fgl.contracts :refer [with-provider]])
+  (:require-macros [fgl.contracts :refer [with-provider with-provider-call]])
   (:require
    [lambdaisland.glogi :as log]
    ["ethers" :refer [Contract]]
@@ -7,7 +7,6 @@
    [oops.core :refer [oapply+ ocall]]))
 
 (defonce cache (atom nil))
-;; (def cache (atom nil))
 
 (defn re-init! [& {:keys [address abi]}]
   (Contract. (or address "0x1111111111111111111111111111111111111111") (clj->js abi)))
@@ -29,6 +28,12 @@
 (defn get-request-fn [contract]
   (assert contract "Invalid contract instance")
   (fn [method-name & args]
-    (log/debug :contract-call [(name method-name) args])
+    ;; (log/debug :contract-call [(name method-name) args])
     (p/let [rst (oapply+ contract (name method-name) args)]
+      rst)))
+
+(defn get-call-fn [contract]
+  (assert contract "Invalid contract instance")
+  (fn [method-name & args]
+    (p/let [rst (oapply+ contract (str "callStatic." (name method-name)) args)]
       rst)))
