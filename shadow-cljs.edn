@@ -47,6 +47,8 @@
                         :depends-on #{:shared}}
     :dashboard         {:entries    [fgl.app.views.dashboard]
                         :depends-on #{:shared}}
+    :kingdom           {:entries    [fgl.app.views.kingdom]
+                        :depends-on #{:shared}}
     :battlefield       {:entries    [fgl.app.views.battlefield]
                         :depends-on #{:shared}}
     :choose-kingdom    {:entries    [fgl.app.views.choose-kingdom]

@@ -117,6 +117,13 @@
       :controllers #(resolve 'fgl.app.views.choose-kingdom/controllers)
       :lazy        true
       :conflicting true}]
+    ["kingdom"
+     {:name          :route/kingdom-map
+      :shadow-module "kingdom"
+      :view          #(resolve 'fgl.app.views.kingdom/main)
+      :controllers   #(resolve 'fgl.app.views.kingdom/controllers)
+      :lazy          true
+      :conflicting   true}]
     ["guild/basic"
      {:name        :route/guild-basic
       :panel-name  "Guild"

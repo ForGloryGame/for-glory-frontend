@@ -37,7 +37,7 @@
 
           ;; kingdom
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/guild-basic])
+           {:on-click     #(rf/dispatch [:navigate :route/kingdom-map])
             :onMouseEnter #(fg-reset! :kingdom)
             :onMouseLeave #(fg-reset! nil)
             :style        {:width "calc(1000vw * 1377 / 5120)"

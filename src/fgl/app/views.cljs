@@ -5,6 +5,7 @@
    [fgl.app.subs :as subs]
    [fgl.app.ui.body :as body]
    [fgl.app.ui.header :as header]
+   [fgl.app.ui.kingdom-map :as uikmap]
    [fgl.app.ui.map :as uimap]
    [fgl.config :as conf]
    [fgl.config :as config]
@@ -16,7 +17,8 @@
   (let [state                                     (rf/subscribe [::w/state])
         wrong-network?                            (rf/subscribe [::w/wrong-network])
         current-route                             @(rf/subscribe [::routes/current-route])
-        {:keys [view] rname :name :as route-data} (get current-route :data)]
+        {:keys [view] rname :name :as route-data} (get current-route :data)
+        guild?                                    (and (keyword? rname) (-> rname name (.startsWith "guild-")))]
     (and (not conf/debug?)
          (js/setTimeout
           #(cond (and (not (= @state :connected)) rname (not (= rname :route/home)))
@@ -33,6 +35,7 @@
     [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
      {:style {:gridTemplate "\"header\" min-content \"main\""}}
      [header/ui]
-     [uimap/ui]
+     (and guild? [uikmap/ui])
+     (and (not guild?) [uimap/ui])
      [body/ui current-route (if view [view current-route] [:div])]
      [:link {:rel "stylesheet" :href "/fonts/family.css"}]]))
