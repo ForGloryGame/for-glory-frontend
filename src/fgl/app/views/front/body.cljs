@@ -137,7 +137,7 @@
   [:main.flex.flex-col.items-center.w-full
    {:style {:minWidth "42.5rem"}}
    [:section.section-1.w-full.flex.flex-col.items-center.pt-45vh.pb-60.mb-7rem.bg-no-repeat.bg-scroll
-    {:style {:backgroundImage    "radial-gradient(circle, transparent 10%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.9)),url(\"/images/bg-new.jpg\")"
+    {:style {:backgroundImage    "radial-gradient(circle, transparent 10%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)),url(\"/images/bg-new.jpg\")"
              :backgroundSize     "cover" ;; "100%"
              :backgroundBlendMode "normal, darken"
              :backgroundPosition "center center"
