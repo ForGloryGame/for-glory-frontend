@@ -10,7 +10,7 @@
    ;; https://cljdoc.org/d/metosin/reitit/0.5.16/doc/coercion/malli
    [reitit.coercion.malli :as m]
    [reitit.coercion :as coercion]
-   [reitit.exception :as exception]
+   ;; [reitit.exception :as exception]
    ;; [reitit.core :as r]
    [re-frame.core :as rf]
    [taoensso.timbre :refer [warn error info debug]]))
@@ -54,8 +54,8 @@
 
 ;;; Routes
 (def routes
-  [""
-   ["/"
+  ["/"
+   [""
     {:name        :route/front
      :view        front/main
      :controllers (front/controllers)
@@ -144,4 +144,5 @@
 
 (defn init! []
   (info "initializing routes")
+  (tap> router)
   (rfe/start! router on-navigate {:use-fragment true}))

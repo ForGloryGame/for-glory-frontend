@@ -1,14 +1,14 @@
-(ns fgl.app.views
+(ns fgl.app.home-views
   (:require
    [re-frame.core :as rf]
    ;; [breaking-point.core :as bp]
    [fgl.app.routes :as routes]
-   [fgl.app.views.front :as front]
+   [fgl.app.views.home :as home]
    [fgl.app.events :as events]
    [fgl.app.subs :as subs]
    [fgl.config :as config]))
 
-(defn main-panel []
+(defn app-panel []
   (let [current-route                      @(rf/subscribe [::routes/current-route])
         {:keys [name view] :as route-data} (get current-route :data {})]
     (case name
@@ -16,4 +16,4 @@
       [:div
        (if current-route
          [view route-data]
-         [front/main])])))
+         [home/main])])))

@@ -38,7 +38,8 @@
   nrepl/nrepl                   {:mvn/version "0.9.0"}
   cider/cider-nrepl             {:mvn/version "0.28.3"}
   refactor-nrepl/refactor-nrepl {:mvn/version "3.5.2"}
-  clj-commons/fs                {:mvn/version "1.6.310"}}
+  clj-commons/fs                {:mvn/version "1.6.310"}
+  djblue/portal {:mvn/version "0.24.0"}}
 
  :aliases
  {:repl/cider-refactor
@@ -86,7 +87,7 @@
     girouette/processor             {:mvn/version "RELEASE"}}}
 
   :css
-  {; clojure -X:girouette-processor
+  {; clojure -X:css
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor
    :exec-fn    process
@@ -96,7 +97,7 @@
                 :watch?        true
                 #_#_:dry-run? true}}
   :css-prod
-  {; clojure -X:girouette-processor
+  {; clojure -X:css-prod
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor
    :exec-fn    process
@@ -105,7 +106,7 @@
                 :apply-classes fgl.app.css/composed-classes
                 #_#_:dry-run? true}}
   :css-cards
-  {; clojure -X:girouette-processor-cards
+  {; clojure -X:css-cards
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor
    :exec-fn    process

@@ -4,6 +4,7 @@
  :tasks
  {nrepl       x.nrepl/run
   shadow      x.shadow/run
-  -start      {:depends [nrepl shadow]}
+  css         {:task (clojure "-X:css")}
+  -start      {:depends [nrepl shadow css]}
   start       {:task (run '-start {:parallel true})}
   release:all x.shadow/release-all}}

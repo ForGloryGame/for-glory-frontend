@@ -1,5 +1,6 @@
 (ns fgl.app.views.front.body
   (:require
+   [re-frame.core :as rf]
    ["@radix-ui/react-avatar" :as Avatar]))
 
 (defn h1 []
@@ -21,7 +22,7 @@
                 :borderRadius    "1.25rem"
                 :cursor          :pointer
                 :minWidth        "2.5rem"}
-    :on-click  identity}
+    :on-click #(rf/dispatch [:navigate :route/home])}
    "Start App"])
 
 (defn whitepaper-btn []
