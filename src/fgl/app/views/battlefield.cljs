@@ -236,62 +236,147 @@
           :onCheckedChange select-all
           :checked         all-selected}]))))
 
-(defn btns []
-  (let [approve
-        #(rf/dispatch [::nft/send
-                       {:method :setApprovalForAll
-                        :params [conf/contract-addr-battlefield true]}
-                       :title "Approve All NFT"
-                       :on-success (fn []
-                                     (dialog/on-success)
-                                     (rf/dispatch [::bfproxy/init-raw]))])
+(rf/reg-event-db
+ ::claim-checked
+ (fn [db [_ checked?]]
+   (assoc db ::claim-checked checked?)))
+
+(rf/reg-sub
+ ::claim-checked
+ (fn [db _]
+   (get db ::claim-checked false)))
+
+(rf/reg-event-db
+ ::flee-checked
+ (fn [db [_ checked?]]
+   (assoc db ::flee-checked checked?)))
+
+(rf/reg-sub
+ ::flee-checked
+ (fn [db _]
+   (get db ::flee-checked false)))
+
+(defn claim-checkbox []
+  (let [checked? @(rf/subscribe [::claim-checked])]
+    [checkbox/ui
+     {:width "1.5rem"
+      :text  [:span.text-xl.ml-2.fb "Do not remind me next time"]}
+     {:className       "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
+      :onCheckedChange #(rf/dispatch [::claim-checked %])
+      :checked         checked?}]))
+
+(defn flee-checkbox []
+  (let [checked? @(rf/subscribe [::flee-checked])]
+    [checkbox/ui
+     {:width "1.5rem"
+      :text  [:span.text-xl.ml-2.fb "Do not remind me next time"]}
+     {:className       "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
+      :onCheckedChange #(rf/dispatch [::flee-checked %])
+      :checked         checked?}]))
+
+(defn btns [route-name]
+  (let [battlefield? (= route-name :route/battlefield)
+        approve
+        #(rf/dispatch
+          [::nft/send
+           {:method :setApprovalForAll
+            :params [conf/contract-addr-battlefield true]}
+           :title "Approve All NFT"
+           :on-success (fn []
+                         (dialog/on-success)
+                         (rf/dispatch [::bfproxy/init-raw]))])
         enter
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send {:method :join
-                                                       :params [(->token-ids token-ids)]
-                                                       :title  "Stake"
-                                                       :on-success
-                                                       (fn []
-                                                         (dialog/on-success)
-                                                         (rf/dispatch [::battlefield/init-raw])
-                                                         (rf/dispatch [::nft/init-raw]))}]))
-        claim
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send
-                                       {:method :claim
-                                        :params [(->token-ids token-ids)]
-                                        :title  "Claim"
-                                        :on-success
-                                        (fn []
-                                          (dialog/on-success)
-                                          (rf/dispatch [::gold/init-raw])
-                                          (rf/dispatch [::glory/init-raw]))}]))
+        (fn [token-ids]
+          #(rf/dispatch [::bfproxy/send {:method :join
+                                         :params [(->token-ids token-ids)]
+                                         :title  "Stake"
+                                         :on-success
+                                         (fn []
+                                           (dialog/on-success)
+                                           (rf/dispatch [::battlefield/init-raw])
+                                           (rf/dispatch [::nft/init-raw]))}]))
         unstake-lords
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send
-                                       {:method :unstakeLords
-                                        :params [(->token-ids token-ids)]
-                                        :title  "Unstake"
-                                        :on-success
-                                        (fn []
-                                          (dialog/on-success)
-                                          (rf/dispatch [::battlefield/init-raw])
-                                          (rf/dispatch [::nft/init-raw])
-                                          (rf/dispatch [::bfproxy/init-raw]))}]))
-        unstake
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send
-                                       {:method :commitUnstake
-                                        :params [(->token-ids token-ids)]
-                                        :title  "Unstake"
-                                        :on-success
-                                        (fn []
-                                          (dialog/on-success)
-                                          (rf/dispatch [::battlefield/init-raw])
-                                          (rf/dispatch [::nft/init-raw])
-                                          (rf/dispatch [::bfproxy/init-raw]))}]))]
+        (fn [token-ids]
+          #(rf/dispatch [::bfproxy/send
+                         {:method :unstakeLords
+                          :params [(->token-ids token-ids)]
+                          :title  "Unstake"
+                          :on-success
+                          (fn []
+                            (dialog/on-success)
+                            (rf/dispatch [::battlefield/init-raw])
+                            (rf/dispatch [::nft/init-raw])
+                            (rf/dispatch [::bfproxy/init-raw]))}]))]
     (fn []
       (let [{:keys [type bf-approved]} @(rf/subscribe [::data])
             selected                   @(rf/subscribe [::selected])
+            claim-checked?             @(rf/subscribe [::claim-checked])
+            flee-checked?              @(rf/subscribe [::flee-checked])
             staked?                    (= type :staked)
             no-selected?               (not (seq selected))
-            className                  (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
+            className                  (if staked? "grid-cols-3 gap-4" "grid-cols-1")
+            unstake
+            (fn []
+              (let [skip? (js/localStorage.getItem "flee-checked")
+                    f1    #(if flee-checked?
+                             (js/localStorage.setItem "flee-checked" 1)
+                             (js/localStorage.removeItem "flee-checked"))
+                    f2    #(rf/dispatch
+                            [::bfproxy/send
+                             {:method :commitUnstake
+                              :params [(->token-ids selected)]
+                              :title  "Flee"
+                              :on-success
+                              (fn []
+                                (dialog/on-success)
+                                (rf/dispatch [::battlefield/init-raw])
+                                (rf/dispatch [::nft/init-raw])
+                                (rf/dispatch [::bfproxy/init-raw]))}])]
+                (if skip?
+                  (f2)
+                  (rf/dispatch [::dialog/set
+                                :open true
+                                :title ""
+                                :desc [:<>
+                                       [:p.ffd.text-base "Notice: If you choose to FLEE, You have 50% chance of receiving all earned
+§Glory without any taxing and it WILL NOT be locked as $sGlarx, However,
+by doing this, there's 50% chance of AlL.of your accumulated $Glory being
+seized by the Council, distributed to Lords accordingly."]
+                                       [:br]
+                                       [flee-checkbox]]
+                                :actions [:<>
+                                          [btn/ui {:t :osm :on-click (comp f2 f1) :className "mr-8"} "Confirm"]
+                                          [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]]))))
+            claim
+            (fn []
+              (let [skip? (js/localStorage.getItem "claim-checked")
+                    f1    #(if claim-checked?
+                             (js/localStorage.setItem "claim-checked" 1)
+                             (js/localStorage.removeItem "claim-checked"))
+                    f2    #(rf/dispatch
+                            [::bfproxy/send
+                             {:method :claim
+                              :params [(->token-ids selected)]
+                              :title  "Claim"
+                              :on-success
+                              (fn []
+                                (dialog/on-success)
+                                (rf/dispatch [::gold/init-raw])
+                                (rf/dispatch [::glory/init-raw]))}])]
+                (if skip?
+                  (f2)
+                  (rf/dispatch [::dialog/set
+                                :open true
+                                :title ""
+                                :desc [:<>
+                                       [:p.ffd.text-base "Notice: If you choose to CLAIM, You are guaranteed to receive 80% your
+yield $Glory as $sGlark, locked for 16 weeks by default. Rest 20% as taxes
+to the Council, distributed to Lords accordingly."]
+                                       [:br]
+                                       [claim-checkbox]]
+                                :actions [:<>
+                                          [btn/ui {:t :osm :on-click (comp f2 f1) :className "mr-8"} "Confirm"]
+                                          [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]]))))]
         [:div.cs3.ce4.rs1.re2.justify-self-end
          {:className className}
          (and (not bf-approved)
@@ -313,12 +398,12 @@
                {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
-                :on-click  (unstake selected)}
+                :on-click  unstake}
                "FLEE"])
          (and bf-approved staked?
               [btn/ui
                {:disabled no-selected?
-                :on-click (claim selected)
+                :on-click claim
                 :t        :olg}
                "CLAIM"])]))))
 
@@ -335,4 +420,4 @@
         [cards (-> cur-route :data :name)]]
        [:div.grid.gap-4.mt-4
         [select-all (-> cur-route :data :name)]
-        [btns]]])}))
+        [btns (-> cur-route :data :name)]]])}))

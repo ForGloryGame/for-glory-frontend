@@ -79,7 +79,7 @@
             desc
             [:>
              D/Description
-             {:className "px-16 text-lg flex flex-col justify-center h-76% overflow-auto" :asChild true}
+             {:className "px-16 text-lg flex flex-col justify-center h-76% overflow-auto mb-4" :asChild true}
              [:div
               (and desc desc)]])
            (and actions [:div.w-full.flexr actions])

@@ -73,3 +73,9 @@
           (let [d (-> d (js->clj :keywordize-keys true) :data)]
             (rf/dispatch [::set d ::rank-kingdom]))))))
    {}))
+
+(rf/reg-event-fx
+ ::new-proposal
+ (fn [_ [_ data]]
+   (post "/proposals/create" data identity)
+   {}))
