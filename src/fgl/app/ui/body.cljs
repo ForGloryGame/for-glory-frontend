@@ -1,13 +1,13 @@
 (ns fgl.app.ui.body
   (:require
-   [lambdaisland.glogi :as log]
-   [taoensso.encore :as enc]
    [fgl.app.ui.dialog :as dialog]
-   [re-frame.core :as rf]
-   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.guild-panel :as gpanel]
    [fgl.app.ui.merchant-panel :as mpanel]
-   [fgl.app.ui.toast :as toast]))
+   [fgl.app.ui.panel :as panel]
+   [fgl.app.ui.toast :as toast]
+   [lambdaisland.glogi :as log]
+   [re-frame.core :as rf]
+   [taoensso.encore :as enc]))
 
 (defn- to-home [] (rf/dispatch [:navigate :route/home]))
 

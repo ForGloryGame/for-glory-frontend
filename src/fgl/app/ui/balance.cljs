@@ -1,9 +1,9 @@
 (ns fgl.app.ui.balance
   (:require
    ["ethers" :as ethers]
-   [taoensso.encore :as enc]
    [fgl.utils :refer [->display-token]]
-   [lambdaisland.glogi :as log]))
+   [lambdaisland.glogi :as log]
+   [taoensso.encore :as enc]))
 
 (defn ui
   ([amount] (ui amount {}))

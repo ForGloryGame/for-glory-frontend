@@ -1,17 +1,17 @@
 (ns fgl.app.views.merchant-landeeds
   (:require
    ["ethers" :as ethers]
-   [fgl.utils :refer [sbn]]
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
    [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.eth-img :as ethimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.separator :as separator]
-   [fgl.wallet.core :as w]
    [fgl.contracts.gold :as gold]
    [fgl.contracts.landeed :as landeed]
    [fgl.re-frame]
+   [fgl.utils :refer [sbn]]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]))
 

@@ -1,7 +1,7 @@
 (ns fgl.app.ui.panel
   (:require
-   [fgl.app.ui.route-menu :as route-menu]
-   [fgl.app.ui.panel-bg :as bg]))
+   [fgl.app.ui.panel-bg :as bg]
+   [fgl.app.ui.route-menu :as route-menu]))
 
 (defn- w [width x]
   (str (/ width x) "rem"))

@@ -1,22 +1,22 @@
 (ns fgl.app.views.guild-basic
   (:require
    ["ethers" :as ethers]
-   [taoensso.encore :as enc]
-   [fgl.contracts.kingdoms :as kingdom]
-   [fgl.contracts.sgold :as sgold]
-   [fgl.contracts.bfproxy :as bfproxy]
-   [fgl.contracts.gamenft :as nft]
-   [fgl.re-frame]
-   [fgl.utils :refer [->display-token ->token-ids]]
-   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.balance :as balance]
-   [fgl.wallet.core :as w]
+   [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.separator :as separator]
    [fgl.app.ui.sgold-img :as sgoldimg]
-   [fgl.app.ui.btn :as btn]
+   [fgl.contracts.bfproxy :as bfproxy]
+   [fgl.contracts.gamenft :as nft]
+   [fgl.contracts.kingdoms :as kingdom]
+   [fgl.contracts.sgold :as sgold]
+   [fgl.re-frame]
+   [fgl.utils :refer [->display-token ->token-ids]]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [taoensso.encore :as enc]))
 
 (defn controllers []
   [{:start

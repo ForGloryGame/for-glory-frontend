@@ -1,22 +1,22 @@
 (ns fgl.app.views.merchant-swap
   (:require
    ["ethers" :as ethers]
-   [taoensso.encore :as enc]
    [clojure.string :as s]
+   [fgl.app.ui.balance :as balance]
+   [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.separator :as separator]
+   [fgl.contracts.exchange :as exchange]
+   [fgl.contracts.glory :as glory]
+   [fgl.contracts.gold :as gold]
    [fgl.re-frame]
    [fgl.wallet.core :as w]
-   [fgl.app.ui.btn :as btn]
-   [fgl.app.ui.balance :as balance]
    [lambdaisland.glogi :as log]
-   [fgl.app.ui.dialog :as dialog]
    [re-frame.core :as rf]
-   [fgl.contracts.gold :as gold]
-   [fgl.contracts.glory :as glory]
-   [fgl.contracts.exchange :as exchange]
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [taoensso.encore :as enc]))
 
 (defn controllers []
   [{:start

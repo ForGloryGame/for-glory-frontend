@@ -1,12 +1,12 @@
 (ns fgl.app.ui.nft-card
   (:require
-   [fgl.utils :refer [calc]]
-   [lambdaisland.glogi :as log]
-   [taoensso.encore :as enc]
+   ["@radix-ui/react-checkbox" :as C]
    [fgl.app.ui.balance :as uib]
    [fgl.app.ui.glory-img :as glory-logo]
    [fgl.app.ui.gold-img :as gold-logo]
-   ["@radix-ui/react-checkbox" :as C]))
+   [fgl.utils :refer [calc]]
+   [lambdaisland.glogi :as log]
+   [taoensso.encore :as enc]))
 
 (defn ui
   ([data] (ui data {}))

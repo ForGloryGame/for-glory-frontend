@@ -1,7 +1,7 @@
 (ns fgl.app.ui.checkbox
   (:require
-   [taoensso.encore :as enc]
-   ["@radix-ui/react-checkbox" :as C]))
+   ["@radix-ui/react-checkbox" :as C]
+   [taoensso.encore :as enc]))
 
 (defn ui
   ([opt1] (ui opt1 {}))

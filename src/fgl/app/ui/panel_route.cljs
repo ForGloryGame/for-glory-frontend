@@ -1,7 +1,7 @@
 (ns fgl.app.ui.panel-route
   (:require
-   [lambdaisland.glogi :as log]
    [fgl.app.routes :as routes]
+   [lambdaisland.glogi :as log]
    [re-frame.core :as rf]))
 
 (rf/reg-event-db

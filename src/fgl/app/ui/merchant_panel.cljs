@@ -1,7 +1,7 @@
 (ns fgl.app.ui.merchant-panel
   (:require
-   [lambdaisland.glogi :as log]
-   [fgl.app.ui.panel-route :as proute]))
+   [fgl.app.ui.panel-route :as proute]
+   [lambdaisland.glogi :as log]))
 
 (defn ui [{:keys [css]} body]
   [:div.w-full.h-full.grid.grid-rows-1

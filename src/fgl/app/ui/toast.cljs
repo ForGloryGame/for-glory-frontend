@@ -1,9 +1,9 @@
 (ns fgl.app.ui.toast
   (:require
-   [lambdaisland.glogi :as log]
    ["@radix-ui/react-toast" :as Toast]
-   [taoensso.encore :refer [dissoc-in]]
-   [re-frame.core :as rf]))
+   [lambdaisland.glogi :as log]
+   [re-frame.core :as rf]
+   [taoensso.encore :refer [dissoc-in]]))
 
 (defonce toast-id (atom 0))
 

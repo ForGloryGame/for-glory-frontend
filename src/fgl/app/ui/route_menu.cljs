@@ -1,8 +1,8 @@
 (ns fgl.app.ui.route-menu
   (:require
-   [re-frame.core :as rf]
    [fgl.app.routes :as routes]
-   [lambdaisland.glogi :as log]))
+   [lambdaisland.glogi :as log]
+   [re-frame.core :as rf]))
 
 (defn style []
   [:style

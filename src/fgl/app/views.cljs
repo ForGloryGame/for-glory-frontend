@@ -6,8 +6,8 @@
    [fgl.app.ui.body :as body]
    [fgl.app.ui.header :as header]
    [fgl.app.ui.map :as uimap]
-   [fgl.wallet.core :as w]
    [fgl.config :as config]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]))
 

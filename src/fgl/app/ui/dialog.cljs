@@ -1,12 +1,12 @@
 (ns fgl.app.ui.dialog
   (:require
-   [taoensso.encore :as enc]
    ["@radix-ui/react-dialog" :as D]
+   [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.loading-dot :as ld]
+   [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [reagent.core :as r]
-   [fgl.app.ui.loading-dot :as ld]
-   [fgl.app.ui.btn :as btn]
-   [lambdaisland.glogi :as log]))
+   [taoensso.encore :as enc]))
 
 (defonce !refresh-count (r/atom 0))
 

@@ -1,8 +1,8 @@
 (ns fgl.app.views.logic.basic
   (:require
-   [re-frame.core :as rf]
+   [fgl.wallet.core :as w]
    [glog :refer [warn]]
-   [fgl.wallet.core :as w]))
+   [re-frame.core :as rf]))
 
 (rf/reg-event-fx
  ::not-connected

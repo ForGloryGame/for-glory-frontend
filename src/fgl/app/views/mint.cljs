@@ -1,22 +1,22 @@
 (ns fgl.app.views.mint
   (:require
    ["ethers" :as ethers]
-   [re-frame.db :as rdb]
-   [fgl.contracts.gamepass :as gamepass]
-   [fgl.contracts.bfproxy :as bfproxy]
-   [fgl.contracts.gold :as gold]
-   [fgl.contracts.glory :as glory]
-   [fgl.contracts.sgold :as sgold]
-   [fgl.contracts.kingdoms :as kingdoms]
-   [fgl.contracts.battlefield :as battlefield]
-   [fgl.contracts.gameminter :as minter]
-   [fgl.config :as conf]
-   [fgl.contracts.gamenft :as nft]
-   [fgl.contracts.landeed :as landeed]
-   [fgl.wallet.core :as w]
-   [re-frame.core :as rf]
    [fgl.app.ui.balance :as balance]
-   [lambdaisland.glogi :as log]))
+   [fgl.config :as conf]
+   [fgl.contracts.battlefield :as battlefield]
+   [fgl.contracts.bfproxy :as bfproxy]
+   [fgl.contracts.gameminter :as minter]
+   [fgl.contracts.gamenft :as nft]
+   [fgl.contracts.gamepass :as gamepass]
+   [fgl.contracts.glory :as glory]
+   [fgl.contracts.gold :as gold]
+   [fgl.contracts.kingdoms :as kingdoms]
+   [fgl.contracts.landeed :as landeed]
+   [fgl.contracts.sgold :as sgold]
+   [fgl.wallet.core :as w]
+   [lambdaisland.glogi :as log]
+   [re-frame.core :as rf]
+   [re-frame.db :as rdb]))
 
 (defn controllers []
   [{:start identity

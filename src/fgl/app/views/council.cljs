@@ -1,23 +1,23 @@
 (ns fgl.app.views.council
   (:require
-   [taoensso.encore :as enc]
-   [fgl.app.ui.checkbox :as checkbox]
    ["@radix-ui/react-select" :as S]
+   [fgl.app.ui.balance :as balance]
+   [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.checkbox :as checkbox]
+   [fgl.app.ui.nft-card :as nftc]
+   [fgl.app.ui.panel :as panel]
+   [fgl.app.ui.separator :as separator]
    [fgl.config :as conf]
    [fgl.contracts.battlefield :as battlefield]
    [fgl.contracts.bfproxy :as bfproxy]
    [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
    [fgl.utils :refer [->display-token ->token-ids]]
-   [fgl.app.ui.panel :as panel]
-   [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
-   [fgl.app.ui.separator :as separator]
-   [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
-   [fgl.app.ui.nft-card :as nftc]
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [taoensso.encore :as enc]))
 
 (defn controllers []
   [{:start

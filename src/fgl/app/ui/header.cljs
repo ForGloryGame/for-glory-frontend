@@ -1,19 +1,19 @@
 (ns fgl.app.ui.header
   (:require
+   ["@radix-ui/react-navigation-menu" :as Nav]
+   [fgl.app.ui.balance :as balance]
+   [fgl.app.ui.connect-btn :as cbtn]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.header-tag :as header-tag]
+   [fgl.app.ui.logo :as logo]
    [fgl.config :as conf]
    [fgl.contracts :as c]
-   [fgl.contracts.gold :as gold]
-   [fgl.contracts.glory :as glory]
    [fgl.contracts.exchange :as exchange]
+   [fgl.contracts.glory :as glory]
+   [fgl.contracts.gold :as gold]
    [fgl.wallet.core :as w]
-   [re-frame.core :as rf]
-   [fgl.app.ui.connect-btn :as cbtn]
-   ["@radix-ui/react-navigation-menu" :as Nav]
-   [fgl.app.ui.logo :as logo]
-   [fgl.app.ui.balance :as balance]))
+   [re-frame.core :as rf]))
 
 (defn init-balances []
   (rf/dispatch [::gold/init])

@@ -1,10 +1,10 @@
 (ns fgl.app.ui.connect-btn
   (:require
    [fgl.app.ui.btn :as btn]
+   [fgl.utils :refer [shorten-addr]]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
-   [fgl.wallet.core :as w]
-   [fgl.utils :refer [shorten-addr]]
    [reagent.core :as r]))
 
 (w/init!)

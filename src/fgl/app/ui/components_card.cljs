@@ -1,13 +1,13 @@
 (ns fgl.app.ui.components-card
   (:require
-   [reagent.core :as reagent]
-   [nubank.workspaces.core :as ws]
-   [nubank.workspaces.card-types.react :as ct.react]
-   [fgl.app.ui.toast :as toast]
-   [fgl.app.ui.nft-card :as nftc]
-   [fgl.app.ui.connect-btn]
    [fgl.app.ui.checkbox :as checkbox]
-   [fgl.app.ui.panel :as panel]))
+   [fgl.app.ui.connect-btn]
+   [fgl.app.ui.nft-card :as nftc]
+   [fgl.app.ui.panel :as panel]
+   [fgl.app.ui.toast :as toast]
+   [nubank.workspaces.card-types.react :as ct.react]
+   [nubank.workspaces.core :as ws]
+   [reagent.core :as reagent]))
 
 (ws/defcard ^:dev/before-load panel
   (ct.react/react-card
