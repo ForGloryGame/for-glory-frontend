@@ -1,11 +1,11 @@
 (ns x.shadow
   (:require
+   [babashka.fs :as fs]
    ;; [babashka.process :refer [process]]
    [babashka.tasks :refer [shell]]
-   [babashka.fs :as fs]
-   [clojure.string :as s]
    ;; [taoensso.timbre :refer [warn]]
-   [clojure.java.shell :refer [sh]]))
+   [clojure.java.shell :refer [sh]]
+   [clojure.string :as s]))
 
 (defonce project-dir (-> *file* fs/parent fs/parent fs/parent))
 
@@ -23,12 +23,12 @@
             (str
              command
              " -d cider/cider-nrepl:"
-             (-> (sh "emacsclient" "--eval" "cider-injected-middleware-version")
+             (-> (sh "emacsclient" "--eval" "(progn (require 'cider) cider-injected-middleware-version)")
                  :out
                  s/trim-newline
                  read-string)
              " -d nrepl/nrepl:"
-             (-> (sh "emacsclient" "--eval" "cider-injected-nrepl-version")
+             (-> (sh "emacsclient" "--eval" "(progn (require 'cider) cider-injected-nrepl-version)")
                  :out
                  s/trim-newline
                  read-string)
@@ -41,7 +41,7 @@
              )
             jack-in-deps
 
-            (-> (sh "emacsclient" "--eval" "cider-jack-in-dependencies")
+            (-> (sh "emacsclient" "--eval" "(progn (require 'cider) cider-jack-in-dependencies)")
                 :out
                 s/trim-newline
                 read-string)
