@@ -125,7 +125,7 @@
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
-    ["guild/vote/empty"
+    ["guild/vote/proposals"
      {:name        :route/guild-vote
       :panel-name  "Guild"
       :view        #(resolve 'fgl.app.views.guild-vote/main)

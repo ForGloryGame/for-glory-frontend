@@ -37,9 +37,90 @@
     {:operationName "Proposal"
      :variables     {:id id}
      :query
-     "query Proposal($id: String!) {\n  proposal(id: $id) {\n    id\n    ipfs\n    title\n    body\n    discussion\n    choices\n    start\n    end\n    snapshot\n    state\n    author\n    created\n    plugins\n    network\n    type\n    quorum\n    symbol\n    strategies {\n      name\n      network\n      params\n    }\n    space {\n      id\n      name\n    }\n    scores_state\n    scores\n    scores_by_strategy\n    scores_total\n    votes\n  }\n}"}
+     "query Proposal($id: String!) {
+proposal(id: $id) {
+id
+ipfs
+title
+body
+discussion
+choices
+start
+end
+snapshot
+state
+author
+created
+plugins
+network
+type
+quorum
+symbol
+strategies {
+name
+network
+params
+}
+space {
+id
+name
+}
+scores_state
+scores
+scores_by_strategy
+scores_total
+votes
+}
+}"}
     #(rf/dispatch [::set (-> % (oget "data.proposal")
                              (js->clj  :keywordize-keys true)) ::proposal id]))
+   {}))
+
+(rf/reg-event-fx
+ ::proposals
+ (fn [_ [_ space]]
+   (post
+    {:operationName "Proposals",
+     :variables     {:first     6
+                     :skip      0
+                     :space     (or space "test1234567.eth")
+                     :state     "all"
+                     :author_in []},
+     :query         "query Proposals($first: Int!, $skip: Int!, $state: String!, $space: String, $space_in: [String], $author_in: [String]) {
+proposals(
+first: $first
+skip: $skip
+where: {space: $space, state: $state, space_in: $space_in, author_in: $author_in}
+) {
+id
+ipfs
+title
+body
+start
+end
+state
+author
+created
+choices
+space {
+id
+name
+members
+avatar
+symbol
+}
+scores_state
+scores_total
+scores
+votes
+quorum
+symbol
+}
+}"}
+    #(rf/dispatch [::set (-> % (oget "data.proposals")
+                             (js->clj  :keywordize-keys true))
+                   ::proposals
+                   (or space "test1234567.eth")]))
    {}))
 
 (rf/reg-event-fx
@@ -54,7 +135,21 @@
       :first          1
       :voter          ""}
      :query
-     "query Votes($id: String!, $first: Int, $skip: Int, $orderBy: String, $orderDirection: OrderDirection, $voter: String) {\n  votes(\n    first: $first\n    skip: $skip\n    where: {proposal: $id, vp_gt: 0, voter: $voter}\n    orderBy: $orderBy\n    orderDirection: $orderDirection\n  ) {\n    ipfs\n    voter\n    choice\n    vp\n    vp_by_strategy\n  }\n}"}
+     "query Votes($id: String!, $first: Int, $skip: Int, $orderBy: String, $orderDirection: OrderDirection, $voter: String) {
+votes(
+first: $first
+skip: $skip
+where: {proposal: $id, vp_gt: 0, voter: $voter}
+orderBy: $orderBy
+orderDirection: $orderDirection
+) {
+ipfs
+voter
+choice
+vp
+vp_by_strategy
+}
+}"}
     #(rf/dispatch [::set (-> % (oget "data.votes")
                              (js->clj  :keywordize-keys true)) ::votes id]))
    {}))
