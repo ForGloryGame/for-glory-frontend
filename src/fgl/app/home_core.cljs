@@ -1,4 +1,5 @@
 (ns fgl.app.home-core
+  (:require-macros [fgl.app.preload :as preload])
   (:require
    ;; [re-pressed.core :as rp]
    ;; [breaking-point.core :as bp]
@@ -23,6 +24,8 @@
   (rf/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
+    (when (not config/debug?)
+      (js/setTimeout #(rdom/render (preload/images) (.getElementById js/document "extra")) 3000))
     (rdom/render [views/main-panel] root-el))
   (routes/init!))
 
