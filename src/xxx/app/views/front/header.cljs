@@ -1,6 +1,6 @@
 (ns xxx.app.views.front.header
   (:require
-   ["@radix-ui/react-visually-hidden" :as Invisible]
+   ;; ["@radix-ui/react-visually-hidden" :as Invisible]
    ["@radix-ui/react-navigation-menu" :as Nav]
    [re-frame.core :as rf]))
 
@@ -16,19 +16,19 @@
     children]])
 
 (defn logo []
-  [:img.mr-8 {:src "/images/logo.png"}])
+  [:img.mr-8.w-76px.h-51px {:src "/images/logo.png" :alt "link to home page"}])
 
 (defn twitter []
-  [:img {:src "/images/twitter.svg"}])
+  [:img.w-24px.h-24px {:src "/images/twitter.svg" :alt "link to twitter"}])
 
 (defn open-sea []
-  [:img {:src "/images/open-sea.svg"}])
+  [:img.w-24px.h-24px {:src "/images/open-sea.svg" :alt "link to opensea"}])
 
 (defn medium []
-  [:img {:src "/images/medium.svg"}])
+  [:img.w-24px.h-24px {:src "/images/medium.svg" :alt "link to medium"}])
 
 (defn discord []
-  [:img {:src "/images/discord.svg"}])
+  [:img.w-24px.h-24px {:src "/images/discord.svg" :alt "link to discord"}])
 
 (defn nav-btn [opts children]
   [:button.text-sm.py-1.bg-rgb-dc961a.mr-4

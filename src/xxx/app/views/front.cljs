@@ -12,7 +12,7 @@
 
 (defn main [_]
   [:div.main
-   [:link {:rel "stylesheet" :href "/fonts/family.css"}]
    [header/ui]
    [body/ui]
+   [:link {:rel "stylesheet" :href "/fonts/family.css"}]
    [footer/ui]])

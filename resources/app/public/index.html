@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset='utf-8'>
-  <meta name="viewport" content=
-  "width=device-width,initial-scale=1">
-  <title>xxx</title>
-  <link rel="stylesheet" href="css/global.css" type="text/css"
-  media="screen">
-  <link rel="stylesheet" href="css/compiled/main.css" type=
-  "text/css" media="screen">
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>For Glory</title>
+    <style type="text/css" media="screen">
+        body {
+            font-size: 16px;
+            background-color: #000;
+            color: white;
+        }
+    </style>
+    <link rel="preload" href="css/compiled/main.css" as="style">
+    <link rel="stylesheet" href="css/compiled/main.css" type="text/css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    </noscript>
 </head>
+
 <body>
-  <noscript>shring is a JavaScript app. Please enable JavaScript to
-  continue.</noscript>
-  <div id="app"></div>
-  <script src="/js/compiled/main.js"></script>
+    <noscript>shring is a JavaScript app. Please enable JavaScript to
+        continue.</noscript>
+    <div id="app"></div>
+    <script src="/js/compiled/main.js"></script>
 </body>
+
 </html>

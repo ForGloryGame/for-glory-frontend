@@ -38,7 +38,8 @@
     :style     {:borderRadius "50%"}}
    [:> Avatar/Image
     {:src       src
-     :className "border-2px border-rgb-4f3926"
+     :alt       "avatar"
+     :className "border-2px border-rgb-4f3926 w-108px"
      :style     {:borderRadius "50%"
                  :boxShadow    "inset 0 0 3px 0 rgba(0,0,0,0.50)"}}]])
 
@@ -114,9 +115,9 @@
   ([] (crown false))
   ([last?]
    [:div.flex.flex-col.justify-between.items-center
-    [:img.block.m-5px {:src "/images/crown.svg"}]
+    [:img.block.m-5px.w-36px.h-36px {:src "/images/crown.svg"}]
     (and (not last?) [:div.w-6px.bg-rgb-f9e19c.grow.h-full])
-    (and (not last?) [:img.block.m-5px.invisible {:src "/images/crown.svg"}])]))
+    (and (not last?) [:img.block.m-5px.w-36px.h-36px.invisible {:src "/images/crown.svg"}])]))
 
 (defn card
   [{:keys [left? last?]} & children]
