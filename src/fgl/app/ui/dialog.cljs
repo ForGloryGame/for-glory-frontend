@@ -79,7 +79,7 @@
             desc
             [:>
              D/Description
-             {:className "px-16 text-lg flex flex-col justify-center h-76% overflow-auto mb-4" :asChild true}
+             {:className "px-4 text-lg flex flex-col justify-center h-76% overflow-auto mb-4" :asChild true}
              [:div
               (and desc desc)]])
            (and actions [:div.w-full.flexr actions])
@@ -102,16 +102,17 @@
     text]])
 
 (defn submitting-desc []
-  [ld/text "Waiting For Wallet Confirmation"])
+  [:div.dialog-body
+   [ld/text "Waiting For Wallet Confirmation"]])
 
 (defn pending []
-  [:<>
+  [:div.dialog-body
    [:span "TX Submitted"]
    [:br]
    [ld/text "Waiting For TX Confirmation"]])
 
 (defn confirmed []
-  [:<>
+  [:div.dialog-body
    [:span "TX Submitted"]
    [:br]
    [:span "TX Confirmed"]])
@@ -134,7 +135,7 @@
    [::set
     :open true
     :title title
-    :desc [:<>
+    :desc [:div.dialog-body
            [:span "Reason:"]
            [:br]
            [:p (or desc title)]]

@@ -50,7 +50,7 @@
         :title
         "Reveal Mint Commits"
         :desc
-        [:<>
+        [:div.dialog-body
          [:p "Found pending commit"]
          [:br]
          [:p "Click the REVEAL button below to reveal them"]]
@@ -69,21 +69,16 @@
                         [::minter/send
                          {:method     :commitMint
                           :params     [1 false]
-                          :on-submitted
-                          (fn [_]
-                            (rf/dispatch
-                             [::dialog/set
-                              :desc
-                              [dialog/pending]]))
-                          :on-success
-                          (fn [_]
-                            (dialog/on-success)
-                            (rf/dispatch [::minter/init-raw]))
+                          :on-submitted (fn [_]
+                                          (rf/dispatch
+                                           [::dialog/set
+                                            :desc
+                                            [dialog/pending]]))
+                          :on-success (fn [_]
+                                        (dialog/on-success)
+                                        (rf/dispatch [::minter/init-raw]))
                           :on-failure dialog/failed}])
-                       (rf/dispatch
-                        [::dialog/set
-                         :open
-                         true]))}
+                       (rf/dispatch [::dialog/set :open true]))}
         [:img {:src "/images/mint.png"}]
         [:div.absolute.bottom-10%.right-13%.flexr
          [gloryimg/ui "3rem"]

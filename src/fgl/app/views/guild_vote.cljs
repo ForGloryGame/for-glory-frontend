@@ -147,7 +147,7 @@
                                              :open true
                                              :close true
                                              :desc
-                                             [:<>
+                                             [:div.dialog-body
                                               [:span "Message signed"]
                                               [:br]
                                               [:span "Failed to create proposal, please try again"]
@@ -158,7 +158,7 @@
                        :open true
                        :close true
                        :desc
-                       [:<>
+                       [:div.dialog-body
                         [:span "Message signed"]
                         [:br]
                         [:span "Vote created"]]]))))

@@ -108,7 +108,7 @@
                          (p/catch #(dialog/failed {:title "Typed Sign Failed" :desc "User rejected typed sign in wallet"})))
            _ (rf/dispatch [::dialog/set
                            :open true
-                           :desc [:<>
+                           :desc [:div.dialog-body
                                   [:span "Message signed"]
                                   [:br]
                                   [ld/text "Submitting proposal"]]])
@@ -122,7 +122,7 @@
                                              :open true
                                              :close true
                                              :desc
-                                             [:<>
+                                             [:div.dialog-body
                                               [:span "Message signed"]
                                               [:br]
                                               [:span "Failed to create proposal, please try again"]
@@ -132,7 +132,7 @@
                                                :open true
                                                :close true
                                                :desc
-                                               [:<>
+                                               [:div.dialog-body
                                                 [:span "Message signed"]
                                                 [:br]
                                                 [:span "Proposal created"]]])

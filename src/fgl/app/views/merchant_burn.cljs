@@ -189,7 +189,7 @@
                                           :open true
                                           :title ""
                                           :desc [:<>
-                                                 [:p.ffd.text-base
+                                                 [:p.ffd.text-base.dialog-body
                                                   "Notice: If you choose to Burn your Land Deed, you will receive 95% of the
 token you used to mint the Land Deed. The rest 5% are being charged as
 handling fee. Afterwards, you will lose corresponding utilities of this Land

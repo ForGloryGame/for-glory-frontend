@@ -110,7 +110,7 @@
               :open true
               :title ""
               :desc [:<>
-                     [:p.ffd.text-base
+                     [:p.ffd.text-base.dialog-body
                       "Notice: Since you are trying to leave your current Kingdom, 10% of your Glony will be charged as handling fee. And 24h cool-down will be applied. Click Confirm to proceed."]
                      [:br]
                      [leave-checkbox]]
