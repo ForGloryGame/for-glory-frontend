@@ -44,9 +44,9 @@
   [nav-btn {:href "#roadmap"} "Roadmap"])
 
 (defn ui []
-  [:header.sticky.top-0
+  [:header.sticky.top-0.flex.justify-center
    [nav-root
-    [:> Nav/List {:className "flex justify-between w-full px-9.375rem py-4"}
+    [:> Nav/List {:className "flex justify-between w-95vw px-9.375rem py-4"}
      ^{:key 'left} [:> Nav/List {:className "flex justify-center items-center"}
                     ^{:key 'logo} [nav-link {:href "/"} [logo]]
                     ^{:key 'twitter} [nav-link {:href "https://twitter.com/"} [twitter]]

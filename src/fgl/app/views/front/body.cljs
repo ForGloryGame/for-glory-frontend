@@ -132,11 +132,12 @@
 
 (defn ui []
   [:main.flex.flex-col.items-center.w-full
-   [:section.section-1.w-full.flex.flex-col.items-center.pt-287px.pb-60.mb-7rem.bg-no-repeat.bg-scroll
+   [:section.section-1.w-full.flex.flex-col.items-center.pt-45vh.pb-60.mb-7rem.bg-no-repeat.bg-scroll
     {:style {:backgroundImage    "url(\"/images/bg-1.png\")"
              :backgroundSize     "100%"
              :backgroundPosition "center center"
-             :marginTop          "-7rem"}}
+             :marginTop          "-7rem"
+             :height "calc(100vh + 7rem)"}}
     [h1]
     [h3]
     [p1]
