@@ -86,7 +86,8 @@
     girouette/processor             {:mvn/version "RELEASE"}}}
 
   :girouette-processor
-  {:extra-deps {girouette/processor {:mvn/version "0.0.7"}}
+  {; clojure -X:girouette-processor
+   :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor
    :exec-fn    process
    :exec-args  {:css           {:output-file "resources/app/public/css/compiled/main.css"}
