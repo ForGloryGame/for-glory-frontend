@@ -38,8 +38,8 @@
    {;; :shared  {:entries []}
     :main    {:init-fn xxx.app.core/init
               :default true}
-    :front   {:entries    [xxx.app.views.front]
-              :depends-on #{:main}}
+    ;; :front   {:entries    [xxx.app.views.front]
+    ;;           :depends-on #{:main}}
     :home    {:entries    [xxx.app.views.home]
               :depends-on #{:main}}
     :profile {:entries    [xxx.app.views.profile]

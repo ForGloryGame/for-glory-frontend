@@ -14,12 +14,6 @@
     (case name
       :route/front [view route-data]
       [:div
-       [:h1
-        "Current route " [:code name] ". Site Version " config/version]
-       [:div
-        [:h3 (str "screen-width: " @(rf/subscribe [::bp/screen-width]))]
-        [:h3 (str "screen: " @(rf/subscribe [::bp/screen]))]]
-       [:div
-        (if current-route
-          [view route-data]
-          [:p "Loading..."])]])))
+       (if current-route
+         [view route-data]
+         [:p "Loading..."])])))

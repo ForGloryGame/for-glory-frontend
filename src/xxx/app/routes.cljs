@@ -3,6 +3,7 @@
    ;; TODO: check promesa
    ;; [promesa.core :as p]
    [shadow.loader :as loader]
+   [xxx.app.views.front :as front]
    [reitit.frontend :as rtf]
    [reitit.frontend.easy :as rfe]
    [reitit.frontend.controllers :as rfc]
@@ -56,9 +57,9 @@
   ["/"
    [""
     {:name        :route/front
-     :view        #(resolve 'xxx.app.views.front/main)
-     :controllers #(resolve 'xxx.app.views.front/controllers)
-     :lazy        true}]
+     :view        front/main
+     :controllers (front/controllers)
+     :lazy        false}]
    ["home"
     {:name        :route/home
      :view        #(resolve 'xxx.app.views.home/main)
@@ -107,7 +108,7 @@
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"
   [route-name dispatch-fn]
-  (if (loader/loaded? (name route-name))
+  (if (loader/loaded? #p (name route-name))
     (dispatch-fn)
       ;; load lazy page
     (->

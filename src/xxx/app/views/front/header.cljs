@@ -21,8 +21,8 @@
 (defn twitter []
   [:img {:src "/images/twitter.svg"}])
 
-(defn boat []
-  [:img {:src "/images/boat.svg"}])
+(defn open-sea []
+  [:img {:src "/images/open-sea.svg"}])
 
 (defn medium []
   [:img {:src "/images/medium.svg"}])
@@ -49,7 +49,7 @@
      ^{:key 'left} [:> Nav/List {:className "flex justify-center items-center"}
                     ^{:key 'logo} [nav-link {:href "/"} [logo]]
                     ^{:key 'twitter} [nav-link {:href "https://twitter.com/"} [twitter]]
-                    ^{:key 'boat} [nav-link {:href "https://boat.com"} [boat]]
+                    ^{:key 'open-sea} [nav-link {:href "https://open-sea.com"} [open-sea]]
                     ^{:key 'medium} [nav-link {:href "https://medium.com"} [medium]]
                     ^{:key 'discord} [nav-link {:href "https://discord.com"} [discord]]]
      ^{:key 'right} [:> Nav/List {:className "flex justify-center items-center"}
