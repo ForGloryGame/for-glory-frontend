@@ -71,7 +71,7 @@
            {:className "fixed top-50% left-50% transform -translate-x-50% -translate-y-50% bg-no-repeat p-4 fb"
             :style     {:backgroundImage "url(/images/popup.png)"
                         :backgroundSize  "100%"
-                        :zIndex          1000
+                        :zIndex          10000
                         :width           "40rem"
                         :height          "20.4775396rem"}}
            (and title [:> D/Title {:className "flexr text-center text-2xl"} title])

@@ -64,7 +64,9 @@
  ::data
  (fn [db [_ k]]))
 
-(defn rank [r k mine?]
+(defn rank
+  "r rank, k kingdom id"
+  [r k mine?]
   (let []
     [:div.relative
      [get imgr r]
