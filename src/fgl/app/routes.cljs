@@ -90,6 +90,12 @@
       :controllers #(resolve 'fgl.app.views.dashboard/controllers)
       :lazy        true
       :conflicting true}]
+    ["start"
+     {:name        :route/start
+      :view        #(resolve 'fgl.app.views.start/main)
+      :controllers #(resolve 'fgl.app.views.start/controllers)
+      :lazy        true
+      :conflicting true}]
     ["council"
      {:name          :route/council
       :shadow-module "battlefield"
@@ -184,21 +190,21 @@
       :lazy        true
       :conflicting true}]
     ["rank/personal"
-     {:name        :route/rank-personal
+     {:name          :route/rank-personal
       :shadow-module "personal-rank"
-      :panel-name  "Rank"
-      :view        #(resolve 'fgl.app.views.personal-rank/main)
-      :controllers #(resolve 'fgl.app.views.personal-rank/controllers)
-      :lazy        true
-      :conflicting true}]
+      :panel-name    "Rank"
+      :view          #(resolve 'fgl.app.views.personal-rank/main)
+      :controllers   #(resolve 'fgl.app.views.personal-rank/controllers)
+      :lazy          true
+      :conflicting   true}]
     ["rank/kingdom"
-     {:name        :route/rank-kingdom
+     {:name          :route/rank-kingdom
       :shadow-module "kingdom-rank"
-      :panel-name  "Rank"
-      :view        #(resolve 'fgl.app.views.kingdom-rank/main)
-      :controllers #(resolve 'fgl.app.views.kingdom-rank/controllers)
-      :lazy        true
-      :conflicting true}]
+      :panel-name    "Rank"
+      :view          #(resolve 'fgl.app.views.kingdom-rank/main)
+      :controllers   #(resolve 'fgl.app.views.kingdom-rank/controllers)
+      :lazy          true
+      :conflicting   true}]
     ["mint"
      {:name        :route/mint
       :view        #(resolve 'fgl.app.views.mint/main)

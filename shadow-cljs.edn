@@ -24,7 +24,7 @@
 
  :http       {:port 9999 :host "localhost"}
  :dev-http
- {8880 {:root "resources/app/public"
+ {8880 {:root      "resources/app/public"
         :proxy-url "http://api.glory.game:8080/api"}
   8881 "resources/front/public"
   8882 "resources/cards/public"}
@@ -40,6 +40,8 @@
    {:shared            {:entries []
                         :default true}
     :main              {:init-fn    fgl.app.home-core/init
+                        :depends-on #{:shared}}
+    :start             {:entries    [fgl.app.views.start]
                         :depends-on #{:shared}}
     :profile           {:entries    [fgl.app.views.profile]
                         :depends-on #{:shared}}

@@ -20,6 +20,7 @@
         {:keys [panel-name] n :name} route-data
 
         global?   (-> n (or :_) name (.startsWith "the-map"))
+        global?   (or global? (-> n (or :_) name (.startsWith "start")))
         guild?    (-> n (or :_) name (.startsWith "guild"))
         merchant? (-> n (or :_) name (.startsWith "merchant"))
         rank?     (-> n (or :_) name (.startsWith "rank"))
