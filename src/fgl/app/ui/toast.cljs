@@ -15,36 +15,32 @@
 (rf/reg-event-db
  :toast/success
  (fn [db [_ payload]]
-   (if-let [title (and (map? payload) (:title payload))]
-     (assoc-in db [:toast/data (swap! toast-id inc)] {:title title :desc (:desc payload) :type :success})
-     (assoc-in db [:toast/data (swap! toast-id inc)] {:title [:h1 "Success"] :desc [:p] :type :success}))))
+   (assoc-in db [:toast/data (swap! toast-id inc)] (assoc payload :type :success))))
 
 (rf/reg-event-db
  :toast/failure
  (fn [db [_ payload]]
-   (if-let [title (and (map? payload) (:title payload))]
-     (assoc-in db [:toast/data (swap! toast-id inc)] {:title title :desc (:desc payload) :type :failure})
-     (assoc-in db [:toast/data (swap! toast-id inc)] {:title [:h1 "Failed"] :desc [:p] :type :failure}))))
+   (assoc-in db [:toast/data (swap! toast-id inc)] (assoc payload :type :failure))))
 
 (rf/reg-event-db
  :toast/close
  (fn [db [_ id]]
    (dissoc-in db [:toast/data id])))
 
-(defn toast [id title desc]
+(defn toast [id title desc type no-close actions]
   (let [title (if (string? title) [:h1 title] title)
         desc (if (string? desc) [:p desc] desc)]
     [:> Toast/Root
      {:key id :onOpenChange #(and (not %) (rf/dispatch [:toast/close id]))}
      [:> Toast/Title title]
-     [:> Toast/Description desc]
-     [:> Toast/Action {:altText "altText"} "OK"]
-     [:> Toast/Close "x"]]))
+     (and desc [:> Toast/Description desc])
+     (and (seq actions) (map #(into [:> Toast/Action %]) actions))
+     (and (not no-close) [:> Toast/Close "x"])]))
 
 (defn toasts []
   (let [data (rf/subscribe [:toast/data])
         ui
-        (map (fn [[id {:keys [title desc]}]] ^{:key id} [toast id title desc]) @data)]
+        (map (fn [[id {:keys [title desc type no-close actions]}]] ^{:key id} [toast id title desc type no-close actions]) @data)]
     ui))
 
 (defn ui []

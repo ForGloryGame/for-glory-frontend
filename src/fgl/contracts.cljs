@@ -65,15 +65,23 @@
                         (js/console.log "haha" %)
                         (if (and (.-hash %) (.-wait %))
                           (do
-                            (on-success {:title "Tx Executed"
-                                         :desc  [:a {:href (scan-tx-url (.-hash %))}
-                                                 "View On Blockchain Explorer"]})
-                            (p/then (.-wait %) (fn [receipt] (on-success {:title "Tx Confirmed"
-                                                                          :desc  [:a {:href (scan-tx-url (.-hash %))}
-                                                                                  "View On Blockchain Explorer"]}))))
-                          (on-success %))))
+                            (on-success
+                             {:title "Tx Executed"
+                              :desc  [:a {:href (scan-tx-url (.-hash %))}
+                                      "View On Blockchain Explorer"]})
+                            (p/then
+                             (.-wait %)
+                             (fn [receipt]
+                               (on-success
+                                {:title "Tx Confirmed"
+                                 :desc  [:a
+                                         {:href (scan-tx-url (.-hash receipt))}
+                                         "View On Blockchain Explorer"]}))))
+
+                          (on-success {:title "Tx Succeeded"}))))
+
              (p/catch #(if (instance? js/Error %)
                          (on-failure {:title "Tx Failed"
                                       :desc  (or (.-reason %) (.-message %))})
-                         (on-failure %))))))
+                         (on-failure {:title "Tx Failed"}))))))
      {})))

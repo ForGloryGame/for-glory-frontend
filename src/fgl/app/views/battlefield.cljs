@@ -1,18 +1,15 @@
 (ns fgl.app.views.battlefield
   (:require
-   [fgl.utils :refer [->token-ids ->display-token]]
-   ["ethers" :as ethers]
    ["@radix-ui/react-checkbox" :as C]
    ["@radix-ui/react-select" :as S]
-   [fgl.wallet.core :as w]
-   [reagent.core :as r]
-   [fgl.app.ui.panel-layout]
-   [re-frame.core :as rf]
    [fgl.config :as conf]
-   [fgl.contracts.gamenft :as nft]
    [fgl.contracts.battlefield :as battlefield]
    [fgl.contracts.bfproxy :as bfproxy]
-   [lambdaisland.glogi :as log]))
+   [fgl.contracts.gamenft :as nft]
+   [fgl.utils :refer [->display-token ->token-ids]]
+   [fgl.wallet.core :as w]
+   [re-frame.core :as rf]
+   [reagent.core :as r]))
 
 (defn controllers []
   [{:start

@@ -34,10 +34,11 @@
    (let [{::w/keys [provider addr]} db]
      (when addr
        (ctc/with-provider c provider
-         (p/let [balance (r :balanceOf addr)
+         (p/let [;; balance (r :balanceOf addr)
                  token-ids (r :tokensOfOwner addr)]
            (rf/dispatch [::set token-ids addr ::token-ids])
-           (rf/dispatch [::set balance addr ::balance])))))
+           ;; (rf/dispatch [::set balance addr ::balance])
+           ))))
 
    {}))
 

@@ -14,5 +14,11 @@
        sort
        clj->js))
 
+(defn scan-url [& args]
+  (apply str conf/explorer-url args))
+
 (defn scan-tx-url [hash]
-  (str conf/explorer-url "/tx/" hash))
+  (scan-url "/tx/" hash))
+
+(defn scan-addr-url [addr]
+  (scan-url "/address/" addr))
