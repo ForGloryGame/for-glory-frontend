@@ -4,16 +4,24 @@
    ["@radix-ui/react-checkbox" :as C]))
 
 (defn ui
-  ([] (ui {}))
-  ([{:keys [width] :as opts}]
+  ([opt1] (ui opt1 {}))
+  ([{:keys [width text]} {:keys [className] :as opt2}]
    [:> C/Root
-    (enc/nested-merge {:style {:borderWidth     "0.05rem"
-                               :width           width
-                               :height          width
-                               :borderStyle     "solid"
-                               :borderRadius    "0.26rem"
-                               :backgroundColor "rgba(79, 126, 140, 0.231)"
-                               :borderColor     "rgb(23, 47, 57)"}}
-                      opts)
+    (enc/nested-merge
+     opt2
+     {:className (str "flex flex-row relative items-center" (or className ""))})
+    [:div {:style {:backgroundColor "rgba(79, 126, 140, 0.231)"
+                   :width           width
+                   :height          width
+                   :borderColor     "rgb(23, 47, 57)"
+                   :borderRadius    "0.26rem"
+                   :borderStyle     "solid"
+                   :borderWidth     "0.05rem"}}]
+    (and text text)
+
     [:> C/Indicator
-     [:img {:src "/images/check.svg"}]]]))
+     [:img.absolute.left-0
+      {:style {:width  width
+               :height width
+               :top    "16%"}
+       :src   "/images/check.svg"}]]]))

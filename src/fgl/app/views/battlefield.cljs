@@ -1,7 +1,7 @@
 (ns fgl.app.views.battlefield
   (:require
    [taoensso.encore :as enc]
-   ["@radix-ui/react-checkbox" :as C]
+   [fgl.app.ui.checkbox :as checkbox]
    ["@radix-ui/react-select" :as S]
    [fgl.config :as conf]
    [fgl.contracts.battlefield :as battlefield]
@@ -12,6 +12,8 @@
    [fgl.app.ui.panel :as panel]
    [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
+   [fgl.app.ui.separator :as separator]
+   [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [fgl.app.ui.nft-card :as nftc]
@@ -38,10 +40,8 @@
  (fn [{::keys [data] :keys [db]} [_ select?]]
    (if select?
      (let [[_ items] data]
-       {:db (assoc db ::selected (->> items (map :id) (into #{}))
-                   ::all-selected true)})
-     {:db (assoc db ::selected #{}
-                 ::all-selected false)})))
+       {:db (assoc db ::selected (->> items (map :id) (into #{})))})
+     {:db (assoc db ::selected #{})})))
 
 (rf/reg-event-db
  ::select
@@ -51,8 +51,7 @@
 (rf/reg-event-db
  ::deselect
  (fn [db [_ id]]
-   (assoc db ::selected (disj (get db ::selected #{}) id)
-          ::all-selected false)))
+   (assoc db ::selected (disj (get db ::selected #{}) id))))
 
 (rf/reg-sub
  ::selected
@@ -77,22 +76,26 @@
 
          bf-approved (::nft/bf-approved addr-db)
 
-         all-selected (::all-selected db)]
+         selected (::selected db)
+
+         data (get
+               {:staked   (map (fn [id]
+                                 (let [id (.toString id)]
+                                   (-> {:id id}
+                                       (merge (get traits id))
+                                       (merge (get reward id)))))
+                               staked-token-ids)
+                :unstaked (map (fn [id]
+                                 (let [id (.toString id)]
+                                   (-> {:id id}
+                                       (merge (get traits id)))))
+                               unstaked-token-ids)}
+               type)
+
+         all-selected (= (count selected) (count data))]
 
      [type
-      (get
-       {:staked   (map (fn [id]
-                         (let [id (.toString id)]
-                           (-> {:id id}
-                               (merge (get traits id))
-                               (merge (get reward id)))))
-                       staked-token-ids)
-        :unstaked (map (fn [id]
-                         (let [id (.toString id)]
-                           (-> {:id id}
-                               (merge (get traits id)))))
-                       unstaked-token-ids)}
-       type)
+      data
       bf-approved
       all-selected])))
 
@@ -110,10 +113,11 @@
       (let [[type] @(rf/subscribe [::data])]
         [:> S/Root
          {:name          "Token Type"
+          :defaultValue  "Staked"
           :value         type
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded"
+          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded relative"
            :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
           [:> S/Value (if (= type :staked) "Staked" "Unstaked")]
           [:> S/Icon [:img.inline-block.ml-6
@@ -143,12 +147,13 @@
       :name name
       :image image
       :gold gold
+      :selected checked
       :staked staked?
       :disabled disabled
       :checked checked
       :width "16rem"
       :glory glory
-      :earned? (not glory)
+      :earned? (and gold (not glory))
       :onCheckedChange onCheckedChange}
      {:className "mr-4"
       :style {:flexShrink 0}}]))
@@ -170,12 +175,12 @@
   (let [select-all #(rf/dispatch [::select-all %])]
     (fn []
       (let [[_ _ _ all-selected] @(rf/subscribe [::data])]
-        [:> C/Root
-         {:className       "cs1 ce2 rs4 re5 justify-self-start"
+        [checkbox/ui
+         {:width "1.5rem"
+          :text  [:span.text-xl.ml-2 {:style {:color "rgb(213, 228, 232)"}} "SELECT ALL"]}
+         {:className "flex flex-row cs1 ce2 rs5 re6 justify-self-start items-center"
           :onCheckedChange select-all
-          :checked         all-selected}
-         "Select All"
-         [:> C/Indicator [:span (str "checked: " all-selected)]]]))))
+          :checked         all-selected}]))))
 
 (defn btns []
   (let [approve
@@ -184,8 +189,8 @@
                         :params [conf/contract-addr-battlefield
                                  true]}])
         enter
-        (fn [token-ids] #(rf/dispatch [{::bfproxy/send {:method :join
-                                                        :params [(->token-ids token-ids)]}}]))
+        (fn [token-ids] #(rf/dispatch [::bfproxy/send {:method :join
+                                                       :params [(->token-ids token-ids)]}]))
         claim
         (fn [token-ids] #(rf/dispatch [::bfproxy/send
                                        {:method :claim
@@ -202,22 +207,23 @@
       (let [[type data approved?] @(rf/subscribe [::data])
             selected              @(rf/subscribe [::selected])
             staked?               (= type :staked)
-            no-selected?          (not (seq selected))]
-        [:div.cs2.ce3.rs4.re5.justify-self-end.grid.grid-cols-3
+            no-selected?          (not (seq selected))
+            className             (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
+        [:div.cs3.ce4.rs5.re6.justify-self-end.grid
+         {:className className}
          (and (not approved?) [:button {:on-click approve} "APPROVE"])
-         (and approved? (not staked?)  [:button {:on-click (enter selected) :disabled no-selected?} "ENTER"])
-         (and approved? staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
-         (and approved? staked? [:button {:on-click (claim selected) :disabled no-selected?} "CLAIM"])]))))
-
-(defn separator
-  ([] (separator {}))
-  ([opt]
-   [:div
-    (enc/nested-merge
-     {:style {:height          0
-              :boxShadow       "rgb(8 30 38) -1px -0.5px 0.5px 0.5px, rgb(0 182 255 / 12%) 1px 1px 0.5px 1px"
-              :backgroundColor "rgba(100, 186, 214, 0)"}}
-     opt)]))
+         (and approved?
+              [btn/ui :blue "ENTER" "14rem"
+               {:disabled no-selected?
+                :on-click (enter selected)}])
+         (and approved? staked?
+              [btn/ui :blue "FLEE" "14rem"
+               {:disabled no-selected?
+                :on-click (unstake selected)}])
+         (and approved? staked?
+              [btn/ui :orange "CLAIM" "14rem"
+               {:disabled no-selected?
+                :on-click (claim selected)}])]))))
 
 (defn main [_]
   (let []
@@ -225,16 +231,12 @@
       (r/create-class
        {:reagent-render
         (fn []
-          (let [[type] @(rf/subscribe [::data])
-                ;; staked? (= type :staked)
-                ]
-            [panel/ui "Battlefield" 80 to-home
-             [:div.grid.justify-center.gap-4
-              {:style {:padding "2%"
-                       :margin  "2%"}}
-              [select]
-              [separator {:className "cs1 ce4 rs2 re3"}]
-              [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-               [cards]]
-              [select-all]
-              [btns]]]))}))))
+          [panel/ui "Battlefield" 80 to-home
+           [:div.grid.gap-4
+            {:style {:padding "2%" :width "98%"}}
+            [select]
+            [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
+            [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+             [cards]]
+            [select-all]
+            [btns]]])}))))

@@ -3,6 +3,9 @@
    [fgl.config :as conf]
    ["ethers" :as ethers]))
 
+(defn calc [w x]
+  (str "calc(" w " * " x ")"))
+
 (defn ->display-token
   ([bignumberish] (->display-token bignumberish 2))
   ([bignumberish to-fixed-decimals]
