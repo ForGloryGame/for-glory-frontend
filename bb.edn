@@ -1,5 +1,6 @@
 {:paths ["dev"]
- :deps  {medley/medley {:mvn/version "1.3.0"}}
+ :deps  {medley/medley {:mvn/version "1.3.0"}
+         selmer/selmer {:mvn/version "1.12.50"}}
  :tasks
  {nrepl       x.nrepl/run
   shadow      x.shadow/run

@@ -30,6 +30,7 @@
     "ws": "^8.3.0"
   },
   "devDependencies": {
+    "mustache": "^4.2.0",
     "shadow-cljs": ">=2.16.12"
   }
 }

@@ -1,6 +1,7 @@
 {:paths ["src" "dev" "test"]
  :deps
- {lambdaisland/uri {:mvn/version "1.13.95"
+ {selmer/selmer    {:mvn/version "1.12.50"}
+  lambdaisland/uri {:mvn/version "1.13.95"
                     :exclusions  [org.clojure/data.json]}
 
   io.aviso/pretty {:mvn/version "1.1.1"}

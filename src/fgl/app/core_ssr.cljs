@@ -3,7 +3,5 @@
    [fgl.app.views :as views]
    [reagent.dom.server :as rs]))
 
-(defn -main []
-  (rs/render-to-static-markup [views/main-panel]))
-
-(js/console.log (-main))
+(defn main []
+  (js/console.log (rs/render-to-static-markup [views/main-panel])))

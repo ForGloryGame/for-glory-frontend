@@ -68,12 +68,26 @@
     :compiler-options
     {:elide-asserts true}}}
 
+  :app-ssr
+  {:target    :node-script
+   :output-to "resources/app/ssr.js"
+   :main      fgl.app.core-ssr/main
+   :devtools
+   {:preloads [hashp.core]}
+   :dev
+   {:compiler-options {}}
+   :release
+   {:closure-defines  {goog.DEBUG                 false
+                       goog.debug.LOGGING_ENABLED true}
+    :build-options    {}
+    :compiler-options {:elide-asserts true}}}
+
   :cards
-  {:target     nubank.workspaces.shadow-cljs.target
-   :ns-regexp  "-?cards?$"
-   :output-dir "resources/cards/public/js/compiled"
-   :asset-path "/js/compiled"
-   :preloads   [day8.re-frame-10x.preload hashp.core]                   ; optional, list namespaces to be pre loaded
+  {:target      nubank.workspaces.shadow-cljs.target
+   :ns-regexp   "-?cards?$"
+   :output-dir  "resources/cards/public/js/compiled"
+   :asset-path  "/js/compiled"
+   :preloads    [day8.re-frame-10x.preload hashp.core]                   ; optional, list namespaces to be pre loaded
    :build-hooks [(hooks.css/build)]
    :dev
    {:compiler-options

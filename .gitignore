@@ -23,3 +23,4 @@
 /.cpcache/
 /.clj-kondo/
 /resources/app/public/css/compiled
+/resources/app/ssr.js
