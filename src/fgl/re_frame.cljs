@@ -1,12 +1,12 @@
 (ns fgl.re-frame
   (:require
-   [reagent.core :as r]
    [lambdaisland.glogi :as log]
-   [re-frame.loggers     :refer [console]]
+   [re-frame.core :as rf]
    [re-frame.fx :as rfx]
-   [re-frame.router :as router]
    [re-frame.interop :as rfi]
-   [re-frame.core :as rf]))
+   [re-frame.loggers     :refer [console]]
+   [re-frame.router :as router]
+   [reagent.core :as r]))
 
 (defonce cache (atom {}))
 

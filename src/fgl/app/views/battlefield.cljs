@@ -143,28 +143,34 @@
          {:name          "Token Type"
           :defaultValue  "Staked"
           :value         type
+          ;; :open true
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded relative fb"
-           :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
-          [:> S/Value (if (= type :staked) "Staked" "Unstaked")]
+          {:className "text-xl text-center pl-14 pr-10 py-0.5 rounded fb"
+           :style     {:backgroundColor "#355661"}}
+          [:> S/Value (if (= type :staked) " Staked " "Unstaked")]
           [:> S/Icon [:img.inline-block.ml-6
                       {:style {:width "0.825rem"}
                        :src   "/images/select-down-arrow.svg"}]]]
          [:> S/Content
-          {:className "text-xl text-center pl-12 pr-12 py-0.5 rounded"
-           :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
+          {:className "text-xl text-center rounded fb pl-14 pr-10"
+           :style     {:backgroundColor "#355661"}}
           [:> S/Viewport
            ^{:key 'staked}
            [:> S/Item
             {:value :staked}
-            [:> S/ItemText {:className "text-2xl"} "Staked"]
-            [:> S/ItemIndicator (or (nil? type) (= type :staked))]]
+            [:> S/ItemText " Staked "]
+            [:> S/ItemIndicator (or (nil? type) (= type :staked))]
+            [:img.inline-block.ml-6
+             {:style {:width "0.825rem" :visibility (if (or (nil? type) (= type :staked)) "visible" "hidden")}
+              :src   "/images/select-down-arrow.svg"}]]
            ^{:key 'unstaked}
            [:> S/Item
             {:value :unstaked}
-            [:> S/ItemText {:className "text-2xl"} "Unstaked"]
-            [:> S/ItemIndicator (= type :unstaked)]]]]]))))
+            [:> S/ItemText "Unstaked"]
+            [:img.inline-block.ml-6
+             {:style {:width "0.825rem" :visibility (if (= type :unstaked) "visible" "hidden")}
+              :src   "/images/select-down-arrow.svg"}]]]]]))))
 
 (defn card [id is-lord gold glory staked? checked disabled]
   (let [onCheckedChange #(rf/dispatch [(if % ::select ::deselect) id])
@@ -226,7 +232,7 @@
         [checkbox/ui
          {:width "1.5rem"
           :text  [:span.text-xl.ml-2.fb {:style {:color "rgb(213, 228, 232)"}} "SELECT ALL"]}
-         {:className "flex flex-row cs1 ce2 rs5 re6 justify-self-start items-center"
+         {:className "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
           :onCheckedChange select-all
           :checked         all-selected}]))))
 
@@ -286,7 +292,7 @@
             staked?                    (= type :staked)
             no-selected?               (not (seq selected))
             className                  (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
-        [:div.cs3.ce4.rs5.re6.justify-self-end
+        [:div.cs3.ce4.rs1.re2.justify-self-end
          {:className className}
          (and (not bf-approved)
               [btn/ui
@@ -321,11 +327,12 @@
    {:component-did-mount maybe-show-reveal-dialog
     :reagent-render
     (fn []
-      [:div.grid.gap-4
+      [:div
        {:style {:padding "2%" :width "98%"}}
        [select]
-       [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
-       [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+       [separator/ui {:className "my-4"}]
+       [:div.overflow-x-auto
         [cards (-> cur-route :data :name)]]
-       [select-all (-> cur-route :data :name)]
-       [btns]])}))
+       [:div.grid.gap-4.mt-4
+        [select-all (-> cur-route :data :name)]
+        [btns]]])}))
