@@ -16,4 +16,6 @@
    [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/council])} "-> council"]
    [:br]
+   [:button {:on-click #(rf/dispatch [:navigate :route/guild-basic])} "-> guild"]
+   [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/mint])} "-> mint"]])

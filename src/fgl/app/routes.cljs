@@ -101,6 +101,12 @@
       :controllers #(resolve 'fgl.app.views.council/controllers)
       :lazy        true
       :conflicting true}]
+    ["guild/basic"
+     {:name        :route/guild-basic
+      :view        #(resolve 'fgl.app.views.guild-basic/main)
+      :controllers #(resolve 'fgl.app.views.guild-basic/controllers)
+      :lazy        true
+      :conflicting true}]
     ["mint"
      {:name        :route/mint
       :view        #(resolve 'fgl.app.views.mint/main)
