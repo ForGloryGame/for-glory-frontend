@@ -6,6 +6,7 @@
    [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
    [fgl.contracts.landeed :as landeed]
+   [fgl.contracts.gameminter :as minter]
    [fgl.app.ui.glory-img :as gloryimg]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
@@ -19,7 +20,7 @@
   [:div.flexb.px-24.w-full
    [:button.w-45%.relative.block
     ;; TODO: purchase params
-    {:on-click #(rf/dispatch [::landeed/send {:method :purchase}])}
+    {:on-click #(rf/dispatch [::minter/send {:method :commitMint :params [1 false]}])}
     [:img {:src "/images/mint.png"}]
     [:div.absolute.bottom-10%.right-13%.flexr
      [gloryimg/ui "3rem"]

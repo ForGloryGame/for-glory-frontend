@@ -115,14 +115,14 @@
     [:div
      [:h1.text-4xl "Mint"]
      [:ul.list-disc.mt-10 "Admin"
-      [:li>button.border {:on-click #(rf/dispatch [::gold/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
-       "Grant Minter to mint Gold Token"]
-      [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
-       "Grant Minter to mint Glory Token"]
-      [:li>button.border {:on-click #(rf/dispatch [::gamepass/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
-       "Grant Minter to mint Game Pass"]
-      [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role addr]}])}
-       "Grant Admin to mint Glory Token"]
+      ;; [:li>button.border {:on-click #(rf/dispatch [::gold/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
+      ;;  "Grant Minter to mint Gold Token"]
+      ;; [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
+      ;;  "Grant Minter to mint Glory Token"]
+      ;; [:li>button.border {:on-click #(rf/dispatch [::gamepass/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
+      ;;  "Grant Minter to mint Game Pass"]
+      ;; [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role addr]}])}
+      ;;  "Grant Admin to mint Glory Token"]
       ;; [:li>button.border
       ;;  {:on-click
       ;;   #(rf/dispatch
@@ -134,8 +134,8 @@
       ;;          "WHITELIST_TRANSFER_ROLE"))
       ;;        addr]}])}
       ;;  "Grant mint Glory Token transfer role"]
-      [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-battlefield]}])}
-       "Grant Battlefield to mint NFT"]
+      ;; [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-battlefield]}])}
+      ;;  "Grant Battlefield to mint NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :updateKindoms :params [conf/contract-addr-kingdoms]}])}
@@ -215,7 +215,7 @@
                [:li "Amount: " [balance/ui amount]]
                [:li (str "Date: " date)]])
             sgold-info)]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 1]}])} "Lock 1 sgold for 1 week"]
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 2]}])} "Lock 1 sgold for 2 weeks"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sgold"]]
      [:ul.list-disc.mt-10 "Battlefield"
       [:li (str "User staked NFT token ids: " battlefield-token-ids)]
