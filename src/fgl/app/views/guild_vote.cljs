@@ -185,7 +185,8 @@
             {:keys [title author body state choices ipfs start end snapshot] voute-count :votes}
             proposal
 
-            {:keys [choice kingdom-id]}
+            {:keys [choice ;; kingdom-id
+                    ]}
             @(rf/subscribe [::pdata proposal-id])
 
             start (and start (format-date (js/Date. (* 1000 start))))
@@ -207,7 +208,10 @@
           [:div.grid.grid-rows-2.gap-x-10.gap-y-8.h-full.pr-9
            {:style {:gridTemplateColumns "1fr 2.8fr"}}
            [:div.col-span-2
-            [:p.guild-font-family.text-2xl.uppercase.tracking-wider title]
+            [:div.flexb
+             [:p.guild-font-family.text-2xl.uppercase.tracking-wider title]
+             [:button {:on-click #(rf/dispatch [:navigate :route/guild-vote])}
+              [:img.w-6 {:src "/images/eject.png"}]]]
             [:p.text-xs.text-Cd6d6d6.pl-1
              [:span.align-middle (str "by " (shorten-addr author))]
              [:span.align-middle.inline-block.w-0_65rem.h-0_65rem.bg-no-repeat.bg-contain.bg-center
