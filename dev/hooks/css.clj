@@ -40,7 +40,6 @@
   [build-state & _]
   (let [build-id (:shadow.build/build-id build-state)
         mode     (:shadow.build/mode build-state)]
-    (prn "hahaha" (some #{build-id} [:cards :app]))
     (when (some #{build-id} [:cards :app])
       (css-processor/process {:css           {:output-file (css-resource-output-file build-state)}
                               :garden-fn     'fgl.app.grammer/class-name->garden

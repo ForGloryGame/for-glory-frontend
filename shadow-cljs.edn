@@ -88,7 +88,8 @@
    :ns-regexp   "-?cards?$"
    :output-dir  "resources/cards/public/js/compiled"
    :asset-path  "/js/compiled"
-   :preloads    [day8.re-frame-10x.preload hashp.core]                   ; optional, list namespaces to be pre loaded
+   :preloads    [;; day8.re-frame-10x.preload
+                 hashp.core]                   ; optional, list namespaces to be pre loaded
    :build-hooks [(hooks.css/build)]
    :dev
    {:compiler-options

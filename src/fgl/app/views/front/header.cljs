@@ -2,6 +2,7 @@
   (:require
    ;; ["@radix-ui/react-visually-hidden" :as Invisible]
    ["@radix-ui/react-navigation-menu" :as Nav]
+   [fgl.app.ui.logo :as logo]
    ;; [re-frame.core :as rf]
    ))
 
@@ -15,17 +16,6 @@
   [nav-item
    [:> Nav/Link (assoc opts :className (str (or className "") " " "block p-2"))
     children]])
-
-(defn logo []
-  [:img.mr-8 {:width "4.75rem" :style {:width "4.75rem" :minWidth "4.75rem" :minHeight "3.28375rem"} :alt "link to home page"
-              :srcSet "/images/logo-128.png 128w,
-                       /images/logo-256.png 256w,
-                       /images/logo-512.png 512w,
-                       /images/logo-1024.png 1024w,"
-              :sizes "(max-width: 1024px) 128px
-                      (max-width: 2048px) 256px
-                      (max-width: 2880px) 512px
-                      (min-width: 2880px) 1024px"}])
 
 (defn twitter []
   [:img {:style {:width "1.5rem" :minWidth "24px"} :src "/images/twitter.svg" :alt "link to twitter"}])
@@ -60,7 +50,7 @@
     [:> Nav/List {:className "flex justify-between  py-4 mx-auto max-w-screen-2xl"}
      ^{:key 'left} [:> Nav/List {:className "flex justify-center items-center"}
                     ^{:key 'logo}
-                    [nav-link {:href "/"} [logo]]
+                    [nav-link {:href "/"} [logo/ui]]
                     ^{:key 'twitter}
                     [nav-link {:href   "https://twitter.com/GloryGameNFT"
                                :rel    "noreferrer"
@@ -78,6 +68,6 @@
                                :target "_blank"
                                :href   "https://discord.com"} [discord]]]
      ^{:key 'right} [:> Nav/List {:className "flex justify-center items-center"}
-                     ^{:key 'logo} [nav-link {:className "invisible" :disabled true} [logo]]
+                     ^{:key 'logo} [nav-link {:className "invisible" :disabled true} [logo/ui]]
                      ^{:key 'about} [nav-item [about]]
                      ^{:key 'roadmap} [nav-item [roadmap]]]]]])

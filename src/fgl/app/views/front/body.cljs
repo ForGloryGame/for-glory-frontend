@@ -16,21 +16,19 @@
 
 (defn app-btn []
   [:a.block.font-bold.text-white.text-center.py-1
-   {:className "px-3.25rem mr-2.5 w-11.25rem"
+   {:className "px-3.25rem mr-2.5 w-11.25rem cursor-pointer"
     :style     {:backgroundImage "linear-gradient(178deg, #E5CB6F 0%, #AC852C 100%)"
                 :boxShadow       "0 2px 4px 0 rgba(255,197,90,0.24)"
                 :borderRadius    "1.25rem"
-                :cursor          :pointer
                 :minWidth        "2.5rem"}
     :on-click #(rf/dispatch [:navigate :route/home])}
    "Start App"])
 
 (defn whitepaper-btn []
   [:a.block.font-bold.text-white.text-center.py-1.border.border-white
-   {:className "px-3.25rem w-11.25rem"
+   {:className "px-3.25rem w-11.25rem cursor-pointer"
     :style     {:boxShadow    "0 2px 4px 0 rgba(255,197,90,0.24)"
                 :borderRadius "1.25rem"
-                :cursor       :pointer
                 :minWidth     "2.5rem"}
     :rel       "noreferrer"
     :target    "_blank"

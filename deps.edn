@@ -39,7 +39,7 @@
   cider/cider-nrepl             {:mvn/version "0.28.3"}
   refactor-nrepl/refactor-nrepl {:mvn/version "3.5.2"}
   clj-commons/fs                {:mvn/version "1.6.310"}
-  djblue/portal {:mvn/version "0.24.0"}}
+  djblue/portal {:mvn/version "0.25.0"}}
 
  :aliases
  {:repl/cider-refactor

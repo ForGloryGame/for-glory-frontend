@@ -38,17 +38,6 @@
     (when-not (zero? num)
       [width (/ (- width border-left-width border-right-width padding-left padding-right) num)])))
 
-(rf/reg-event-db
- ::style-data
- [rf/trim-v]
- (fn [db [data]]
-   (assoc db ::style-data data)))
-
-(rf/reg-sub
- ::style-data
- (fn [db _]
-   (::style-data db)))
-
 (defn- shorten-addr [width addr]
   (if (or (not @max-content-style) (>= width (first @max-content-style)))
     addr
@@ -90,7 +79,7 @@
             x                   @(rf/subscribe [::elr/nodes :connect-btn])]
         (js/setTimeout
          #(reset! max-content-style
-                  (let [el    (js/document.getElementById "connect-btn-span")
+                  (let [el              (js/document.getElementById "connect-btn-span")
                         computed-styles (get-computed-style el)]
                     (get-px-of-each-char computed-styles 42)))
          0)

@@ -1,5 +1,6 @@
 (ns fgl.app.views.home
   (:require
+   [fgl.app.ui.header :as header]
    [re-frame.core :as rf]
    [taoensso.timbre :refer [info]]))
 
@@ -8,5 +9,8 @@
     :stop  #(info "stop" "home controller")}])
 
 (defn main [_]
-  [:section "Home page"
-   [:p>button {:on-click #(rf/dispatch [:navigate :route/front])} "> Front"]])
+  [:div
+   [header/ui]
+   [:main
+    [:section "Home page"
+     [:p>button {:on-click #(rf/dispatch [:navigate :route/front])} "> Front"]]]])
