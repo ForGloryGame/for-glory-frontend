@@ -1,12 +1,11 @@
 (ns fgl.app.ui.connect-btn
   (:require
+   [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [fgl.wallet.core :as w]
    [oops.core :refer [ocall oget]]
-   [reagent.core :as r]
-   ;; [element-resize.core :as elr]
-   ))
+   [reagent.core :as r]))
 
 (w/init!)
 
@@ -31,8 +30,5 @@
     :reagent-render
     (fn []
       (let [[text name disabled on-click] @(rf/subscribe [::text])]
-        [:button#connect-btn
-         {:disabled disabled
-          :name     name
-          :on-click on-click}
-         text]))}))
+        [btn/ui {:id "connect-btn" :disabled disabled :name name :on-click on-click}
+         [:span {:style {:textShadow "1.364px 1.463px 1px rgba(0, 0, 0, 0.64)"}} text]]))}))

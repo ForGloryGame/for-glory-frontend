@@ -1,9 +1,15 @@
-(ns fgl.app.ui.gold-img)
+(ns fgl.app.ui.gold-img
+  (:require
+   [taoensso.encore :as enc]))
 
-(defn ui [width]
-  (let [width (if string? width (str width "rem"))]
-    [:img
-     {:style {:width width
-              :height width
-              :transform "translateY(5%)"}
-      :src "/images/gold-token.png"}]))
+(defn ui
+  ([width] (ui width {}))
+  ([width opts]
+   (let [width (if string? width (str width "rem"))]
+     [:img
+      (enc/nested-merge
+       opts
+       {:style {:width     width
+                :height    width
+                :transform "translateY(5%)"}
+        :src   "/images/gold-token.png"})])))

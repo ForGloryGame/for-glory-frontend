@@ -13,69 +13,71 @@
   :closure-defines
   {fgl.config/version :shadow-git-inject/version}
   :compiler-options
-  {:infer-externs :auto
-   :shadow-keywords true
-          ;; https://github.com/thheller/shadow-cljs/blob/7fefe5b3f604ff11d33539e4899e160dd1ff6eb0/src/main/shadow/build/cljs_hacks.cljc#L859
-   :shadow-tweaks true
-          ;; :cross-chunk-method-motion false
-          ;; :output-feature-set        :es-next
+  {:infer-externs      :auto
+   :shadow-keywords    true
+   ;; https://github.com/thheller/shadow-cljs/blob/7fefe5b3f604ff11d33539e4899e160dd1ff6eb0/src/main/shadow/build/cljs_hacks.cljc#L859
+   :shadow-tweaks      true
+   ;; :cross-chunk-method-motion false
+   ;; :output-feature-set        :es-next
    :output-feature-set :es8
-   :warnings {:undeclared-var false}}}
+   :warnings           {:undeclared-var false}}}
 
  :http       {:port 9999 :host "localhost"}
  :dev-http
- {8880    "resources/app/public"
+ {8880 "resources/app/public"
   8881 "resources/front/public"
   8882 "resources/cards/public"}
  :js-options {:js-package-dirs ["node_modules"]}
 
  :builds
  {:app
-  {:target :browser
-   :output-dir "resources/app/public/js/compiled"
-   :asset-path "/js/compiled"
+  {:target        :browser
+   :output-dir    "resources/app/public/js/compiled"
+   :asset-path    "/js/compiled"
    :module-loader true
    :modules
-   {:shared {:entries []
-             :default true}
-    :main {:init-fn fgl.app.home-core/init
-           :depends-on #{:shared}}
-    :profile {:entries [fgl.app.views.profile]
-              :depends-on #{:shared}}
-    :dashboard {:entries [fgl.app.views.dashboard]
-                :depends-on #{:shared}}
-    :battlefield {:entries [fgl.app.views.battlefield]
+   {:shared      {:entries []
+                  :default true}
+    :main        {:init-fn    fgl.app.home-core/init
                   :depends-on #{:shared}}
-    :mint {:entries [fgl.app.views.mint]
-           :depends-on #{:shared}}
-    :404 {:entries [fgl.app.views.v404]
-          :depends-on #{:shared}}
-    :500 {:entries [fgl.app.views.v500]
-          :depends-on #{:shared}}}
+    :profile     {:entries    [fgl.app.views.profile]
+                  :depends-on #{:shared}}
+    :dashboard   {:entries    [fgl.app.views.dashboard]
+                  :depends-on #{:shared}}
+    :battlefield {:entries    [fgl.app.views.battlefield]
+                  :depends-on #{:shared}}
+    :council     {:entries    [fgl.app.views.council]
+                  :depends-on #{:shared}}
+    :mint        {:entries    [fgl.app.views.mint]
+                  :depends-on #{:shared}}
+    :404         {:entries    [fgl.app.views.v404]
+                  :depends-on #{:shared}}
+    :500         {:entries    [fgl.app.views.v500]
+                  :depends-on #{:shared}}}
    :devtools
-   {:preloads [;; day8.re-frame-10x.preload
-               hashp.core
-               cljs-devtool]
+   {:preloads        [;; day8.re-frame-10x.preload
+                      hashp.core
+                      cljs-devtool]
     :console-support false}
    :compiler-options
    {:closure-defines
-    {re-frame.trace.trace-enabled? true
-     day8.re-frame.tracing.trace-enabled? true
-     fgl.config.contract-addr-gold #shadow/env "CONTRACT_GOLD"
-     fgl.config.contract-addr-glory #shadow/env "CONTRACT_GLORY"
-     fgl.config.contract-addr-landeed #shadow/env "CONTRACT_LANDEED"
-     fgl.config.contract-addr-sgold #shadow/env "CONTRACT_SGOLD"
-     fgl.config.contract-addr-kingdoms #shadow/env "CONTRACT_KINGDOMS"
-     fgl.config.contract-addr-gamenft #shadow/env "CONTRACT_GAMENFT"
-     fgl.config.contract-addr-gamepass #shadow/env "CONTRACT_GAMEPASS"
-     fgl.config.contract-addr-battlefield #shadow/env "CONTRACT_BATTLEFIELD"
-     fgl.config.contract-addr-minter #shadow/env "CONTRACT_MINTER"
+    {re-frame.trace.trace-enabled?              true
+     day8.re-frame.tracing.trace-enabled?       true
+     fgl.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
+     fgl.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
+     fgl.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
+     fgl.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
+     fgl.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
+     fgl.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
+     fgl.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
+     fgl.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
+     fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
      fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
-     fgl.config.target-chain-id #shadow/env "TARGET_CHAIN_ID"}}
+     fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}
    :dev
    {}
    :release
-   {:closure-defines {goog.DEBUG false
+   {:closure-defines {goog.DEBUG                 false
                       goog.debug.LOGGING_ENABLED true}
     :build-options
     {:ns-aliases
@@ -84,25 +86,25 @@
     {:elide-asserts true}}}
 
   :front
-  {:target :browser
-   :output-dir "resources/front/public/js/compiled"
-   :asset-path "/js/compiled"
+  {:target        :browser
+   :output-dir    "resources/front/public/js/compiled"
+   :asset-path    "/js/compiled"
    :module-loader true
    :modules
    {:shared {:entries []}
-    :main {:init-fn fgl.app.front-core/init
-           :default true
-           :depends-on #{:shared}}}
+    :main   {:init-fn    fgl.app.front-core/init
+             :default    true
+             :depends-on #{:shared}}}
    :devtools
    {:preloads [;; day8.re-frame-10x.preload
                hashp.core]}
    :dev
    {:compiler-options
     {:closure-defines
-     {re-frame.trace.trace-enabled? true
+     {re-frame.trace.trace-enabled?        true
       day8.re-frame.tracing.trace-enabled? true}}}
    :release
-   {:closure-defines {goog.DEBUG false
+   {:closure-defines {goog.DEBUG                 false
                       goog.debug.LOGGING_ENABLED true}
     :build-options
     {:ns-aliases
@@ -111,43 +113,43 @@
     {:elide-asserts true}}}
 
   :app-ssr
-  {:target :node-script
+  {:target    :node-script
    :output-to "resources/app/ssr.js"
-   :main fgl.app.home-ssr/main
+   :main      fgl.app.home-ssr/main
    :devtools
    {:preloads [hashp.core]}
    :dev
    {:compiler-options {}}
    :release
-   {:closure-defines {goog.DEBUG false
-                      goog.debug.LOGGING_ENABLED true}
-    :build-options {}
+   {:closure-defines  {goog.DEBUG                 false
+                       goog.debug.LOGGING_ENABLED true}
+    :build-options    {}
     :compiler-options {:elide-asserts true}}}
 
   :front-ssr
-  {:target :node-script
+  {:target    :node-script
    :output-to "resources/front/ssr.js"
-   :main fgl.app.front-ssr/main
+   :main      fgl.app.front-ssr/main
    :devtools
    {:preloads [hashp.core]}
    :dev
    {:compiler-options {}}
    :release
-   {:closure-defines {goog.DEBUG false
-                      goog.debug.LOGGING_ENABLED true}
-    :build-options {}
+   {:closure-defines  {goog.DEBUG                 false
+                       goog.debug.LOGGING_ENABLED true}
+    :build-options    {}
     :compiler-options {:elide-asserts true}}}
 
   :cards
-  {:target nubank.workspaces.shadow-cljs.target
-   :ns-regexp "-?cards?$"
-   :output-dir "resources/cards/public/js/compiled"
-   :asset-path "/js/compiled"
-   :preloads [;; day8.re-frame-10x.preload
-              hashp.core]                   ; optional, list namespaces to be pre loaded
+  {:target      nubank.workspaces.shadow-cljs.target
+   :ns-regexp   "-?cards?$"
+   :output-dir  "resources/cards/public/js/compiled"
+   :asset-path  "/js/compiled"
+   :preloads    [;; day8.re-frame-10x.preload
+                 hashp.core]                   ; optional, list namespaces to be pre loaded
    :build-hooks []
    :dev
    {:compiler-options
     {:closure-defines
-     {re-frame.trace.trace-enabled? true
+     {re-frame.trace.trace-enabled?        true
       day8.re-frame.tracing.trace-enabled? true}}}}}}

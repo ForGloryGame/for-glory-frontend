@@ -1,4 +1,4 @@
-(ns fgl.app.views.battlefield
+(ns fgl.app.views.council
   (:require
    [taoensso.encore :as enc]
    [fgl.app.ui.checkbox :as checkbox]
@@ -213,23 +213,17 @@
          {:className className}
          (and (not approved?) [:button {:on-click approve} "APPROVE"])
          (and approved?
-              [btn/ui
+              [btn/ui :blue "ENTER" "14rem"
                {:disabled no-selected?
-                :on-click (enter selected)}
-               "ENTER"])
+                :on-click (enter selected)}])
          (and approved? staked?
-              [btn/ui
+              [btn/ui :blue "FLEE" "14rem"
                {:disabled no-selected?
-                :on-click (unstake selected)}
-               "FLEE"])
+                :on-click (unstake selected)}])
          (and approved? staked?
-              [btn/ui
+              [btn/ui :orange "CLAIM" "14rem"
                {:disabled no-selected?
-                :on-click (claim selected)
-                :style    {:width "14rem"
-                           :backgroundColor "rgb(237, 142, 40)"
-                           :borderColor     "rgb(255, 211, 134)"}}
-               "CLAIM"])]))))
+                :on-click (claim selected)}])]))))
 
 (defn main [_]
   (let []
@@ -237,7 +231,7 @@
       (r/create-class
        {:reagent-render
         (fn []
-          [panel/ui "Battlefield" 80 to-home
+          [panel/ui "Council" 80 to-home
            [:div.grid.gap-4
             {:style {:padding "2%" :width "98%"}}
             [select]

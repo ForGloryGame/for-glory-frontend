@@ -1,5 +1,8 @@
 (ns fgl.app.ui.header
   (:require
+   [fgl.app.ui.glory-img :as gloryimg]
+   [fgl.app.ui.gold-img :as goldimg]
+   [fgl.app.ui.header-tag :as header-tag]
    [fgl.config :as conf]
    [fgl.contracts :as c]
    [fgl.contracts.gold :as gold]
@@ -17,9 +20,16 @@
 
 (defn nav-root [x]
   [:> Nav/Root
-   {:className "bg-no-repeat bg-top"
-    :style     {:backgroundImage "url(\"/images/header-bg.png\")"
-                :backgroundSize  "100% 80%"}}
+   {:className "bg-no-repeat"
+    :style     {:backgroundImage "
+linear-gradient(to right, rgba(0,0,0,.302),rgba(0,0,0,.302)),
+linear-gradient(to right, rgba(0,0,0,.302),rgba(0,0,0,.302)),
+url(\"/images/header-bg.svg\")
+"
+
+                :backgroundBlendMode "multiply"
+                :backgroundPosition  "100% 37%, -8% -16%, 63% -33%"
+                :backgroundSize      "8.5% 44%, 100% 57%, 100% 77%"}}
    x])
 
 (rf/reg-sub
@@ -47,15 +57,29 @@
 
        ^{:key 'glory}
        [:> Nav/Item {:className "cs7 ce9"}
-        [:span "Glory: " [balance/ui glory-balance]]]
+        [header-tag/ui
+         [:div.flex.flex-row.justify-between.items-center.text-xl
+          [gloryimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
+          [balance/ui glory-balance]]]]
 
        ^{:key 'gold}
        [:> Nav/Item {:className "cs9 ce11"}
-        [:span "Gold: " [balance/ui gold-balance]]]
+        [header-tag/ui
+         [:div.flex.flex-row.justify-between.items-center.text-xl
+          [goldimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
+          [balance/ui gold-balance]]]]
 
        ^{:key 'ratio}
        [:> Nav/Item {:className "cs11 ce13"}
-        [:span "ratio"]]
+        [header-tag/ui
+         [:div.flex.flex-row.justify-between.items-center.text-xl
+          [goldimg/ui "2rem"]
+          [:span.mx-2 "1"]
+          [:div.flex.flex-col
+           [:img.w-6 {:src "/images/ratio.svg"}]
+           [:img.w-6 {:style {:transform "rotate(180deg)"} :src "/images/ratio.svg"}]]
+          "100"
+          [gloryimg/ui "2rem" {:className "mx-2"}]]]]
 
        ^{:key 'connect-btn}
        [:> Nav/Item {:className "cs13 ce15"}

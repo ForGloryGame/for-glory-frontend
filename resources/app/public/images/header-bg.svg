@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" width="5917.5px"
+height="308.5px">
+  <defs>
+    <filter filterUnits="userSpaceOnUse" id="Filter_0" x="5393px"
+    y="90px" width="522px" height="216px">
+      <feOffset in="SourceAlpha" dx="1.968" dy="2.264" />
+      <feGaussianBlur result="blurOut" stdDeviation="1.414" />
+      <feFlood flood-color="rgb(0, 0, 0)" result="floodOut" />
+      <feComposite operator="atop" in="floodOut" in2="blurOut" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.18" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <filter filterUnits="userSpaceOnUse" id="Filter_1" x="21px"
+    y="-10px" width="5594px" height="261px">
+      <feOffset in="SourceAlpha" dx="1.968" dy="2.264" />
+      <feGaussianBlur result="blurOut" stdDeviation="1.414" />
+      <feFlood flood-color="rgb(0, 0, 0)" result="floodOut" />
+      <feComposite operator="atop" in="floodOut" in2="blurOut" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.18" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <path fill-rule="evenodd" fill="rgb(15, 50, 60)"
+  d="M5806.999,114.999 L5427.787,115.150 L5418.780,122.170 L5418.780,276.602 L5806.812,276.602 L5886.999,191.999 L5806.999,114.999 Z" />
+  <path fill-rule="evenodd" stroke="rgb(26, 44, 48)"
+  stroke-width="25px" stroke-linecap="butt" stroke-linejoin="miter"
+  fill="none"
+  d="M5805.999,114.999 L5428.770,115.150 L5419.165,122.169 L5419.165,276.600 L5806.999,275.999 L5885.999,190.999 L5805.999,114.999 Z" />
+  <g filter="url(#Filter_0)">
+    <path fill-rule="evenodd" stroke="rgb(92, 114, 122)"
+    stroke-width="20px" stroke-linecap="butt"
+    stroke-linejoin="miter" fill="none"
+    d="M5806.415,115.150 L5427.787,115.150 L5418.780,122.170 L5418.780,276.602 L5806.999,275.999 L5885.999,190.999 L5806.415,115.150 Z" />
+  </g>
+  <path fill-rule="evenodd" stroke="rgb(143, 152, 157)"
+  stroke-width="20px" stroke-linecap="butt" stroke-linejoin="miter"
+  fill="none" d="" />
+  <path fill-rule="evenodd" fill="rgb(69, 78, 80)"
+  d="M5428.999,274.593 L5799.562,274.593 L5799.562,276.593 L5428.999,276.593 L5428.999,274.593 Z" />
+  <path fill-rule="evenodd" fill="rgb(99, 118, 125)"
+  d="M5428.999,255.593 L5799.562,255.593 L5799.562,257.593 L5428.999,257.593 L5428.999,255.593 Z" />
+  <path fill-rule="evenodd" fill="rgb(69, 78, 80)"
+  d="M5428.999,133.593 L5799.562,133.593 L5799.562,135.593 L5428.999,135.593 L5428.999,133.593 Z" />
+  <path fill-rule="evenodd" fill="rgb(99, 118, 125)"
+  d="M5428.999,114.593 L5799.562,114.593 L5799.562,116.593 L5428.999,116.593 L5428.999,114.593 Z" />
+  <image x="5281px" y="64px" width="308px" height="222px"
+  xlink:href="data:img/png;base64," />
+  <path fill-rule="evenodd" stroke="rgb(105, 110, 113)"
+  stroke-width="15px" stroke-linecap="butt" stroke-linejoin="miter"
+  fill="rgb(22, 55, 65)"
+  d="M5553.979,223.174 L5414.92,280.743 L5414.92,202.931 L5553.979,202.931 L5553.979,223.174 Z" />
+  <path fill-rule="evenodd" fill="rgb(96, 121, 129)"
+  d="M5427.999,259.756 L5552.339,206.178 L5553.130,208.15 L5428.790,261.593 L5427.999,259.756 Z" />
+  <path fill-rule="evenodd" fill="rgb(48, 67, 73)"
+  d="M5428.999,274.999 L5554.999,220.999 L5555.131,223.15 L5428.999,276.999 L5428.999,274.999 Z" />
+  <image opacity="0.4" x="5132px" y="18px" width="764px"
+  height="268px" xlink:href="data:img/png;base64," />
+  <image opacity="0.2" x="5409px" y="73px" width="46px"
+  height="213px" xlink:href="data:img/png;base64," />
+  <path fill-rule="evenodd" fill="rgb(40, 91, 106)"
+  d="M46.373,25.506 L5572.647,25.506 L5585.555,34.12 L5585.555,221.131 L51.536,221.131 L46.373,25.506 Z" />
+  <path fill-rule="evenodd" stroke="rgb(32, 74, 87)"
+  stroke-width="20px" stroke-linecap="butt" stroke-linejoin="miter"
+  fill="none"
+  d="M15.114,30.654 L5572.553,30.654 L5585.541,38.678 L5585.541,215.200 L20.310,215.200 L15.114,30.654 Z" />
+  <g filter="url(#Filter_1)">
+    <path fill-rule="evenodd" stroke="rgb(143, 152, 157)"
+    stroke-width="20px" stroke-linecap="butt"
+    stroke-linejoin="miter" fill="none"
+    d="M46.373,15.506 L5572.648,15.506 L5585.555,24.12 L5585.555,221.131 L51.536,221.131 L46.373,15.506 Z" />
+  </g>
+  <image x="7px" y="18px" width="5831px" height="268px"
+  xlink:href="data:img/png;base64," />
+  <image opacity="0.149" x="5523px" y="21px" width="52px"
+  height="204px" xlink:href="data:img/png;base64," />
+  <path fill-rule="evenodd" fill="rgb(69, 78, 80)"
+  d="M802.406,220.124 L5553.968,220.124 L5553.968,222.124 L802.406,222.124 L802.406,220.124 Z" />
+  <path fill-rule="evenodd" fill="rgb(99, 118, 125)"
+  d="M802.406,201.124 L5553.968,201.124 L5553.968,203.124 L802.406,203.124 L802.406,201.124 Z" />
+  <path fill-rule="evenodd" fill="rgb(32, 63, 73)"
+  d="M802.406,49.124 L5553.968,49.124 L5553.968,51.124 L802.406,51.124 L802.406,49.124 Z" />
+  <image opacity="0.302" x="2716px" y="23px" width="3175px"
+  height="258px" xlink:href="data:img/png;base64," />
+</svg>

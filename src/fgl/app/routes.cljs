@@ -95,6 +95,12 @@
       :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true
       :conflicting true}]
+    ["council"
+     {:name        :route/council
+      :view        #(resolve 'fgl.app.views.council/main)
+      :controllers #(resolve 'fgl.app.views.council/controllers)
+      :lazy        true
+      :conflicting true}]
     ["mint"
      {:name        :route/mint
       :view        #(resolve 'fgl.app.views.mint/main)
