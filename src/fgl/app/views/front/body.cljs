@@ -133,8 +133,9 @@
 (defn ui []
   [:main.flex.flex-col.items-center.w-full
    [:section.section-1.w-full.flex.flex-col.items-center.pt-45vh.pb-60.mb-7rem.bg-no-repeat.bg-scroll
-    {:style {:backgroundImage    "url(\"/images/bg-new.jpg\")"
-             :backgroundSize     "100%"
+    {:style {:backgroundImage    "radial-gradient(circle, transparent 40%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url(\"/images/bg-new.jpg\")"
+             :backgroundSize     "cover" ;; "100%"
+             :backgroundBlendMode "normal, darken"
              :backgroundPosition "center center"
              :marginTop          "-7rem"
              :height "calc(100vh + 7rem)"}}
