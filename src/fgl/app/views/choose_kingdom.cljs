@@ -14,9 +14,6 @@
           linear-gradient(to bottom, transparent 80%, #000000a6),
           linear-gradient(155deg, #ffffff, transparent 30%);
       }
-      .kingdom .gradient-bg {
-        background: linear-gradient(120deg, #5788c640, transparent 50%);
-      }
       .kingdom .section {
         hyphens: auto;
       }"])
@@ -58,10 +55,18 @@
    4 "A highland covered with eternal ice located on the southeast of the Gloryverse. Severe climate make it uninhabitable for almost all creatures. Wolves, however, treat it as unrestrained paradise. Some said they are governed by Fenrir, one of the most mythical and powerful beasts."
    5 "A highland covered with eternal ice located on the southeast of the Gloryverse. Severe climate make it uninhabitable for almost all creatures. Wolves, however, treat it as unrestrained paradise. Some said they are governed by Fenrir, one of the most mythical and powerful beasts."})
 
+(def bg-gradient
+  {1 "#5788c640"
+   2 "#53b5c440"
+   3 "#d1ac5b40"
+   4 "#be675240"
+   5 "#6d57c640"})
+
 (defn left []
   (let [{:keys [hover select]} @(rf/subscribe [::data])
         current                (or hover select 1)]
-    [:div {:className "relative w-1/2 h-full flex gradient-bg"}
+    [:div {:className "relative w-1/2 h-full flex"
+           :style {:background (str "linear-gradient(120deg, " (get bg-gradient current) ", transparent 50%)")}}
      [:div {:className "w-40% h-full ml-32 bg-no-repeat z-2 text-center"
             :style     {:backgroundImage (str "url(" (get img-bg current) ")")
                         :backgroundSize  "100% 100%"}}
@@ -88,12 +93,14 @@
       :onMouseEnter #(rf/dispatch [::hover id])
       :onMouseLeave #(rf/dispatch [::hover])
       :on-click     #(rf/dispatch [::select id])
-      :style        {:filter (if (or hovered? selected?) "" "brightness(0.6)")}}
+      :style        {:filter (if (or hovered? selected?) "" "brightness(0.6)")
+                     :minWidth "6.3rem"}}
      [:img {:src (get img-flag id)}]
      [:img
       {:className "absolute w-28 max-w-none top-2 left-1/2 transform -translate-x-1/2"
        :src       (get img id)}]
-     [:p {:className "absolute w-full bottom-8 text-sm text-Cd5e4e8"}
+     [:p {:className "absolute w-full text-sm text-Cd5e4e8"
+          :style {:bottom "15%"}}
       (get kingdom/kingdoms-name id)]]))
 
 (defn confirm []
@@ -113,7 +120,9 @@
     "Decades passed, villages nearby started to get constantly raided by powerful rangers. Riding on the wolf, fighting with primitive power and treating enemies with no mercy - Notorious name of “The Astas” had soon spread over the Gloryverse. According to rumors from the survivors, they are orphans raised by wolves. Aiming to make a blood sacrifice to Fenrir for some reason..."]
    [:p {:className "text-sm text-Cababab ffd font-bold italic"}
     "You can modify the kingdom after selection"]
-   [:div {:className "relative grid grid-cols-5 gap-x-16 mt-8 text-center"}
+   [:div
+    {:className "relative grid grid-cols-5 gap-x-16 mt-8 text-center"
+     :style {:minWidth "30rem"}}
     [kingdom 1]
     [kingdom 2]
     [kingdom 3]
