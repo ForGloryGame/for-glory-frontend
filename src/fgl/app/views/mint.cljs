@@ -27,13 +27,87 @@
   (rf/dispatch [::battlefield/init])
   (rf/dispatch [::landeed/init]))
 
+(rf/reg-sub
+ ::data
+ (fn [db _]
+   (let [{::w/keys [addr]} db
+         addr-db                    (get db addr)
+
+         {nft-balance ::nft/balance
+          nft-token-ids ::nft/token-ids
+
+          landeed-balance   ::landeed/balance
+          landeed-token-ids ::landeed/token-ids
+
+          kingdoms   ::kingdoms/kingoms
+          kingdom-id ::kingdoms/kingom-id
+
+          gold-balance ::gold/balance
+
+          glory-balance ::glory/balance
+
+          gamepass-balance ::gamepass/balance
+
+          sgold-balance  ::sgold/balance
+          sgold-locked   ::sgold/locked
+          sgold-unlocked ::sgold/unlocked
+          sgold-info     ::sgold/info
+
+          battlefield-token-ids ::battlefield/token-ids}
+         addr-db]
+     {:addr addr
+
+      :nft-balance nft-balance
+      :nft-token-ids nft-token-ids
+
+      :landeed-balance   landeed-balance
+      :landeed-token-ids landeed-token-ids
+
+      :kingdoms   kingdoms
+      :kingdom-id kingdom-id
+
+      :gold-balance gold-balance
+
+      :glory-balance glory-balance
+
+      :gamepass-balance gamepass-balance
+
+      :sgold-balance  sgold-balance
+      :sgold-locked   sgold-locked
+      :sgold-unlocked sgold-unlocked
+      :sgold-info     sgold-info
+
+      :battlefield-token-ids battlefield-token-ids})))
+
 (defn main [_]
   (init-data)
   (let [minter-role (ethers/utils.keccak256 (ethers/utils.toUtf8Bytes "MINTER_ROLE"))
-        provider           @(rf/subscribe [::w/provider])
-        addr           @(rf/subscribe [::w/addr])
-        nft-ids           @(rf/subscribe [::nft/token-ids addr])
-        kingdom-id           @(rf/subscribe [::kingdoms/kingdom-id addr])]
+        d           (rf/subscribe [::data])
+        {:keys [nft-balance
+                nft-token-ids
+
+                landeed-balance
+                landeed-token-ids
+
+                kingdoms
+                kingdom-id
+
+                gold-balance
+
+                glory-balance
+
+                gamepass-balance
+
+                sgold-balance
+                sgold-locked
+                sgold-unlocked
+                sgold-info
+
+                battlefield-token-ids]}
+        @d
+
+        addr
+        @(rf/subscribe [::w/addr])]
     [:div
      [:h1.text-4xl "Mint"]
      [:ul.list-disc.mt-10 "Admin"
@@ -96,11 +170,11 @@
                                                                                (.pow 18))]}])}
        "Mint Glory"]]
      [:ul.list-disc.mt-10 "Gold Token"
-      [:li>span (str "balance: " @(rf/subscribe [::gold/balance addr]))]]
+      [:li>span (str "balance: " gold-balance)]]
      [:ul.list-disc.mt-10 "Glory Token"
-      [:li>span (str "balance: " @(rf/subscribe [::glory/balance addr]))]]
+      [:li>span (str "balance: " glory-balance)]]
      [:ul.list-disc.mt-10 "Game Pass Token"
-      [:li>span (str "balance: " @(rf/subscribe [::gamepass/balance addr]))]]
+      [:li>span (str "balance: " gamepass-balance)]]
      [:ul.list-disc.mt-10 "Minter"
       [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :commitMint :params [1 false]}])}
        "Mint Glory NFT"]
@@ -108,32 +182,32 @@
        "Mint Glory NFT and Stake"]
       [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :revealMint :params [addr]}])} "revealMint"]]
      [:ul.list-disc.mt-10 "Glory NFT"
-      [:li>span (str "glory nft balance: " @(rf/subscribe [::nft/balance addr]))]
-      [:li>span (str "glory nft token ids: " nft-ids)]]
+      [:li>span (str "glory nft balance: " nft-balance)]
+      [:li>span (str "glory nft token ids: " nft-token-ids)]]
      [:ul.list-disc.mt-10 "Landeed NFT"
-      [:li>span (str "Landeed nft balance: " @(rf/subscribe [::landeed/balance addr]))]
-      [:li>span (str "Landeed nft token ids: " @(rf/subscribe [::landeed/token-ids addr]))]]
+      [:li>span (str "Landeed nft balance: " landeed-balance)]
+      [:li>span (str "Landeed nft token ids: " landeed-token-ids)]]
      [:ul.list-disc.mt-10 "Kingdom"
-      [:li (str "Kingdoms: " @(rf/subscribe [::kingdoms/kingdoms]))]
+      [:li (str "Kingdoms: " kingdoms)]
       [:li (str "Which: " kingdom-id)]
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :join :params [2]}])} "Join kingdom 2"]
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :leave}])} "Leave current kingdom"]]
      [:ul.list-disc.mt-10 "sGold"
-      [:li (str "User balance: " @(rf/subscribe [::sgold/balance]))]
-      [:li (str "User locked: " @(rf/subscribe [::sgold/locked]))]
-      [:li (str "User unlocked: " @(rf/subscribe [::sgold/unlocked]))]
-      [:li (str "User UnlockInfo Info: " @(rf/subscribe [::sgold/info]))]
+      [:li (str "User balance: " sgold-balance)]
+      [:li (str "User locked: " sgold-locked)]
+      [:li (str "User unlocked: " sgold-unlocked)]
+      [:li (str "User UnlockInfo Info: " sgold-info)]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 1]}])} "Lock 1 sgold for 1 week"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sgold"]]
      [:ul.list-disc.mt-10 "Battlefield"
-      [:li (str "User staked NFT token ids: " @(rf/subscribe [::battlefield/token-ids addr]))]
+      [:li (str "User staked NFT token ids: " battlefield-token-ids)]
       [:li
        (str
         "User pending reward gold: "
         @(rf/subscribe
           [::battlefield/reward addr
            (first
-            @(rf/subscribe [::battlefield/token-ids addr]))
+            battlefield-token-ids)
            :gold]))]
       [:li
        (str
@@ -141,13 +215,13 @@
         @(rf/subscribe
           [::battlefield/reward addr
            (first
-            @(rf/subscribe [::battlefield/token-ids addr]))
+            battlefield-token-ids)
            :glory]))]]
      [:ul.list-disc.mt-10 "Battlefield Proxy"
       [:li>button.border
-       {:on-click #(rf/dispatch [::nft/send {:method :approve :params [conf/contract-addr-battlefield (first nft-ids)]}])}
+       {:on-click #(rf/dispatch [::nft/send {:method :approve :params [conf/contract-addr-battlefield (first nft-token-ids)]}])}
        "Approve Battlefield spend glory nft"]
-      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :join :params [#js [(first nft-ids)]]}])}
+      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :join :params [#js [(first nft-token-ids)]]}])}
        "Stake"]
       [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :claim}])}
        "Claim"]

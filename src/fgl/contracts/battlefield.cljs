@@ -19,13 +19,10 @@
  (fn [db [_ v & paths]]
    (assoc-in db paths v)))
 
-(defonce token-ids-cache (atom nil))
-
 (rf/reg-sub
  ::token-ids
  (fn [db [_ addr]]
-   (if @token-ids-cache @token-ids-cache
-       (reset! token-ids-cache (get-in db [addr ::token-ids])))))
+   (get-in db [addr ::token-ids])))
 
 (rf/reg-sub
  ::reward

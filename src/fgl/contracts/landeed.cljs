@@ -22,13 +22,10 @@
  (fn [db [_ addr]]
    (.toString (get-in db [addr ::balance] 0))))
 
-(defonce token-ids-cache (atom nil))
-
 (rf/reg-sub
  ::token-ids
  (fn [db [_ addr]]
-   (if @token-ids-cache @token-ids-cache
-       (reset! token-ids-cache (get-in db [addr ::token-ids])))))
+   (get-in db [addr ::token-ids])))
 
 (reg-event-pfx
  ::init

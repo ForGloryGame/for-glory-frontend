@@ -35,24 +35,19 @@
  (fn [db [_ addr]]
    (nth kingdoms-name (get-in db [addr ::kingdom-id] 0))))
 
-;; avoid rerender
-(def kingdoms-cache (atom []))
-
 (rf/reg-sub
  ::kingdoms
  (fn [db _]
-   (if @kingdoms-cache
-     @kingdoms-cache
-     (let [kingdoms (get db ::kingdom {})
-           kingdoms
-           (map
-            (fn [[idx {:keys [elders senators member-count]}]]
-              {:name         (nth kingdoms-name (inc idx))
-               :member-count member-count
-               :elders       elders
-               :senators     senators})
-            kingdoms)]
-       (reset! kingdoms-cache kingdoms)))))
+   (let [kingdoms (get db ::kingdom {})
+         kingdoms
+         (map
+          (fn [[idx {:keys [elders senators member-count]}]]
+            {:name         (nth kingdoms-name (inc idx))
+             :member-count member-count
+             :elders       elders
+             :senators     senators})
+          kingdoms)]
+     kingdoms)))
 
 (reg-event-pfx
  ::init
