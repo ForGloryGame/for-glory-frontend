@@ -14,8 +14,9 @@
 (defn wrapper [children]
   [:div.cs2.ce3 {:style {:minWidth "64vw"}} children])
 
-(defn ui [route-data children]
-  (let [{:keys [panel-name] n :name} route-data
+(defn ui [cur-route children]
+  (let [route-data                   (:data cur-route)
+        {:keys [panel-name] n :name} route-data
 
         guild?    (-> n (or :_) name (.startsWith "guild"))
         merchant? (-> n (or :_) name (.startsWith "merchant"))
@@ -23,14 +24,14 @@
 
         sub-wrapper
         (cond guild?
-              #(vector gpanel/ui route-data %)
+              #(vector gpanel/ui cur-route %)
               merchant?
-              #(vector mpanel/ui route-data %)
+              #(vector mpanel/ui cur-route %)
               :else identity)
 
         panel-wrapper
         (if panel-name
-          #(vector panel/ui route-data panel-name 80 to-home %)
+          #(vector panel/ui cur-route panel-name 80 to-home %)
           identity)
 
         outer-wrapper (if global? identity wrapper)

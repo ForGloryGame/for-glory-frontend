@@ -316,7 +316,7 @@
                 :t        :olg}
                "CLAIM"])]))))
 
-(defn main [route-data]
+(defn main [cur-route]
   (r/create-class
    {:component-did-mount maybe-show-reveal-dialog
     :reagent-render
@@ -326,6 +326,6 @@
        [select]
        [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
        [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-        [cards (:name route-data)]]
-       [select-all (:name route-data)]
+        [cards (-> cur-route :data :name)]]
+       [select-all (-> cur-route :data :name)]
        [btns]])}))

@@ -1,20 +1,20 @@
 (ns fgl.app.routes
   (:require
-   ;; [promesa.core :as p]
-   [reitit.core :as r]
-   [shadow.loader :as loader]
-   ;; [fgl.app.views.front :as front]
-   [reitit.frontend :as rtf]
-   [reitit.frontend.easy :as rfe]
-   [reitit.frontend.controllers :as rfc]
    ;; https://cljdoc.org/d/metosin/reitit/0.5.16/doc/coercion/malli
-   [reitit.coercion.malli :as m]
-   [reitit.coercion :as coercion]
+   ;; [reitit.coercion.malli :as m]
+   ;; [reitit.coercion :as coercion]
    [fgl.app.views.home :as home]
    ;; [reitit.exception :as exception]
    ;; [reitit.core :as r]
    [re-frame.core :as rf]
-   [lambdaisland.glogi :as log]))
+   [lambdaisland.glogi :as log]
+   ;; [promesa.core :as p]
+   [reitit.core :as r]
+   ;; [fgl.app.views.front :as front]
+   [reitit.frontend :as rtf]
+   [reitit.frontend.controllers :as rfc]
+   [reitit.frontend.easy :as rfe]
+   [shadow.loader :as loader]))
 
 (declare router)
 
@@ -36,7 +36,7 @@
 ;;; Subs
 (rf/reg-sub
  ::current-route
- (fn [db] (:current-route db)))
+ (fn [db] (get db :current-route {})))
 
 ;;; Events
 ;; navigate with (rf/dispatch [:navigate :routes/home])
@@ -91,12 +91,13 @@
       :lazy        true
       :conflicting true}]
     ["council"
-     {:name        :route/council
-      :panel-name  "Council"
-      :view        #(resolve 'fgl.app.views.battlefield/main)
-      :controllers #(resolve 'fgl.app.views.battlefield/controllers)
-      :lazy        true
-      :conflicting true}]
+     {:name          :route/council
+      :shadow-module "battlefield"
+      :panel-name    "Council"
+      :view          #(resolve 'fgl.app.views.battlefield/main)
+      :controllers   #(resolve 'fgl.app.views.battlefield/controllers)
+      :lazy          true
+      :conflicting   true}]
     ["battlefield"
      {:name        :route/battlefield
       :panel-name  "Battlefield"
@@ -118,13 +119,22 @@
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
-    ["guild/vote"
+    ["guild/vote/empty"
      {:name        :route/guild-vote
       :panel-name  "Guild"
       :view        #(resolve 'fgl.app.views.guild-vote/main)
       :controllers #(resolve 'fgl.app.views.guild-vote/controllers)
       :lazy        true
       :conflicting true}]
+    ["guild/vote/:proposal-id"
+     {:name          :route/guild-vote-proposal
+      :shadow-module "guild-vote"
+      :panel-name    "Guild"
+      :view          #(resolve 'fgl.app.views.guild-vote/main)
+      :controllers   #(resolve 'fgl.app.views.guild-vote/controllers)
+      ;; :parameters    {:path [:map [:proposal-id string?]]}
+      :lazy          true
+      :conflicting   true}]
     ["guild/management"
      {:name        :route/guild-management
       :panel-name  "Guild"
@@ -200,8 +210,8 @@
 (def router
   (rtf/router
    routes
-   {:data    {:coercion m/coercion}
-    :compile coercion/compile-request-coercers
+   {;; :data    {:coercion m/coercion}
+    ;; :compile coercion/compile-request-coercers
     :conflicts
     (fn [conflicts]
       ;; (warn (exception/format-exception :path-conflicts nil conflicts))
@@ -209,14 +219,13 @@
 
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"
-  [route-name dispatch-fn]
-  (let [route-name-str (name route-name)
-        route-name-str (if (= route-name-str "council") "battlefield" route-name-str)]
-    (if (loader/loaded? route-name-str)
+  [route-name shadow-module dispatch-fn]
+  (let [route-name-str (name route-name)]
+    (if (loader/loaded? (or shadow-module route-name-str))
       (dispatch-fn)
       ;; load lazy page
       (->
-       (loader/load route-name-str)
+       (loader/load (or shadow-module route-name-str))
        (.then dispatch-fn #(do
                              (rf/dispatch [:navigate :route/server-error])
                              ;; (log/error %)
@@ -225,10 +234,10 @@
 ;;; init
 (defn on-navigate [new-match]
   (when new-match
-    (let [{:keys [name lazy]} (:data new-match)]
+    (let [{:keys [name lazy shadow-module]} (:data new-match)]
       (log/debug :route-match name)
       (if lazy
-        (fetch-router-view! name #(rf/dispatch [::navigated new-match]))
+        (fetch-router-view! name shadow-module #(rf/dispatch [::navigated new-match]))
         (rf/dispatch [::navigated new-match])))))
 
 (defn init! []

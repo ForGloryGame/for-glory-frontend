@@ -34,7 +34,7 @@
       (let [current-route @(rf/subscribe [::routes/current-route])
             hovered       @(rf/subscribe [::hover])
             {n :name}     (get current-route :data {})
-            active?       (= n route-key)
+            active?       (.startsWith (name n) (name route-key))
             hover?        (= hovered route-key)]
         ^{:key text}
         [:li>button.relative.w-full.py-1_2rem
