@@ -139,15 +139,25 @@
 
 (defn btns []
   (let [approve
-        #(rf/dispatch [::nft/send :setApprovalForAll conf/contract-addr-battlefield true])
+        #(rf/dispatch [::nft/send
+                       {:method :setApprovalForAll
+                        :params [conf/contract-addr-battlefield
+                                 true]}])
         enter
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send :join (->token-ids token-ids)]))
+        (fn [token-ids] #(rf/dispatch [{::bfproxy/send {:method :join
+                                                        :params [(->token-ids token-ids)]}}]))
         claim
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send :claim (->token-ids token-ids)]))
+        (fn [token-ids] #(rf/dispatch [::bfproxy/send
+                                       {:method :claim
+                                        :params [(->token-ids token-ids)]}]))
         unstake-lords
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send :unstakeLords (->token-ids token-ids)]))
+        (fn [token-ids] #(rf/dispatch [::bfproxy/send
+                                       {:method :unstakeLords
+                                        :params [(->token-ids token-ids)]}]))
         unstake
-        (fn [token-ids] #(rf/dispatch [::bfproxy/send :commitUnstake (->token-ids token-ids)]))]
+        (fn [token-ids] #(rf/dispatch [::bfproxy/send
+                                       {:method :commitUnstake
+                                        :params [(->token-ids token-ids)]}]))]
     (fn []
       (let [[type _ approved?] @(rf/subscribe [::data])
             selected           @(rf/subscribe [::selected])
@@ -165,8 +175,9 @@
       (r/create-class
        {:reagent-render
         (fn []
-          (let [[type] @(rf/subscribe [::data])
-                staked?     (= type :staked)]
+          (let [[type]  @(rf/subscribe [::data])
+                ;; staked? (= type :staked)
+                ]
             [:div.grid.p-1.border
              [:h1.cs1.ce3.rs1.re2 "Battlefield"]
              [close]

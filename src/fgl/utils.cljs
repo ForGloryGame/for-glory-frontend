@@ -1,5 +1,6 @@
 (ns fgl.utils
   (:require
+   [fgl.config :as conf]
    ["ethers" :as ethers]))
 
 (defn ->display-token [bignumberish]
@@ -12,3 +13,6 @@
   (->> (map int token-ids-in-str-or-int)
        sort
        clj->js))
+
+(defn scan-tx-url [hash]
+  (str conf/explorer-url "/tx/" hash))

@@ -1,10 +1,13 @@
-(ns fgl.app.ui.body)
+(ns fgl.app.ui.body
+  (:require
+   [fgl.app.ui.toast :as toast]))
 
 (defn ui [& children]
   [:main.grid-area-main.grid.justify-strech
    {:style {:gridTemplateColumns "1fr auto 1fr"
-            :justifyContent "strech"}}
-   (into
+            :justifyContent      "strech"}}
+   [into
     [:div.cs2.ce3
      {:style {:minWidth "64vw"}}]
-    children)])
+    children]
+   [toast/ui]])

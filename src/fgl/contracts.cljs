@@ -1,6 +1,9 @@
 (ns fgl.contracts
   (:require-macros [fgl.contracts :refer [with-provider with-provider-call]])
   (:require
+   [fgl.utils :refer [scan-tx-url]]
+   [fgl.wallet.core :as w]
+   [re-frame.core :as rf]
    [lambdaisland.glogi :as log]
    ["ethers" :refer [Contract]]
    [promesa.core :as p]
@@ -37,3 +40,40 @@
   (fn [method-name & args]
     (p/let [rst (oapply+ contract (str "callStatic." (name method-name)) args)]
       rst)))
+
+(defn reg-send [c id]
+  (rf/reg-event-fx
+   id
+   (fn [{:keys [db]} [_ {:keys [method params on-success on-failure err-handler]}]]
+     (let [{::w/keys [provider]} db
+           params                (or params [])
+
+           on-success
+           (cond (fn? on-success)                               on-success
+                 (or (nil? on-success) (= on-success :success)) #(rf/dispatch [:toast/success (log/spy %)])
+                 (keyword? on-success)                          #(rf/dispatch [on-success %])
+                 :else                                          identity)
+           on-failure
+           (cond (fn? on-failure)                               on-failure
+                 (or (nil? on-failure) (= on-failure :failure)) #(rf/dispatch [:toast/failure %])
+                 (keyword? on-failure)                          #(rf/dispatch [on-failure %])
+                 :else                                          identity)
+           on-failure (if (fn? err-handler) (comp on-failure err-handler) on-failure)]
+       (with-provider c provider
+         (-> (apply r method params)
+             (p/then #(do
+                        (js/console.log "haha" %)
+                        (if (and (.-hash %) (.-wait %))
+                          (do
+                            (on-success {:title "Tx Executed"
+                                         :desc  [:a {:href (scan-tx-url (.-hash %))}
+                                                 "View On Blockchain Explorer"]})
+                            (p/then (.-wait %) (fn [receipt] (on-success {:title "Tx Confirmed"
+                                                                          :desc  [:a {:href (scan-tx-url (.-hash %))}
+                                                                                  "View On Blockchain Explorer"]}))))
+                          (on-success %))))
+             (p/catch #(if (instance? js/Error %)
+                         (on-failure {:title "Tx Failed"
+                                      :desc  (or (.-reason %) (.-message %))})
+                         (on-failure %))))))
+     {})))

@@ -37,62 +37,63 @@
     [:div
      [:h1.text-4xl "Mint"]
      [:ul.list-disc.mt-10 "Admin"
-      [:li>button.border {:on-click #(rf/dispatch [::gold/send :grantRole minter-role conf/contract-addr-minter])}
+      [:li>button.border {:on-click #(rf/dispatch [::gold/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Gold Token"]
-      [:li>button.border {:on-click #(rf/dispatch [::glory/send :grantRole minter-role conf/contract-addr-minter])}
+      [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory Token"]
-      [:li>button.border {:on-click #(rf/dispatch [::gamepass/send :grantRole minter-role conf/contract-addr-minter])}
+      [:li>button.border {:on-click #(rf/dispatch [::gamepass/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Game Pass"]
-      [:li>button.border {:on-click #(rf/dispatch [::glory/send :grantRole minter-role addr])}
+      [:li>button.border {:on-click #(rf/dispatch [::glory/send {:method :grantRole :params [minter-role addr]}])}
        "Grant Admin to mint Glory Token"]
       ;; [:li>button.border
       ;;  {:on-click
       ;;   #(rf/dispatch
       ;;     [::glory/send
-      ;;      :grantRole
-      ;;      (ethers/utils.keccak256
-      ;;       (ethers/utils.toUtf8Bytes
-      ;;        "WHITELIST_TRANSFER_ROLE"))
-      ;;      "0x28B19b15AbD3B20C71C7c808403AB934f2fd9Cb1"
-      ;;      ;; addr
-      ;;      ])}
+      ;;      :method :grantRole
+      ;;      :params
+      ;;      [(ethers/utils.keccak256
+      ;;        (ethers/utils.toUtf8Bytes
+      ;;         "WHITELIST_TRANSFER_ROLE"))
+      ;;       "0x28B19b15AbD3B20C71C7c808403AB934f2fd9Cb1"
+      ;;       ;; addr
+      ;;       ]])}
       ;;  "Grant mint Glory Token transfer role"]
-      [:li>button.border {:on-click #(rf/dispatch [::nft/send :grantRole minter-role conf/contract-addr-minter])}
+      [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory NFT"]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send :updateKindoms conf/contract-addr-kingdoms])}
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :updateKindoms :params [conf/contract-addr-kingdoms]}])}
        "Set sgold kingdoms contract addr"]
       [:li>button.border
        {:on-click #(rf/dispatch
                     [::battlefield/send
-                     :grantRole
-                     (ethers/utils.keccak256
-                      (ethers/utils.toUtf8Bytes
-                       "GAME_PROXY_ROLE"))
-                     conf/contract-addr-battlefield-proxy])}
+                     {:method :grantRole :params
+                      [(ethers/utils.keccak256
+                        (ethers/utils.toUtf8Bytes
+                         "GAME_PROXY_ROLE"))
+                       conf/contract-addr-battlefield-proxy]}])}
        "Grant Battlefield Proxy GAME_PROXY_ROLE role"]
       [:li>button.border
        {:on-click #(rf/dispatch
                     [::glory/send
-                     :grantRole
-                     minter-role
-                     conf/contract-addr-battlefield])}
+                     {:method :grantRole :params
+                      [minter-role
+                       conf/contract-addr-battlefield]}])}
        "Grant Battlefield To Mint Glory"]
       [:li>button.border
        {:on-click #(rf/dispatch
                     [::gold/send
-                     :grantRole
-                     minter-role
-                     conf/contract-addr-battlefield])}
+                     {:method :grantRole :params
+                      [minter-role
+                       conf/contract-addr-battlefield]}])}
        "Grant Battlefield To Mint Gold"]
       [:li>button.border
-       {:on-click #(rf/dispatch [::gold/send :mint addr (-> "10"
-                                                            ethers/BigNumber.from
-                                                            (.pow 18))])}
+       {:on-click #(rf/dispatch [::gold/send {:method :mint :params [addr (-> "10"
+                                                                              ethers/BigNumber.from
+                                                                              (.pow 18))]}])}
        "Mint Gold"]
       [:li>button.border
-       {:on-click #(rf/dispatch [::glory/send :mint addr (-> "10"
-                                                             ethers/BigNumber.from
-                                                             (.pow 18))])}
+       {:on-click #(rf/dispatch [::glory/send {:method :mint :params [addr (-> "10"
+                                                                               ethers/BigNumber.from
+                                                                               (.pow 18))]}])}
        "Mint Glory"]]
      [:ul.list-disc.mt-10 "Gold Token"
       [:li>span (str "balance: " @(rf/subscribe [::gold/balance addr]))]]
@@ -101,11 +102,11 @@
      [:ul.list-disc.mt-10 "Game Pass Token"
       [:li>span (str "balance: " @(rf/subscribe [::gamepass/balance addr]))]]
      [:ul.list-disc.mt-10 "Minter"
-      [:li>button.border {:on-click #(rf/dispatch [::minter/send :commitMint 1 false])}
+      [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :commitMint :params [1 false]}])}
        "Mint Glory NFT"]
-      [:li>button.border {:on-click #(rf/dispatch [::minter/send :commitMint 1 true])}
+      [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :commitMint :params [1 true]}])}
        "Mint Glory NFT and Stake"]
-      [:li>button.border {:on-click #(rf/dispatch [::minter/send :revealMint addr])} "revealMint"]]
+      [:li>button.border {:on-click #(rf/dispatch [::minter/send {:method :revealMint :params [addr]}])} "revealMint"]]
      [:ul.list-disc.mt-10 "Glory NFT"
       [:li>span (str "glory nft balance: " @(rf/subscribe [::nft/balance addr]))]
       [:li>span (str "glory nft token ids: " nft-ids)]]
@@ -115,15 +116,15 @@
      [:ul.list-disc.mt-10 "Kingdom"
       [:li (str "Kingdoms: " @(rf/subscribe [::kingdoms/kingdoms]))]
       [:li (str "Which: " kingdom-id)]
-      [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send :join 2])} "Join kingdom 2"]
-      [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send :leave])} "Leave current kingdom"]]
+      [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :join :params [2]}])} "Join kingdom 2"]
+      [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :leave}])} "Leave current kingdom"]]
      [:ul.list-disc.mt-10 "sGold"
       [:li (str "User balance: " @(rf/subscribe [::sgold/balance]))]
       [:li (str "User locked: " @(rf/subscribe [::sgold/locked]))]
       [:li (str "User unlocked: " @(rf/subscribe [::sgold/unlocked]))]
       [:li (str "User UnlockInfo Info: " @(rf/subscribe [::sgold/info]))]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send :lock 1 1])} "Lock 1 sgold for 1 week"]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send :withdraw])} "Withdraw all unlocked sgold"]]
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 1]}])} "Lock 1 sgold for 1 week"]
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sgold"]]
      [:ul.list-disc.mt-10 "Battlefield"
       [:li (str "User staked NFT token ids: " @(rf/subscribe [::battlefield/token-ids addr]))]
       [:li
@@ -144,11 +145,11 @@
            :glory]))]]
      [:ul.list-disc.mt-10 "Battlefield Proxy"
       [:li>button.border
-       {:on-click #(rf/dispatch [::nft/send :approve conf/contract-addr-battlefield (first nft-ids)])}
+       {:on-click #(rf/dispatch [::nft/send {:method :approve :params [conf/contract-addr-battlefield (first nft-ids)]}])}
        "Approve Battlefield spend glory nft"]
-      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send :join #js [(first nft-ids)]])}
+      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :join :params [#js [(first nft-ids)]]}])}
        "Stake"]
-      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send :claim])}
+      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :claim}])}
        "Claim"]
-      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send :commitUnstake])}
+      [:li>button.border {:on-click #(rf/dispatch [::bfproxy/send {:method :commitUnstake}])}
        "Unstake"]]]))

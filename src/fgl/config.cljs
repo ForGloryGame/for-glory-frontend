@@ -17,14 +17,6 @@
 (goog-define ^js/String contract-addr-battlefield-proxy "unknown")
 (goog-define ^js/String target-chain-id "unknown")
 
-(set! (.-kkkkk js/window) [contract-addr-gold
-                           contract-addr-glory
-                           contract-addr-landeed
-                           contract-addr-sgold
-                           contract-addr-kingdoms
-                           contract-addr-gamenft
-                           contract-addr-gamepass
-                           contract-addr-battlefield
-                           contract-addr-minter
-                           contract-addr-battlefield-proxy
-                           target-chain-id])
+(defonce explorer-url (case target-chain-id
+                        "0x4" "https://rinkeby.etherscan.io"
+                        "https://etherscan.io"))
