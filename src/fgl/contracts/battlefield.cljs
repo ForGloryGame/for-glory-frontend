@@ -40,8 +40,8 @@
    {}))
 
 ;; join
-;; commitClaim
-;; revealClaim
+;; commitUnstake
+;; revealUnstake
 (rf/reg-event-fx
  ::send
  (fn [_ [_ provider method & params]]
