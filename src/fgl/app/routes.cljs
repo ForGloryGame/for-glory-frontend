@@ -105,6 +105,12 @@
       :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true
       :conflicting true}]
+    ["choose-kingdom"
+     {:name        :route/choose-kingdom
+      :view        #(resolve 'fgl.app.views.choose-kingdom/main)
+      :controllers #(resolve 'fgl.app.views.choose-kingdom/controllers)
+      :lazy        true
+      :conflicting true}]
     ["guild/basic"
      {:name        :route/guild-basic
       :panel-name  "Guild"

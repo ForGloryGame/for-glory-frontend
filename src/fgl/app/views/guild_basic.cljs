@@ -30,15 +30,14 @@
 
 (rf/reg-sub
  ::data
- (fn [db [_ kingdom-id]]
-   (let [kingdom-id        (or kingdom-id 1)
+ (fn [db [_]]
+   (let [{::w/keys [addr]} db
 
-         {::w/keys [addr]} db
-
-         kingdoms-db       (get db ::kingdom/kingdom)
+         kingdoms-db (get db ::kingdom/kingdom)
+         kingdom-id  (get-in db [addr ::kingdom/kingdom-id] 0)
 
          ranks (->> kingdoms-db
-                    (map (fn [[k v]] [k (:power (or v (ethers/BigNumber.from 0)))]))
+                    (map (fn [[k v]] [k (:power (or v (ethers/BigNumber.from 1)))]))
                     (sort-by second (fn [x y] (try (.gt x y)
                                                    (catch js/Error e true))))
                     (enc/reduce-indexed (fn [acc idx [k]] (assoc acc k (inc idx))) {}))
@@ -52,7 +51,7 @@
          role (cond
                 (some #{addr} elders)   :elder
                 (some #{addr} senators) :senator
-                :else :member)]
+                :else                   :member)]
 
      {:addr         addr
       :rank         (get ranks kingdom-id)

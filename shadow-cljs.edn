@@ -46,6 +46,8 @@
                         :depends-on #{:shared}}
     :battlefield       {:entries    [fgl.app.views.battlefield]
                         :depends-on #{:shared}}
+    :choose-kingdom    {:entries    [fgl.app.views.choose-kingdom]
+                        :depends-on #{:shared}}
     :guild-basic       {:entries    [fgl.app.views.guild-basic]
                         :depends-on #{:shared}}
     :guild-alter       {:entries    [fgl.app.views.guild-alter]

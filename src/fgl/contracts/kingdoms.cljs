@@ -1,14 +1,14 @@
 (ns fgl.contracts.kingdoms
   (:require
+   [fgl.config :as conf]
+   [fgl.contracts :as ctc]
+   [fgl.contracts.kingdoms.abi :as abi]
    [fgl.re-frame :refer [reg-event-pfx]]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
-   [fgl.wallet.core :as w]
-   [re-frame.core :as rf]
-   [fgl.config :as conf]
-   [fgl.contracts.kingdoms.abi :as abi]
-   [fgl.contracts :as ctc]
-   [promesa.core :as p]))
+   [promesa.core :as p]
+   [re-frame.core :as rf]))
 
 (def c (ctc/init :id :kingdoms :address conf/contract-addr-kingdoms :abi abi/data))
 
@@ -32,8 +32,9 @@
 
 (rf/reg-sub
  ::kingdom-id
- (fn [db [_ addr]]
-   (nth kingdoms-name (get-in db [addr ::kingdom-id] 0))))
+ (fn [db _]
+   (let [{::w/keys [addr]} db]
+     (get-in db [addr ::kingdom-id]))))
 
 (rf/reg-sub
  ::kingdoms
@@ -66,11 +67,15 @@
                  role (and has-kingdom? (cond (some #{addr} elders)   :elders
                                               (some #{addr} senators) :senators
                                               :else                   nil))]
-           (when has-kingdom?
-             (rf/dispatch [::set kingdom-id addr ::kingdom-id])
-             (rf/dispatch [::set (js->clj elders) ::kingdom kingdom-id :elders])
-             (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
-             (rf/dispatch [::set role addr ::role]))))))
+           (if has-kingdom?
+             (do
+               (rf/dispatch [::set kingdom-id addr ::kingdom-id])
+               (rf/dispatch [::set (js->clj elders) ::kingdom kingdom-id :elders])
+               (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
+               (rf/dispatch [::set role addr ::role]))
+             (do (when (nil? (get-in db [addr ::kingdom-id]))
+                   (rf/dispatch [:navigate :route/choose-kingdom]))
+                 (rf/dispatch [::set 0 addr ::kingdom-id])))))))
 
    {::w/raddrnet ::init-raw}))
 

@@ -154,7 +154,7 @@
        #(rf/dispatch
          [::landeed/send
           {:method :redeem
-           :params (log/spy [#js [token-id] eth gold])
+           :params [#js [token-id] eth gold]
            :on-success
            (fn []
              (rf/dispatch [::landeed/init-raw])
