@@ -212,12 +212,13 @@
      {:component-did-mount
       (fn []
         (rf/dispatch [::select])
-        (when-let [!cards-div @!cards]
-          (.addEventListener !cards-div "wheel" on-wheel #js {:passive false})))
-      :component-will-unmount
-      (fn []
-        (when-let [!cards-div @!cards]
-          (.removeEventListener !cards-div "wheel" on-wheel)))
+        ;; (when-let [!cards-div @!cards]
+        ;;   (.addEventListener !cards-div "wheel" on-wheel #js {:passive false}))
+        )
+      ;; :component-will-unmount
+      ;; (fn []
+      ;;   (when-let [!cards-div @!cards]
+      ;;     (.removeEventListener !cards-div "wheel" on-wheel)))
       :reagent-render
       (fn []
         (let [{:keys [type data]} @(rf/subscribe [::data route-name])
