@@ -40,8 +40,11 @@
   [:img {:style {:width "1.5rem" :minWidth "24px"} :src "/images/discord.svg" :alt "link to discord"}])
 
 (defn nav-btn [opts children]
-  [:a.text-sm.py-1.bg-rgb-dc961a.mr-4.block
-   (merge {:className "px-3.25rem" :style {:borderRadius "1.25rem"}}
+  [:a.text-sm.mr-4.block.font-bold.text-center
+   (merge {:className "px-2.575rem py-1.5"
+           :style     {:borderRadius    "1.25rem"
+                       :minWidth        "8.75rem"
+                       :backgroundImage "linear-gradient(178deg, #E5CB6F 0%, #AC852C 100%)"}}
           opts)
    children])
 

@@ -16,7 +16,7 @@
 (defn app-btn []
   [:a.block.font-bold.text-white.text-center.py-1
    {:className "px-3.25rem mr-2.5 w-11.25rem"
-    :style     {:backgroundImage "linear-gradient(180deg, #E8B239 0%, #EC7917 100%)"
+    :style     {:backgroundImage "linear-gradient(178deg, #E5CB6F 0%, #AC852C 100%)"
                 :boxShadow       "0 2px 4px 0 rgba(255,197,90,0.24)"
                 :borderRadius    "1.25rem"
                 :cursor          :pointer
@@ -137,7 +137,7 @@
   [:main.flex.flex-col.items-center.w-full
    {:style {:minWidth "42.5rem"}}
    [:section.section-1.w-full.flex.flex-col.items-center.pt-45vh.pb-60.mb-7rem.bg-no-repeat.bg-scroll
-    {:style {:backgroundImage    "radial-gradient(circle, transparent 10%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)),url(\"/images/bg-new.jpg\")"
+    {:style {:backgroundImage    "radial-gradient(circle, transparent 10%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(\"/images/bg-new.jpg\")"
              :backgroundSize     "cover" ;; "100%"
              :backgroundBlendMode "normal, darken"
              :backgroundPosition "center center"
