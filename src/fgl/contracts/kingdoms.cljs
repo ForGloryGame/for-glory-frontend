@@ -79,7 +79,7 @@
                (rf/dispatch [::set (js->clj elders) ::kingdom kingdom-id :elders])
                (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
                (rf/dispatch [::set role addr ::role]))
-             (do (when (and route-guard? (nil? (get-in db [addr ::kingdom-id])))
+             (do (when route-guard?
                    (rf/dispatch [:navigate :route/choose-kingdom]))
                  (rf/dispatch [::set 0 addr ::kingdom-id])))))))))
 
@@ -94,28 +94,7 @@
  10000
  [rf/trim-v]
  (fn [{:keys [db]} _]
-   (let [{::w/keys [provider addr]} db]
-     (when addr
-       (ctc/with-provider c provider
-         (p/let [kingdom-id (r :getAccountInfo addr)
-                 kingdom-id (first kingdom-id)
-                 has-kingdom? (pos? kingdom-id)
-                 elders (and has-kingdom? (r :getElders kingdom-id))
-                 senators (and has-kingdom? (r :getSenators kingdom-id))
-
-                 role (and has-kingdom? (cond (some #{addr} elders)   :elder
-                                              (some #{addr} senators) :senator
-                                              :else                   nil))]
-           (if has-kingdom?
-             (do
-               (rf/dispatch [::set kingdom-id addr ::kingdom-id])
-               (rf/dispatch [::set (js->clj elders) ::kingdom kingdom-id :elders])
-               (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
-               (rf/dispatch [::set role addr ::role]))
-             (do (when (nil? (get-in db [addr ::kingdom-id]))
-                   (rf/dispatch [:navigate :route/choose-kingdom]))
-                 (rf/dispatch [::set 0 addr ::kingdom-id])))))))
-
+   (get-acc-kinfo db)
    {::w/raddrnet ::init-raw}))
 
 (reg-event-pfx

@@ -3,6 +3,8 @@
    ["ethers" :as ethers]
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.checkbox :as checkbox]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.panel :as panel]
    [fgl.app.ui.separator :as separator]
    [fgl.app.ui.sgold-img :as sgoldimg]
@@ -23,6 +25,7 @@
     #(do
        ;; get staked info
        (rf/dispatch [::kingdom/init])
+       (rf/dispatch [::kingdom/get-account-info true])
        (rf/dispatch [::kingdom/init-all])
        ;; get unstaked info
        (rf/dispatch [::nft/init]))
@@ -79,12 +82,68 @@
 (defn kingdom-logo [src]
   [:img.w-36.mr-12 {:src src}])
 
+(rf/reg-event-db
+ ::leave-checked
+ (fn [db [_ checked?]]
+   (assoc db ::leave-checked checked?)))
+
+(rf/reg-sub
+ ::leave-checked
+ (fn [db _]
+   (get db ::leave-checked false)))
+
+(defn leave-checkbox []
+  (let [checked? @(rf/subscribe [::leave-checked])]
+    [checkbox/ui
+     {:width "1.5rem"
+      :text  [:span.text-xl.ml-2.fb "Do not remind me next time"]}
+     {:className       "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
+      :onCheckedChange #(rf/dispatch [::leave-checked %])
+      :checked         checked?}]))
+
 (defn kingdom-info []
-  (let [{:keys [kname member-count rank role]} @(rf/subscribe [::data])]
+  (let [{:keys [kname member-count rank role]} @(rf/subscribe [::data])
+        leave-checked?                         @(rf/subscribe [::leave-checked])
+        skip?                                  (js/localStorage.getItem "leave-checked")
+        f1
+        #(if leave-checked?
+           (js/localStorage.setItem "leave-checked" 1)
+           (js/localStorage.removeItem "leave-checked"))
+        f2
+        #(rf/dispatch
+          [::kingdom/send
+           {:method :leave
+            :title  "Leave Kingdom"
+            :on-success
+            (fn []
+              (dialog/on-success)
+              (rf/dispatch [::kingdom/get-account-info true]))}])
+        leave
+        (fn []
+          (if skip?
+            (f2)
+            (rf/dispatch
+             [::dialog/set
+              :open true
+              :title ""
+              :desc [:<>
+                     [:p.ffd.text-base
+                      "Notice: Since you are trying to leave your current Kingdom, 10% of your Glony will be charged as handling fee. And 24h cool-down will be applied. Click Confirm to proceed."]
+                     [:br]
+                     [leave-checkbox]]
+              :actions [:<>
+                        [btn/ui {:t :osm :on-click (comp f2 f1) :className "mr-8"} "Confirm"]
+                        [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]])))]
     [:div.flex.pt-9.pb-4.pl-11
      [kingdom-logo "/images/guild-avatar.png"]
      [:div.grid.grid-cols-3.text-3xl.gap-x-8.items-center
-      [:span.text-4xl.col-span-full kname]
+      [:div.flexrr.col-span-full
+       [:span.text-4xl.col-span-full kname]
+       [btn/ui
+        {:t         :blg
+         :className "text-base ml-12"
+         :on-click  leave}
+        "Leave My Kingdom"]]
       [:span
        [:span member-count]
        [:span.text-xl.text-C74bfcee6 "/ Members"]]

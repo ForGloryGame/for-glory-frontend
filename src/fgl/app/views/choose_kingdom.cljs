@@ -1,6 +1,7 @@
 (ns fgl.app.views.choose-kingdom
   (:require
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.contracts.kingdoms :as kingdom]
    [fgl.re-frame]
    [lambdaisland.glogi :as log]
@@ -107,7 +108,15 @@
   (let [{:keys [select]} @(rf/subscribe [::data])]
     [btn/ui
      {:t         :olg
-      :on-click  #(rf/dispatch [::kingdom/send {:method :join :params select}])
+      :on-click
+      #(rf/dispatch
+        [::kingdom/send
+         {:method :join
+          :params select
+          :on-success
+          (fn []
+            (dialog/on-success)
+            (rf/dispatch [:navigate :route/guild-basic]))}])
       :className "absolute bottom-12 right-16"}
      "CONFIRM"]))
 

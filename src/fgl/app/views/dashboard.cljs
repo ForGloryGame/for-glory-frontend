@@ -2,6 +2,8 @@
   (:require
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.checkbox :as checkbox]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.header-tag :as header-tag]
@@ -63,9 +65,58 @@
     [:div.rounded-full.bg-C25376f.w-40.h-40.mr-8.self-start
      [:img {:src (case type :knight "/images/avatar-knight.png" "/images/avatar-lord.png")}]]))
 
+(rf/reg-event-db
+ ::leave-checked
+ (fn [db [_ checked?]]
+   (assoc db ::leave-checked checked?)))
+
+(rf/reg-sub
+ ::leave-checked
+ (fn [db _]
+   (get db ::leave-checked false)))
+
+(defn leave-checkbox []
+  (let [checked? @(rf/subscribe [::leave-checked])]
+    [checkbox/ui
+     {:width "1.5rem"
+      :text  [:span.text-xl.ml-2.fb "Do not remind me next time"]}
+     {:className       "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
+      :onCheckedChange #(rf/dispatch [::leave-checked %])
+      :checked         checked?}]))
+
 (defn user-info []
   (let [{:keys [addr kingdom-id kingdom-role]} @(rf/subscribe [::data])
-        role                                   (or role :member)]
+        role                                   (or kingdom-role :member)
+        leave-checked?                         @(rf/subscribe [::leave-checked])
+
+        skip? (js/localStorage.getItem "leave-checked")
+        f1    #(if leave-checked?
+                 (js/localStorage.setItem "leave-checked" 1)
+                 (js/localStorage.removeItem "leave-checked"))
+        f2    #(rf/dispatch
+                [::kingdom/send
+                 {:method :leave
+                  :title  "Leave Kingdom"
+                  :on-success
+                  (fn []
+                    (dialog/on-success)
+                    (rf/dispatch [::kingdom/get-account-info true]))}])
+        leave
+        (fn []
+          (if skip?
+            (f2)
+            (rf/dispatch
+             [::dialog/set
+              :open true
+              :title ""
+              :desc [:<>
+                     [:p.ffd.text-base
+                      "Notice: Since you are trying to leave your current Kingdom, 10% of your Glony will be charged as handling fee. And 24h cool-down will be applied. Click Confirm to proceed."]
+                     [:br]
+                     [leave-checkbox]]
+              :actions [:<>
+                        [btn/ui {:t :osm :on-click (comp f2 f1) :className "mr-8"} "Confirm"]
+                        [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]])))]
     [:div.flexrs.mb-4
      ;; user
      [:div.mr-8
@@ -82,18 +133,19 @@
          #(do (copy-to-clipboard addr)
               (rf/dispatch [:toast/success {:title "Copied!" :no-close true}]))}
         [:span.flexr [:img.mr-2.w-4 {:src "/images/copy.png"}] "Copy Address"]]]]
+
      ;; user kingdom
      (and kingdom-id (pos? kingdom-id)
-      [:div.flexr
-       [:img.h-30.mr-4 {:src (str "/images/k" kingdom-id ".png")}]
-       [:div
-        [:div.flex.flex-row.items-baseline.mb-4
-         [:div.uppercase.text-3xl.fi.mr-4 (get kingdom/kingdoms-name kingdom-id)]
-         [:div.text-xl.uppercase (str "ROLE:" (name role))]]
-        [btn/ui
-         {:on-click #(js/open (scan-addr-url addr))
-          :t        :bxs}
-         [:span.flexr [:img.w-4.mr-2 {:src "/images/share.png"}] "View on explorer"]]]])]))
+          [:div.flexr
+           [:img.h-30.mr-4 {:src (str "/images/k" kingdom-id ".png")}]
+           [:div
+            [:div.flex.flex-row.items-baseline.mb-4
+             [:div.uppercase.text-3xl.fi.mr-4 (get kingdom/kingdoms-name kingdom-id)]
+             [:div.text-xl.uppercase (str "ROLE:" (name role))]]
+            [btn/ui
+             {:on-click leave
+              :t        :bxs}
+             "Leave My Kingdom"]]])]))
 
 (defn balances []
   (let [{:keys [glory gold sgold landeed]} @(rf/subscribe [::data])]
