@@ -46,6 +46,15 @@
            (rf/dispatch [::set peerage ::traits token-id-str :peerage])))))
    {}))
 
+(rf/reg-event-fx
+ ::token-uri
+ (fn [{:keys [db]} [_ token-id]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (p/let [uri (r :tokenURI token-id)]
+         (rf/dispatch [::set uri ::uri token-id]))))
+   {}))
+
 (reg-event-pfx
  ::init
  10000

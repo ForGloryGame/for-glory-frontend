@@ -1,25 +1,68 @@
 (ns fgl.app.views.merchant-landeeds
   (:require
-   ;; ["@radix-ui/react-checkbox" :as C]
    ["ethers" :as ethers]
-   [taoensso.encore :as enc]
-   [fgl.re-frame]
+   [fgl.utils :refer [sbn]]
    [fgl.app.ui.balance :as balance]
-   [fgl.wallet.core :as w]
-   [fgl.app.ui.gold-img :as goldimg]
-   [fgl.app.ui.eth-img :as ethimg]
-   [fgl.contracts.gold :as gold]
-   [fgl.app.ui.separator :as separator]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
+   [fgl.app.ui.eth-img :as ethimg]
+   [fgl.app.ui.gold-img :as goldimg]
+   [fgl.app.ui.separator :as separator]
+   [fgl.wallet.core :as w]
+   [fgl.contracts.gold :as gold]
+   [fgl.contracts.landeed :as landeed]
+   [fgl.re-frame]
    [lambdaisland.glogi :as log]
-   [re-frame.core :as rf]
-   [reagent.core :as r]))
+   [re-frame.core :as rf]))
 
 (defn controllers []
   [{:start
     #(do
-       (rf/dispatch [::gold/init]))
+       (rf/dispatch [::landeed/init])
+       (rf/dispatch [::gold/init])
+       (rf/dispatch [::gold/allowance (.-address landeed/c)]))
     :stop identity}])
+
+(defn style []
+  [:style
+   "
+      .guild-land-deeds figure {
+        transition: all 0.2s ease;
+      }
+
+      .guild-land-deeds figure:hover {
+        transform: scale(1.05);
+      }
+
+      .guild-land-deeds figure .selected,
+      .guild-land-deeds figure .selected::after {
+        visibility: visible;
+      }
+
+      .guild-land-deeds figure .selected {
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0.18rem solid #fff;
+        border-radius: 4px;
+      }
+      .guild-land-deeds figure .selected::after {
+        visibility: visible;
+        content: \" \";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border: 1rem solid transparent;
+        border-right: 1rem solid #fff;
+        transform: translate(calc(-50% - 1px), calc(-50% - 1px)) rotate(45deg);
+      }
+
+      .guild-land-deeds figcaption {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+      }"])
 
 (rf/reg-event-db ::payment (fn [db [_ p]] (assoc db ::payment p)))
 (rf/reg-event-db ::type (fn [db [_ t]] (assoc db ::type t)))
@@ -27,23 +70,50 @@
 (rf/reg-sub
  ::data
  (fn [db _]
-   {:type    (get db ::type 3)
-    :payment (get db ::payment :gold)}))
+   (let [{::w/keys [addr]
+          ::keys   [type]
+          ::landeed/keys
+          [info
+           eth-gold-ratio
+           rgold
+           reth
+           total]} db
 
-(defn payment-select []
-  (let [{:keys [payment]} @(rf/subscribe [::data])
-        gold?             (= payment :gold)]
-    [:div.grid.grid-cols-2.gap-x-6.text-3xl
-     [:button.bg-C81c6dd1a.leading-3rem.rounded-sm.flexr
-      {:className (and (not gold?) "bg-C71edf599")
-       :on-click  #(rf/dispatch [::payment :eth])}
-      [ethimg/ui "2rem"]
-      [balance/ui "1800000000000000000"]]
-     [:button.bg-C81c6dd1a.leading-3rem.rounded-sm.flexr
-      {:className (and gold? "bg-C71edf599")
-       :on-click  #(rf/dispatch [::payment :gold])}
-      [goldimg/ui "2rem"]
-      [balance/ui "2330000000000000000"]]]))
+         gold-allowance (get-in db [addr ::gold/allowance (.-address landeed/c)])
+
+         type (or type 3)
+
+         eth-price  (sbn (:price (get info type)))
+         gold-price (.mul (sbn eth-gold-ratio) eth-price)
+
+         eth-lp  (.div eth-price (sbn reth 1))
+         gold-lp (.div gold-price (sbn rgold 1))
+         min-lp  (if (.gte eth-lp gold-lp) gold-lp eth-lp)
+         min-lp
+         (->
+          min-lp
+          (.div 10)
+          (.mul 9)
+          (.mul (sbn total))
+          (.div "1000000000000000000"))]
+
+     {:type       type
+      :min-lp     min-lp
+      :approved?  (.gte (sbn gold-allowance) gold-price)
+      :eth-price  eth-price
+      :gold-price gold-price})))
+
+(defn cost []
+  (let [{:keys [eth-price gold-price]} @(rf/subscribe [::data])]
+    [:<>
+     [:p.text-C6bc9db.mb-4.mt-6.text-lg "Cost"]
+     [:ol.grid.grid-cols-2.gap-x-6.text-3xl
+      [:li.bg-C81c6dd1a.leading-3rem.rounded-sm.flexr
+       [ethimg/ui "2rem"]
+       [balance/ui eth-price]]
+      [:li.bg-C81c6dd1a.leading-3rem.rounded-sm.flexr
+       [goldimg/ui "2rem"]
+       [balance/ui gold-price]]]]))
 
 (defn deed-type-select []
   (let [{:keys [type]} @(rf/subscribe [::data])]
@@ -95,55 +165,34 @@
         [:p.text-xs "Land Deed"]]
        (and (= type 0) [:div.selected])]]]))
 
-(defn style []
-  [:style
-   "
-      .guild-land-deeds figure {
-        transition: all 0.2s ease;
-      }
-
-      .guild-land-deeds figure:hover {
-        transform: scale(1.05);
-      }
-
-      .guild-land-deeds figure .selected,
-      .guild-land-deeds figure .selected::after {
-        visibility: visible;
-      }
-
-      .guild-land-deeds figure .selected {
-        visibility: visible;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 0.18rem solid #fff;
-        border-radius: 4px;
-      }
-      .guild-land-deeds figure .selected::after {
-        visibility: visible;
-        content: \" \";
-        position: absolute;
-        width: 0;
-        height: 0;
-        border: 1rem solid transparent;
-        border-right: 1rem solid #fff;
-        transform: translate(calc(-50% - 1px), calc(-50% - 1px)) rotate(45deg);
-      }
-
-      .guild-land-deeds figcaption {
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-      }"])
+(defn mint []
+  (let  [{:keys [type eth-price min-lp approved?]} @(rf/subscribe [::data])]
+    [:div.text-center
+     [btn/ui
+      {:t :osm
+       :on-click
+       #(rf/dispatch
+         (if approved?
+           [::landeed/send
+            {:method   :purchase
+             :params   [type min-lp]
+             :override {:value (.toHexString eth-price)}
+             :on-success
+             (fn []
+               (rf/dispatch [::gold/allowance (.-address landeed/c)])
+               (dialog/on-success))}]
+           [::gold/send
+            {:method :approve
+             :params [(.-address landeed/c)
+                      "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"]}]))}
+      (if approved? "MINT" "APPROVE")]]))
 
 (defn main []
-  (let [{:keys [type payment]} @(rf/subscribe [::data])]
-    [:<>
-     [style]
-     [:div.guild-land-deeds.relative.px-10.py-4
-      [:p.text-C6bc9db.mb-4.text-lg "Land Shop"]
-      [deed-type-select]
-      [:p.text-C6bc9db.mb-4.mt-6.text-lg "Cost"]
-      [payment-select]
-      [separator/ui {:className "mt-24 mb-8"}]
-      [:div.text-center [btn/ui {:t :osm} "MINT"]]]]))
+  [:<>
+   [style]
+   [:div.guild-land-deeds.relative.px-10.py-4
+    [:p.text-C6bc9db.mb-4.text-lg "Land Shop"]
+    [deed-type-select]
+    [cost]
+    [separator/ui {:className "mt-24 mb-8"}]
+    [mint]]])

@@ -64,3 +64,8 @@
 
 (defn shorten-addr [addr]
   (str (.substring addr 0 6) "...." (.substring addr 34)))
+
+(defn sbn
+  ([x] (sbn x 0))
+  ([x n]
+   (or x (ethers/BigNumber.from n))))

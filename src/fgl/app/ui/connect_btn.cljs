@@ -4,7 +4,7 @@
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [fgl.wallet.core :as w]
-   [oops.core :refer [ocall oget]]
+   [fgl.utils :refer [shorten-addr]]
    [reagent.core :as r]))
 
 (w/init!)
@@ -23,7 +23,7 @@
      wrong-network
      ["Wrong Network" "Wrong Network" false #(rf/dispatch [::w/switch-to-target-chain!])]
      :else
-     [(or addr "") "Address" true identity])))
+     [(if addr (shorten-addr addr) "") "Address" false #(rf/dispatch [:navigate :route/dashboard])])))
 
 (defn ui [target-chain-id]
   (r/create-class

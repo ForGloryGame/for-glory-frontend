@@ -40,7 +40,7 @@
 
 (rf/reg-event-fx
  ::select-all
- [(rf/inject-cofx :inject/sub [::data])]
+ [(rf/inject-cofx :inject/sub (fn [[_ _ route-name]] [::data route-name]))]
  (fn [{::keys [data] :keys [db]} [_ select?]]
    (if select?
      (let [{items :data} data]
@@ -50,7 +50,9 @@
 (rf/reg-event-db
  ::select
  (fn [db [_ id]]
-   (assoc db ::selected (conj (get db ::selected #{}) id))))
+   (if (nil? id)
+     (assoc db ::selected #{})
+     (assoc db ::selected (conj (get db ::selected #{}) id)))))
 
 (rf/reg-event-db
  ::deselect
@@ -198,6 +200,7 @@
     (r/create-class
      {:component-did-mount
       (fn []
+        (rf/dispatch [::select])
         (when-let [!cards-div @!cards]
           (.addEventListener !cards-div "wheel" on-wheel #js {:passive false})))
       :component-will-unmount
@@ -217,7 +220,7 @@
                 data))))})))
 
 (defn select-all [route-name]
-  (let [select-all #(rf/dispatch [::select-all %])]
+  (let [select-all #(rf/dispatch [::select-all % route-name])]
     (fn []
       (let [{:keys [all-selected]} @(rf/subscribe [::data route-name])]
         [checkbox/ui

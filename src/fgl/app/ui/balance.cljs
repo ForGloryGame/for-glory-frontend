@@ -16,7 +16,6 @@
                                 (ethers/BigNumber.from 0)))
                   :else (ethers/BigNumber.from 0))]
      [:data.fb (enc/nested-merge {:value (.toString amount)
-                                  :style {:maxWidth  "6rem"
-                                          :overflowX "auto"}}
+                                  :style {:maxWidth  "6rem"}}
                                  (-> opts (dissoc :fixed) (dissoc :keep-end)))
       (->display-token amount opts)])))

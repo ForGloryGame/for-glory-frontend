@@ -32,6 +32,7 @@
 (defn get-request-fn [contract]
   (assert contract "Invalid contract instance")
   (fn [method-name & args]
+    ;; (js/console.log args)
     (p/let [rst (oapply+ contract (name method-name) args)]
       rst)))
 
@@ -44,9 +45,13 @@
 (defn reg-send [c id]
   (rf/reg-event-fx
    id
-   (fn [{:keys [db]} [_ {:keys [method params dialog title submitting on-success on-submitted on-failure err-handler]}]]
+   (fn [{:keys [db]} [_ {:keys [method params override dialog title submitting on-success on-submitted on-failure err-handler]}]]
      (let [{::w/keys [provider]} db
            params                (or params [])
+           override              (or override {})
+           override              (clj->js override)
+
+           args (if (coll? params) (concat params [override]) [params override])
 
            title (or title "")
 
@@ -82,7 +87,7 @@
                  :else              identity)
            on-failure (if (fn? err-handler) (comp on-failure err-handler) on-failure)]
        (with-provider c provider
-         (-> (apply r method params)
+         (-> (apply r method args)
              (p/then #(do
                         (if (and (.-hash %) (.-wait %))
                           (do

@@ -22,11 +22,12 @@
  10000
  (fn [{:keys [db]} _]
    (let [{::w/keys [provider]} db]
-     (rf/dispatch [::set 100 ::ratio])
-     ;; (ctc/with-provider c provider
-     ;;   (p/then (r :getReserves)
-     ;;           (fn [[gold glory]] (rf/dispatch [::set (.div gold glory) ::reserves]))))
-     )
+     (ctc/with-provider c provider
+       (p/then (r :getReserves)
+               (fn [[gold glory]]
+                 (rf/dispatch [::set gold ::rgold])
+                 (rf/dispatch [::set glory ::rglory])
+                 (rf/dispatch [::set (.div glory gold) ::ratio])))))
    {}))
 
 (ctc/reg-send c ::send)
