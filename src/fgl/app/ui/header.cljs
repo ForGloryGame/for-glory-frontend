@@ -25,18 +25,15 @@
    {:className "bg-no-repeat"
     :style     {:backgroundImage
                 "
-linear-gradient(to right, rgba(0,0,0,.302),rgba(0,0,0,.302)),
 url(\"/images/header-bg.svg\")
 "
 
                 :backgroundBlendMode "multiply"
                 :backgroundPosition
                 "
- -8% -16%,
-63% -33%"
+-10px -33%"
                 :backgroundSize
                 "
-100% 57%,
 100% 77%"}}
    x])
 
@@ -56,7 +53,7 @@ url(\"/images/header-bg.svg\")
     [:header.w-100vw.grid-area-header.fixed.z-10
      [nav-root
       [:> Nav/List
-       {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}
+       {:className "grid justify-items-stretch justify-between items-center content-center pt-2"}
 
        ^{:key 'logo}
        [:> Nav/Item {:className "cs1 ce3 rs1 re3"}
@@ -65,7 +62,7 @@ url(\"/images/header-bg.svg\")
          [logo/ui {:style {:minWidth "8.8125rem"}}]]]
 
        ^{:key 'glory}
-       [:> Nav/Item {:className "cs7 ce9"}
+       [:> Nav/Item {:className "cs6 ce8"}
         [header-tag/ui
          [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
           {:on-click #(w/request
@@ -74,14 +71,14 @@ url(\"/images/header-bg.svg\")
                         :options {:address  (.-address glory/c)
                                   :symbol   "GLORY"
                                   :decimals 18
-                                  :image "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/glory-token.png"}}
+                                  :image    "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/glory-token.png"}}
                        identity
                        js/console.log)}
           [gloryimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
           [balance/ui glory-balance {:className "fi mr-1"}]]]]
 
        ^{:key 'gold}
-       [:> Nav/Item {:className "cs9 ce11"}
+       [:> Nav/Item {:className "cs8 ce10"}
         [header-tag/ui
          [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
           {:on-click #(w/request
@@ -90,14 +87,14 @@ url(\"/images/header-bg.svg\")
                         :options {:address  (.-address gold/c)
                                   :symbol   "GOLD"
                                   :decimals 18
-                                  :image "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/gold-token.png"}}
+                                  :image    "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/gold-token.png"}}
                        identity
                        js/console.log)}
           [goldimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
           [balance/ui gold-balance {:className "fi mr-1"}]]]]
 
        ^{:key 'ratio}
-       [:> Nav/Item {:className "cs11 ce13"}
+       [:> Nav/Item {:className "cs10 ce12"}
         [header-tag/ui
          [:div.flex.flex-row.justify-between.items-center.text-xl.fi
           [goldimg/ui "2rem"]
@@ -109,5 +106,7 @@ url(\"/images/header-bg.svg\")
           [gloryimg/ui "2rem" {:className "mx-1"}]]]]
 
        ^{:key 'connect-btn}
-       [:> Nav/Item {:className "cs13 ce15"}
-        [fgl.app.ui.connect-btn/ui conf/target-chain-id]]]]]))
+       [:> Nav/Item {:className "cs12 ce14"}
+        [fgl.app.ui.connect-btn/ui conf/target-chain-id]]
+       ^{:key 'placeholder}
+       [:> Nav/Item {:className "cs14"}]]]]))
