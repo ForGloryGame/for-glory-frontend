@@ -1,6 +1,8 @@
 (ns fgl.contracts.battlefield
   (:require
+   [fgl.re-frame :refer [reg-event-pfx]]
    ["ethers" :as ethers]
+   [fgl.contracts.gamenft :as nft]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
    [fgl.wallet.core :as w]
@@ -15,7 +17,6 @@
 (rf/reg-event-db
  ::set
  (fn [db [_ v & paths]]
-   (tap> (assoc-in db paths v))
    (assoc-in db paths v)))
 
 (defonce token-ids-cache (atom nil))
@@ -30,25 +31,26 @@
  ::reward
  (fn [db [_ addr token-id type]]
    (and token-id
-        (-> (get-in db [addr ::reward (.toString token-id) type] (ethers/BigNumber.from 0))
-            (ethers/utils.formatUnits 18)
-            ethers/utils.commify))))
+        (get-in db [addr ::reward (.toString token-id) type] (ethers/BigNumber.from 0)))))
 
-(rf/reg-event-fx
+(reg-event-pfx
  ::get
+ 10000
  [rf/trim-v]
- (fn [_ [provider addr]]
-   (and addr
-        (ctc/with-provider c provider
-          (p/let [token-ids (r :depositsOf addr)
-                  rewards (p/all (map #(r :pendingReward %) token-ids))]
-            (loop [ids token-ids
-                   rs  rewards]
-              (when-let [id (first ids)]
-                (rf/dispatch [::set (first (first rs)) addr ::reward (-> id .toString) :gold])
-                (rf/dispatch [::set (second (first rs)) addr ::reward (-> id .toString) :glory])
-                (recur (rest ids) (rest rs))))
-            (rf/dispatch [::set token-ids addr ::token-ids]))))
+ (fn [{:keys [db]} _]
+   (let [{::w/keys [provider addr]} db]
+     (when addr
+       (ctc/with-provider c provider
+         (p/let [token-ids (r :depositsOf addr)
+                 rewards (p/all (map #(r :pendingReward %) token-ids))]
+           (loop [ids token-ids
+                  rs  rewards]
+             (when-let [id (first ids)]
+               (rf/dispatch [::nft/get-token-traits id])
+               (rf/dispatch [::set (first (first rs)) addr ::reward (-> id .toString) :gold])
+               (rf/dispatch [::set (second (first rs)) addr ::reward (-> id .toString) :glory])
+               (recur (rest ids) (rest rs))))
+           (rf/dispatch [::set token-ids addr ::token-ids])))))
 
    {}))
 
@@ -57,8 +59,9 @@
 ;; revealUnstake
 (rf/reg-event-fx
  ::send
- (fn [_ [_ provider method & params]]
-   ;; TODO: handle write contract result
-   (ctc/with-provider c provider
-     (apply r method params))
+ (fn [{:keys [db]} [_ method & params]]
+   (let [{::w/keys [provider]} db]
+     ;; TODO: handle write contract result
+     (ctc/with-provider c provider
+       (apply r method params)))
    {}))

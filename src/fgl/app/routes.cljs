@@ -16,6 +16,8 @@
    [re-frame.core :as rf]
    [lambdaisland.glogi :as log]))
 
+(declare router)
+
 (comment
   ;; cljs.core.subs(location.hash, 1)
   (subs (.. js/window -location -hash) 1)
@@ -81,6 +83,18 @@
          :controllers (home/controllers)
          ;; :lazy        true
          :conflicting true}]
+    ["dashboard"
+     {:name        :route/dashboard
+      :view        #(resolve 'fgl.app.views.dashboard/main)
+      :controllers #(resolve 'fgl.app.views.dashboard/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["battlefield"
+     {:name        :route/battlefield
+      :view        #(resolve 'fgl.app.views.battlefield/main)
+      :controllers #(resolve 'fgl.app.views.battlefield/controllers)
+      :lazy        true
+      :conflicting true}]
     ["mint"
      {:name        :route/mint
       :view        #(resolve 'fgl.app.views.mint/main)

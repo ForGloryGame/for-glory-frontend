@@ -1,5 +1,6 @@
 (ns fgl.app.grammer
   (:require
+   [girouette.tw.common :refer [value-unit->css]]
    [girouette.tw.core :refer [make-api]]
    [girouette.tw.common :as common]
    [girouette.tw.color :as color]
@@ -39,7 +40,32 @@
          grid-area = <'grid-area-'> (#'[\\w-]+')
          "
          :garden (fn [{[param] :component-data}]
-                   {:grid-area param})}))
+                   {:grid-area param})}
+        {:id     :grid-column-start-short
+         :rules  "
+         grid-column-start-short = <'cs'> integer
+         "
+         :garden (fn [{[param] :component-data}]
+                   {:grid-column-start (value-unit->css param)})}
+        {:id     :grid-column-end-short
+         :rules  "
+         grid-column-end-short = <'ce'> integer
+         "
+         :garden (fn [{[param] :component-data}]
+                   {:grid-column-end (value-unit->css param)})}
+
+        {:id     :grid-row-start-short
+         :rules  "
+         grid-row-start-short = <'rs'> integer
+         "
+         :garden (fn [{[param] :component-data}]
+                   {:grid-row-start (value-unit->css param)})}
+        {:id     :grid-row-end-short
+         :rules  "
+         grid-row-end-short = <'re'> integer
+         "
+         :garden (fn [{[param] :component-data}]
+                   {:grid-row-end (value-unit->css param)})}))
 
 (def my-chosen-components
   [common/components

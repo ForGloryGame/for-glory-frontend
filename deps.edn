@@ -1,8 +1,9 @@
 {:paths ["src" "dev" "test"]
  :deps
- {selmer/selmer    {:mvn/version "1.12.50"}
-  lambdaisland/uri {:mvn/version "1.13.95"
-                    :exclusions  [org.clojure/data.json]}
+ {selmer/selmer               {:mvn/version "1.12.50"}
+  day8.re-frame/async-flow-fx {:mvn/version "0.3.0"}
+  lambdaisland/uri            {:mvn/version "1.13.95"
+                               :exclusions  [org.clojure/data.json]}
 
   io.aviso/pretty {:mvn/version "1.1.1"}
   environ/environ {:mvn/version "1.2.0"}

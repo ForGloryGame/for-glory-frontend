@@ -11,9 +11,18 @@
 
 (defn request
   ([method] (request method []))
-  ([method params]
-   (let [p @provider]
-     (and p (ocall p "send" method (clj->js params))))))
+  ([method params] (request method params identity identity))
+  ([method on-success on-failure] (request method [] on-success on-failure))
+  ([method params on-success on-failure]
+   (let [p @provider
+         params (or params [])
+         promise
+         (ocall p "send" method (clj->js params))]
+     (if p (-> promise
+               (p/then on-success)
+               (p/catch on-failure))
+         (on-failure (js/Error. "No provider found")))
+     promise)))
 
 (defn check-installation [_]
   (when (and js/ethereum js/ethereum.isMetaMask)
@@ -80,16 +89,12 @@
  [rf/trim-v
   (rf/after check-installation)]
  (fn [db [target-chain-id]]
-   (assoc db
-          ::state :uninstalled
-          ::addr nil
-          ::provider nil
-          ::target-chain target-chain-id)))
-
-(rf/reg-sub
- ::path
- (fn [db [_ & paths]]
-   (get-in db paths)))
+   (when-not (::state db)
+     (assoc db
+            ::state :uninstalled
+            ::addr nil
+            ::provider nil
+            ::target-chain target-chain-id))))
 
 (rf/reg-sub
  ::state
@@ -139,3 +144,14 @@
 
 (defn connect! []
   (p/then (request "eth_requestAccounts") #(rf/dispatch [::connected %])))
+
+(def accounts-changed-interceptor
+  (rf/->interceptor
+   :id :wallet/accounts-changed
+   :before (fn [context]
+             (let [new-db   (rf/get-effect context :db)
+                   old-db   (rf/get-coeffect context :db)
+                   acc-changed? (not (= (::addr new-db) (::addr old-db)))]
+               (rf/assoc-coeffect context :wallet/accounts-changed true)))))
+
+(rf/reg-global-interceptor accounts-changed-interceptor)

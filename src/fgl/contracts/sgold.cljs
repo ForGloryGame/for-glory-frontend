@@ -1,5 +1,6 @@
 (ns fgl.contracts.sgold
   (:require
+   [fgl.re-frame :refer [reg-event-pfx]]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
    [fgl.wallet.core :as w]
@@ -52,26 +53,28 @@
               unlockInfos)]
          (reset! unlock-info-cache unlockInfos)))))
 
-(rf/reg-event-fx
+(reg-event-pfx
  ::get
+ 10000
  [rf/trim-v]
- (fn [_ [provider addr]]
-   (and addr
-        (ctc/with-provider c provider
-          (p/let [balance (r :balanceOf addr)
-                  [locked unlocked user-gold-info] (r :getUserGoldInfo addr)]
-            (rf/dispatch [::set balance addr ::balance])
-            ;; TODO: week to date
-            (rf/dispatch [::set locked addr ::locked])
-            (rf/dispatch [::set unlocked addr ::unlocked])
-            (rf/dispatch [::set user-gold-info addr ::info]))))
+ (fn [{:keys [db]} _]
+   (let [{::w/keys [provider addr]} db]
+     (and addr
+          (ctc/with-provider c provider
+            (p/let [balance (r :balanceOf addr)
+                    [locked unlocked user-gold-info] (r :getUserGoldInfo addr)]
+              (rf/dispatch [::set balance addr ::balance])
+              ;; TODO: week to date
+              (rf/dispatch [::set locked addr ::locked])
+              (rf/dispatch [::set unlocked addr ::unlocked])
+              (rf/dispatch [::set user-gold-info addr ::info])))))
 
    {}))
 
 (rf/reg-event-fx
  ::send
- (fn [_ [_ provider method & params]]
-   ;; TODO: handle write contract result
-   (ctc/with-provider c provider
-     (apply r method params))
+ (fn [{:keys [db]} [_ method & params]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (apply r method params)))
    {}))

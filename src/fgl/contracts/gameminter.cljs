@@ -13,7 +13,8 @@
 
 (rf/reg-event-fx
  ::send
- (fn [_ [_ provider method & params]]
-   (ctc/with-provider c provider
-     (apply r method params))
+ (fn [{:keys [db]} [_ method & params]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (apply r method params)))
    {}))

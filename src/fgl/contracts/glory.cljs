@@ -1,5 +1,6 @@
 (ns fgl.contracts.glory
   (:require
+   [fgl.re-frame :refer [reg-event-pfx]]
    ["ethers" :as ethers]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
@@ -24,19 +25,20 @@
        (ethers/utils.formatUnits 18)
        ethers/utils.commify)))
 
-(rf/reg-event-fx
+(reg-event-pfx
  ::get-balance
- [rf/trim-v]
- (fn [_ [provider addr]]
-   (and addr
-        (ctc/with-provider c provider
-          (p/then (r :balanceOf addr) #(rf/dispatch [::set % addr ::balance]))))
+ 10000
+ (fn [{:keys [db]} _]
+   (let [{::w/keys [addr provider]} db]
+     (when addr
+       (ctc/with-provider c provider
+         (p/then (r :balanceOf addr) #(rf/dispatch [::set % addr ::balance])))))
    {}))
 
 (rf/reg-event-fx
  ::send
- (fn [_ [_ provider method & params]]
-   ;; TODO: handle write contract result
-   (ctc/with-provider c provider
-     (apply r method params))
+ (fn [{:keys [db]} [_ method & params]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (apply r method params)))
    {}))

@@ -11,7 +11,8 @@
 (defn main-panel []
   (let [current-route                 @(rf/subscribe [::routes/current-route])
         {:keys [view] :as route-data} (get current-route :data {})]
-    [:div.grid
-     {:style {:gridTemplate "\"header\" \"main\""}}
+    [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
+     {:style {:gridTemplate    "\"header\" 6.25rem \"main\""
+              :backgroundImage "url(\"/images/bg@2x.png\""}}
      [header/ui]
      [body/ui (if view [view route-data] [:div])]]))

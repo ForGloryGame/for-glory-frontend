@@ -1,5 +1,6 @@
 (ns fgl.app.home-core
   (:require
+   [fgl.re-frame]
    [lambdaisland.glogi :as log]
    [lambdaisland.glogi.console :as glogi-console]
    [reagent.dom :as rdom]

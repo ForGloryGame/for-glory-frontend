@@ -2,10 +2,9 @@
   (:require
    ;; [babashka.process :refer [process]]
    [babashka.tasks :refer [shell]]
-   [cheshire.core :as json]
    [babashka.fs :as fs]
    [clojure.string :as s]
-   [taoensso.timbre :refer [warn]]
+   ;; [taoensso.timbre :refer [warn]]
    [clojure.java.shell :refer [sh]]))
 
 (defonce project-dir (-> *file* fs/parent fs/parent fs/parent))
@@ -59,12 +58,12 @@
       command)))
 
 (defn run [& args]
-  (let [args (or args ["server"])
+  (let [args                (or args ["server"])
         shadow-cljs-command (get-shadow-cljs-command args)]
     (println (s/join " " (concat [">" shadow-cljs-command] args)))
     (apply shell shadow-cljs-command args)))
 
 (defn release-all []
   (let [{:keys [builds]} (shadow-edn)
-        ids (remove #{:cards :browser-test :karma-test} (keys builds))]
+        ids              (remove #{:cards :browser-test :karma-test} (keys builds))]
     (apply run "release" ids)))

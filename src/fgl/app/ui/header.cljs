@@ -11,10 +11,8 @@
    [fgl.app.ui.logo :as logo]))
 
 (defn init-balances []
-  (let [p    @(rf/subscribe [::w/provider])
-        addr @(rf/subscribe [::w/addr])]
-    (rf/dispatch [::gold/get-balance p addr])
-    (rf/dispatch [::glory/get-balance p addr])))
+  (rf/dispatch [::gold/get-balance])
+  (rf/dispatch [::glory/get-balance]))
 
 (defn nav-root [x]
   [:> Nav/Root
@@ -32,24 +30,23 @@
        {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}
 
        ^{:key 'logo}
-       [:> Nav/Item {:className "col-start-1 col-end-3 row-start-1 row-end-3"
-                     :style     {}}
+       [:> Nav/Item {:className "cs1 ce3 rs1 re3"}
         [:> Nav/Link {:className "cursor-pointer block p-2"
-                      :on-click  #(rf/dispatch [:navigate :route/front])}
+                      :on-click  #(rf/dispatch [:navigate :route/home])}
          [logo/ui {:style {:minWidth "8.8125rem"}}]]]
 
        ^{:key 'glory}
-       [:> Nav/Item {:className "col-start-7 col-end-9"}
+       [:> Nav/Item {:className "cs7 ce9"}
         [:span (str "Glory: " @(rf/subscribe [::glory/balance addr]))]]
 
        ^{:key 'gold}
-       [:> Nav/Item {:className "col-start-9 col-end-11"}
+       [:> Nav/Item {:className "cs9 ce11"}
         [:span (str "Gold: " @(rf/subscribe [::gold/balance addr]))]]
 
        ^{:key 'ratio}
-       [:> Nav/Item {:className "col-start-11 col-end-13"}
+       [:> Nav/Item {:className "cs11 ce13"}
         [:span "ratio"]]
 
        ^{:key 'connect-btn}
-       [:> Nav/Item {:className "col-start-13 col-end-15"}
+       [:> Nav/Item {:className "cs13 ce15"}
         [fgl.app.ui.connect-btn/ui conf/target-chain-id]]]]]))
