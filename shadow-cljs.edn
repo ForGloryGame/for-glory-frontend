@@ -1,7 +1,6 @@
 {:deps  {:aliases [:cljs]}
  :nrepl {:port 9989}
 
- ;; :jvm-opts ["-Xmx700m" "-Xms100m" "-XX:+UseSerialGC" "-XX:-OmitStackTraceInFastThrow"]
  :jvm-opts ["-Xmx4G" "-Xms512m" "-XX:+UseSerialGC" "-XX:-OmitStackTraceInFastThrow"]
  :log      {:level :info}
 
@@ -9,7 +8,7 @@
 
  :build-defaults
  {:build-hooks [(shadow-git-inject.core/hook)
-                (hooks/env-hook)]
+                (hooks.css/build)]
   :closure-defines
   {xxx.config/version :shadow-git-inject/version}
   :compiler-options
@@ -22,12 +21,11 @@
    :output-feature-set :es8
    :warnings           {:undeclared-var false}}}
 
- ;; :http       {:port 9990 :host "localhost"}
+ :http       {:port 9999 :host "localhost"}
  :dev-http
- {8880 "resources/main/public"
-  8881 "resources/workspace/public"
-  8890 "target/browser-test"}
- :js-options {:js-package-dirs ["node_modules" "resources/mains/node_modules" "contracts/lens-protocol/node_modules"]}
+ {8880 "resources/app/public"
+  8881 "resources/cards/public"}
+ :js-options {:js-package-dirs ["node_modules"]}
 
  :builds
  {:app
@@ -37,21 +35,21 @@
    :module-loader true
    :modules
    {;; :shared  {:entries []}
-    :main    {:init-fn xxx.main.core/init
+    :main    {:init-fn xxx.app.core/init
               :default true}
-    :front   {:entries    [xxx.main.views.front]
+    :front   {:entries    [xxx.app.views.front]
               :depends-on #{:main}}
-    :home    {:entries    [xxx.main.views.home]
+    :home    {:entries    [xxx.app.views.home]
               :depends-on #{:main}}
-    :profile {:entries    [xxx.main.views.profile]
+    :profile {:entries    [xxx.app.views.profile]
               :depends-on #{:main}}
-    :about   {:entries    [xxx.main.views.about]
+    :about   {:entries    [xxx.app.views.about]
               :depends-on #{:main}}
-    :login   {:entries    [xxx.main.views.login]
+    :login   {:entries    [xxx.app.views.login]
               :depends-on #{:main}}
-    :404     {:entries    [xxx.main.views.v404]
+    :404     {:entries    [xxx.app.views.v404]
               :depends-on #{:main}}
-    :500     {:entries    [xxx.main.views.v500]
+    :500     {:entries    [xxx.app.views.v500]
               :depends-on #{:main}}}
    :devtools
    {:preloads [day8.re-frame-10x.preload hashp.core]}
@@ -71,7 +69,7 @@
 
   :cards
   {:target     nubank.workspaces.shadow-cljs.target
-   :ns-regexp  "-(cards)$"
+   :ns-regexp  "-?cards?$"
    :output-dir "resources/cards/public/js/compiled"
    :asset-path "/js/compiled"
    :preloads   []                   ; optional, list namespaces to be pre loaded

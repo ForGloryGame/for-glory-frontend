@@ -21,3 +21,4 @@
 /resources/*/.env
 /.cpcache/
 /.clj-kondo/
+/resources/app/public/css/compiled
