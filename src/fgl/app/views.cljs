@@ -1,5 +1,6 @@
 (ns fgl.app.views
   (:require
+   [lambdaisland.glogi :as log]
    [fgl.app.ui.header :as header]
    [fgl.app.ui.body :as body]
    [re-frame.core :as rf]
@@ -15,5 +16,5 @@
      {:style {:gridTemplate    "\"header\" min-content \"main\""
               :backgroundImage "url(\"/images/bg@2x.png\""}}
      [header/ui]
-     [body/ui (if view [view route-data] [:div])]
+     [body/ui route-data (if view [view route-data] [:div])]
      [:link {:rel "stylesheet" :href "/fonts/family.css"}]]))

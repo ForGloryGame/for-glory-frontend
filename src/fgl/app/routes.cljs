@@ -91,20 +91,32 @@
       :conflicting true}]
     ["battlefield"
      {:name        :route/battlefield
+      :panel-name  "Battlefield"
       :view        #(resolve 'fgl.app.views.battlefield/main)
       :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true
       :conflicting true}]
     ["council"
      {:name        :route/council
+      :panel-name  "Council"
       :view        #(resolve 'fgl.app.views.council/main)
       :controllers #(resolve 'fgl.app.views.council/controllers)
       :lazy        true
       :conflicting true}]
     ["guild/basic"
      {:name        :route/guild-basic
+      :panel-name  "Guild"
+      :css         "/css/guild-basic.css"
       :view        #(resolve 'fgl.app.views.guild-basic/main)
       :controllers #(resolve 'fgl.app.views.guild-basic/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["guild/alter"
+     {:name        :route/guild-alter
+      :panel-name  "Guild"
+      :css         "/css/guild-alter.css"
+      :view        #(resolve 'fgl.app.views.guild-alter/main)
+      :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
     ["mint"

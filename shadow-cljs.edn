@@ -48,6 +48,8 @@
                   :depends-on #{:shared}}
     :guild-basic {:entries    [fgl.app.views.guild-basic]
                   :depends-on #{:shared}}
+    :guild-alter {:entries    [fgl.app.views.guild-alter]
+                  :depends-on #{:shared}}
     :council     {:entries    [fgl.app.views.council]
                   :depends-on #{:shared}}
     :mint        {:entries    [fgl.app.views.mint]

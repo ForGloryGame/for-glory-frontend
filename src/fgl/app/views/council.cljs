@@ -213,30 +213,27 @@
          {:className className}
          (and (not approved?) [:button {:on-click approve} "APPROVE"])
          (and approved?
-              [btn/ui :blue "ENTER" "14rem"
+              [btn/ui
                {:disabled no-selected?
-                :on-click (enter selected)}])
+                :on-click (enter selected)}
+               "ENTER"])
          (and approved? staked?
-              [btn/ui :blue "FLEE" "14rem"
+              [btn/ui
                {:disabled no-selected?
-                :on-click (unstake selected)}])
+                :on-click (unstake selected)}
+               "FLEE"])
          (and approved? staked?
-              [btn/ui :orange "CLAIM" "14rem"
+              [btn/ui
                {:disabled no-selected?
-                :on-click (claim selected)}])]))))
+                :on-click (claim selected)}
+               "CLAIM"])]))))
 
 (defn main [_]
-  (let []
-    (fn []
-      (r/create-class
-       {:reagent-render
-        (fn []
-          [panel/ui "Council" 80 to-home
-           [:div.grid.gap-4
-            {:style {:padding "2%" :width "98%"}}
-            [select]
-            [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
-            [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-             [cards]]
-            [select-all]
-            [btns]]])}))))
+  [:div.grid.gap-4
+   {:style {:padding "2%" :width "98%"}}
+   [select]
+   [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
+   [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+    [cards]]
+   [select-all]
+   [btns]])

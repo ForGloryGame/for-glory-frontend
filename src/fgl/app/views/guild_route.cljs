@@ -9,18 +9,32 @@
   (let [to #(rf/dispatch [:navigate route-key])]
     (fn []
       (let [current-route @(rf/subscribe [::routes/current-route])
-            {n :name}     (get current-route :data {})]
+            {n :name}     (get current-route :data {})
+            active?       (= n route-key)]
         [:li.my-6
          [:button.w-full.h-full
-          {:className
-           (str
-            "py-1.5 "
-            (if (= n route-key) "active" ""))
-           :on-click to}
+          (enc/assoc-when
+           {:className "py-1.5"
+            :on-click  to}
+           :style
+           (and active?
+                {:background
+                 "
+linear-gradient(
+    to right,
+    transparent 10%,
+    rgba(116, 191, 206, 0.6) 60%,
+    transparent 100%
+  )"}))
           text]]))))
 
 (defn ui []
-  [:ul.guild-menu.w-48.h-full.text-lg.guild-font-family.text-center.pt-12
+  [:ul
+   {:className "text-lg guild-font-family text-center pt-12"
+    :style
+    {:background "linear-gradient(to right, transparent, rgb(80, 146, 158, 0.231))"
+     :color      "rgb(213, 228, 232)"
+     :textShadow "1px 1px 1px rgba(0, 0, 0, 0.64)"}}
    [route "Basic" :route/guild-basic]
    [route "Alter" :route/guild-alter]
    [route "Vote" :route/guild-vote]

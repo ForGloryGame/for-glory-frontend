@@ -5,7 +5,7 @@
 (defn- w [width x]
   (str (/ width x) "rem"))
 
-(defn ui [name width on-close children]
+(defn ui [_ name width on-close children]
   (let [wf              (partial w width)
         close-btn-width (wf 54.87179487)]
     [bg/ui width

@@ -7,6 +7,7 @@
    (enc/nested-merge
     {:style
      {:backgroundColor "rgb(37, 161, 183)"
+      :textShadow "0.0341rem 0.0341rem 0.025rem rgba(0, 0, 0, 0.64)"
       :borderColor     "rgb(94, 203, 231)"
       :borderRadius    "1rem"}}
     opt)

@@ -226,23 +226,17 @@
               [btn/ui
                {:disabled no-selected?
                 :on-click (claim selected)
-                :style    {:width "14rem"
+                :style    {:width           "14rem"
                            :backgroundColor "rgb(237, 142, 40)"
                            :borderColor     "rgb(255, 211, 134)"}}
                "CLAIM"])]))))
 
 (defn main [_]
-  (let []
-    (fn []
-      (r/create-class
-       {:reagent-render
-        (fn []
-          [panel/ui "Battlefield" 80 to-home
-           [:div.grid.gap-4
-            {:style {:padding "2%" :width "98%"}}
-            [select]
-            [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
-            [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-             [cards]]
-            [select-all]
-            [btns]]])}))))
+  [:div.grid.gap-4
+   {:style {:padding "2%" :width "98%"}}
+   [select]
+   [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
+   [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+    [cards]]
+   [select-all]
+   [btns]])

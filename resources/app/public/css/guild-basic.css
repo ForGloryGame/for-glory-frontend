@@ -1,23 +1,11 @@
 .guild-color {
   color: rgba(116, 191, 206, 0.902);
 }
-/* 以下为自定义样式 */
-.guild-menu {
-  background: linear-gradient(to right, transparent, rgb(80, 146, 158, 0.231));
-  color: rgb(213, 228, 232);
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.64);
-}
-
-.guild-menu > li > button.active {
-  background: linear-gradient(
-    to right,
-    transparent 10%,
-    rgba(116, 191, 206, 0.6) 60%,
-    transparent 100%
-  );
+.guild-font-family {
+  font-family: "Impact", sans-serif;
 }
 .guild-members {
-  height: calc(100% - 180px - 15rem);
+  height: calc(100% - 180px - 3.5rem);
 }
 .guild-table {
   height: calc(100% - 2.25rem);
