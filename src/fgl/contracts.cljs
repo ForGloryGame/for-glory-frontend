@@ -1,5 +1,5 @@
 (ns fgl.contracts
-  (:refer-macro [with-provider])
+  (:require-macros [fgl.contracts :refer [with-provider]])
   (:require
    ["ethers" :refer [Contract]]
    [promesa.core :as p]
@@ -9,7 +9,7 @@
 ;; (def cache (atom nil))
 
 (defn re-init! [& {:keys [address abi]}]
-  (Contract. address (clj->js abi)))
+  (Contract. (or address "0x1111111111111111111111111111111111111111") (clj->js abi)))
 
 (defn init [& {:keys [id address abi reinit!]}]
   (assert abi "Inavlid contract abi")

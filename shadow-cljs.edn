@@ -37,7 +37,7 @@
    :module-loader true
    :modules
    {:shared  {:entries []
-              :default    true}
+              :default true}
     :main    {:init-fn    fgl.app.home-core/init
               :depends-on #{:shared}}
     :profile {:entries    [fgl.app.views.profile]
@@ -51,23 +51,26 @@
     :500     {:entries    [fgl.app.views.v500]
               :depends-on #{:shared}}}
    :devtools
-   {:preloads [;; day8.re-frame-10x.preload
-               hashp.core]}
+   {:preloads        [;; day8.re-frame-10x.preload
+                      hashp.core
+                      cljs-devtool]
+    :console-support false}
    :dev
    {:compiler-options
     {:closure-defines
-     {re-frame.trace.trace-enabled?                  true
-      day8.re-frame.tracing.trace-enabled?           true
-      fgl.app.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
-      fgl.app.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
-      fgl.app.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
-      fgl.app.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
-      fgl.app.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
-      fgl.app.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
-      fgl.app.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
-      fgl.app.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
-      fgl.app.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
-      fgl.app.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"}}}
+     {re-frame.trace.trace-enabled?              true
+      day8.re-frame.tracing.trace-enabled?       true
+      fgl.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
+      fgl.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
+      fgl.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
+      fgl.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
+      fgl.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
+      fgl.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
+      fgl.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
+      fgl.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
+      fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
+      fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
+      fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}}
    :release
    {:closure-defines {goog.DEBUG                 false
                       goog.debug.LOGGING_ENABLED true}
@@ -84,9 +87,9 @@
    :module-loader true
    :modules
    {:shared {:entries []}
-    :main  {:init-fn    fgl.app.front-core/init
-            :default    true
-            :depends-on #{:shared}}}
+    :main   {:init-fn    fgl.app.front-core/init
+             :default    true
+             :depends-on #{:shared}}}
    :devtools
    {:preloads [;; day8.re-frame-10x.preload
                hashp.core]}
@@ -119,17 +122,17 @@
     :compiler-options {:elide-asserts true}}}
 
   :front-ssr
-  {:target    :node-script
-   :output-to "resources/front/ssr.js"
-   :main      fgl.app.front-ssr/main
+  {:target :node-script
+   :output-to  "resources/front/ssr.js"
+   :main  fgl.app.front-ssr/main
    :devtools
    {:preloads [hashp.core]}
    :dev
    {:compiler-options {}}
    :release
-   {:closure-defines  {goog.DEBUG                 false
-                       goog.debug.LOGGING_ENABLED true}
-    :build-options    {}
+   {:closure-defines {goog.DEBUG false
+                      goog.debug.LOGGING_ENABLED true}
+    :build-options {}
     :compiler-options {:elide-asserts true}}}
 
   :cards

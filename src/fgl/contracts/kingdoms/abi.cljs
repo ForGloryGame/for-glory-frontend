@@ -1,4 +1,4 @@
-(ns fgl.contracts.kingdom.abi)
+(ns fgl.contracts.kingdoms.abi)
 
 (defonce data
   [{:anonymous false
