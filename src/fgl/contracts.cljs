@@ -68,7 +68,7 @@
                             ;;   :desc  [:a {:href (scan-tx-url (.-hash %))}
                             ;;           "View On Blockchain Explorer"]})
                             (p/then
-                             (.wait % 7)
+                             (.wait % 1)
                              (fn [receipt]
                                (on-success
                                 {:title "Tx Confirmed"
@@ -81,7 +81,9 @@
                           (on-success {:title "Tx Succeeded"}))))
 
              (p/catch #(if (instance? js/Error %)
-                         (on-failure {:title "Tx Failed"
-                                      :desc  (or (oget % "?.error.message") (oget % "?.reason") (oget % "message"))})
+                         (do
+                           (js/console.error %)
+                           (on-failure {:title "Tx Failed"
+                                        :desc  (or (oget % "?.error.message") (oget % "?.reason") (oget % "message"))}))
                          (on-failure {:title "Tx Failed"}))))))
      {})))
