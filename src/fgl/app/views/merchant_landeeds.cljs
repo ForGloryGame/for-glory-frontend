@@ -62,7 +62,16 @@
 
       .guild-land-deeds figcaption {
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-      }"])
+      }
+     figure.dt2>img {
+        filter: hue-rotate(230deg) saturate(.6);
+     }
+     figure.dt1>img {
+        filter: hue-rotate(171deg) saturate(.6);
+     }
+     figure.dt0>img {
+        filter: hue-rotate(57deg) saturate(.6);
+     }"])
 
 (rf/reg-event-db ::payment (fn [db [_ p]] (assoc db ::payment p)))
 (rf/reg-event-db ::type (fn [db [_ t]] (assoc db ::type t)))
@@ -121,7 +130,7 @@
      ^{:key 'mega}
      [:button.text-left
       {:on-click #(rf/dispatch [::type 3])}
-      [:figure.relative
+      [:figure.relative.dt3
        [:img {:src "/images/mega.png"}]
        [:figcaption.absolute.w-full.pl-3.pb-4.bottom-0
         [:p.text-lg.tracking-widest.font-light.leading-5
@@ -131,10 +140,9 @@
      ^{:key 'large}
      [:button.text-left
       {:on-click #(rf/dispatch [::type 2])}
-      [:figure.relative
+      [:figure.relative.dt2
        [:img
-        {:style {:filter "hue-rotate(230deg) saturate(.6)"}
-         :src   "/images/mega.png"}]
+        {:src   "/images/mega.png"}]
        [:figcaption.absolute.w-full.pl-3.pb-4.bottom-0
         [:p.text-lg.tracking-widest.font-light.leading-5
          "LARGE"]
@@ -143,10 +151,9 @@
      ^{:key 'medium}
      [:button.text-left
       {:on-click #(rf/dispatch [::type 1])}
-      [:figure.relative
+      [:figure.relative.dt1
        [:img
-        {:style {:filter "hue-rotate(171deg) saturate(.6)"}
-         :src   "/images/mega.png"}]
+        {:src   "/images/mega.png"}]
        [:figcaption.absolute.w-full.pl-3.pb-4.bottom-0
         [:p.text-lg.tracking-widest.font-light.leading-5
          "MEDIUM"]
@@ -155,10 +162,9 @@
      ^{:key 'standard}
      [:button.text-left
       {:on-click #(rf/dispatch [::type 0])}
-      [:figure.relative
+      [:figure.relative.dt0
        [:img
-        {:style {:filter "hue-rotate(57deg) saturate(.6)"}
-         :src   "/images/mega.png"}]
+        {:src   "/images/mega.png"}]
        [:figcaption.absolute.w-full.pl-3.pb-4.bottom-0
         [:p.text-lg.tracking-widest.font-light.leading-5
          "STANDARD"]

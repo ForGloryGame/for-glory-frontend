@@ -90,16 +90,16 @@
       :controllers #(resolve 'fgl.app.views.dashboard/controllers)
       :lazy        true
       :conflicting true}]
-    ["battlefield"
-     {:name        :route/battlefield
-      :panel-name  "Battlefield"
+    ["council"
+     {:name        :route/council
+      :panel-name  "Council"
       :view        #(resolve 'fgl.app.views.battlefield/main)
       :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true
       :conflicting true}]
-    ["council"
-     {:name        :route/council
-      :panel-name  "Council"
+    ["battlefield"
+     {:name        :route/battlefield
+      :panel-name  "Battlefield"
       :view        #(resolve 'fgl.app.views.battlefield/main)
       :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true

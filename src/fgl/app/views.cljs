@@ -12,26 +12,25 @@
    [re-frame.core :as rf]))
 
 (defn main-panel []
-  (let [connected?                                (= @(rf/subscribe [::w/state]) :connected)
-        wrong-network?                            @(rf/subscribe [::w/wrong-network])
+  (let [state                                     (rf/subscribe [::w/state])
+        wrong-network?                            (rf/subscribe [::w/wrong-network])
         current-route                             @(rf/subscribe [::routes/current-route])
         {:keys [view] rname :name :as route-data} (get current-route :data {})]
-    (cond (and (not connected?) rname (not (= (log/spy rname) :route/home)))
-          (do
-            (rf/dispatch [:navigate :route/home])
-            (w/connect!)
-            [:div])
-          (and connected? wrong-network? rname (not (= (log/spy rname) :route/home)))
-          (do
-            (rf/dispatch [:navigate :route/home])
-            (rf/dispatch [::w/switch-to-target-chain!])
-            [:div])
-          :else
-          [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
-           {:style {:gridTemplate "\"header\" min-content \"main\""
-                    ;; :backgroundImage "url(\"/images/bg@2x.png\""
-                    }}
-           [header/ui]
-           [uimap/ui]
-           [body/ui route-data (if view [view route-data] [:div])]
-           [:link {:rel "stylesheet" :href "/fonts/family.css"}]])))
+    (js/setTimeout
+     #(cond (and (not (= @state :connected)) rname (not (= rname :route/home)))
+            (do
+              (rf/dispatch [:navigate :route/home])
+              (w/connect!)
+              [:div])
+            (and (= @state :connected) @wrong-network? rname (not (= rname :route/home)))
+            (do
+              (rf/dispatch [:navigate :route/home])
+              (rf/dispatch [::w/switch-to-target-chain!])
+              [:div]))
+     500)
+    [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
+     {:style {:gridTemplate "\"header\" min-content \"main\""}}
+     [header/ui]
+     [uimap/ui]
+     [body/ui route-data (if view [view route-data] [:div])]
+     [:link {:rel "stylesheet" :href "/fonts/family.css"}]]))

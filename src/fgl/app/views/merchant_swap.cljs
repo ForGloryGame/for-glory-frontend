@@ -75,7 +75,9 @@
 
          amount-out (-> input
                         (.mul rgold)
-                        (.div (.add input rglory)))
+                        (.div (.add input rglory))
+                        (.mul 9)
+                        (.div 10))
 
          glory-allowance
          (get-in db [addr ::glory/allowance (.-address exchange/c)] (ethers/BigNumber.from "0"))]

@@ -32,6 +32,32 @@
  (fn [db [_ addr]]
    (get-in db [addr ::token-ids])))
 
+(rf/reg-event-fx
+ ::type
+ (fn [{:keys [db]} [_ token-id]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (p/then
+        (r :getDeedType token-id)
+        #(rf/dispatch [::set % ::type token-id]))))
+   {}))
+
+(rf/reg-event-fx
+ ::locked
+ (fn [{:keys [db]} [_ token-id]]
+   (when token-id
+     (let [{::w/keys [provider]} db]
+       (ctc/with-provider c provider
+         (p/then
+          (r :locked token-id)
+          #(rf/dispatch [::set % ::locked token-id])))))
+   {}))
+
+(rf/reg-sub
+ ::locked
+ (fn [db [_ token-id]]
+   (get-in db [::locked token-id])))
+
 (reg-event-pfx
  ::pair-init
  10000
@@ -71,7 +97,7 @@
                (recur (inc idx) (rest items)))))
 
          (p/then (r :tokensOfOwner addr)
-                 #(rf/dispatch [::set % addr ::token-ids]))
+                 #(rf/dispatch [::set (map (fn [x] (.toHexString x)) %) addr ::token-ids]))
          (p/then (r :balanceOf addr)
                  #(rf/dispatch [::set % addr ::balance]))
          (p/then (r :pair)

@@ -64,8 +64,8 @@
                         :depends-on #{:shared}}
     :merchant-swap     {:entries    [fgl.app.views.merchant-swap]
                         :depends-on #{:shared}}
-    :council           {:entries    [fgl.app.views.council]
-                        :depends-on #{:shared}}
+    ;; :council           {:entries    [fgl.app.views.council]
+    ;;                     :depends-on #{:shared}}
     :mint              {:entries    [fgl.app.views.mint]
                         :depends-on #{:shared}}
     :404               {:entries    [fgl.app.views.v404]

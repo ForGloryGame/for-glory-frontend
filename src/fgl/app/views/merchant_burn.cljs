@@ -1,17 +1,20 @@
 (ns fgl.app.views.merchant-burn
   (:require
    ["ethers" :as ethers]
-   [fgl.re-frame]
    [fgl.app.ui.balance :as balance]
-   [fgl.wallet.core :as w]
-   [fgl.app.ui.gold-img :as goldimg]
-   [fgl.app.ui.eth-img :as ethimg]
-   [lambdaisland.glogi :as log]
-   [fgl.app.ui.separator :as separator]
    [fgl.app.ui.btn :as btn]
-   [re-frame.core :as rf]
+   [fgl.app.ui.dialog :as dialog]
+   [fgl.app.ui.eth-img :as ethimg]
+   [fgl.app.ui.gold-img :as goldimg]
+   [fgl.app.ui.separator :as separator]
    [fgl.contracts.gold :as gold]
-   [fgl.contracts.landeed :as landeed]))
+   [fgl.contracts.landeed :as landeed]
+   [fgl.re-frame]
+   [fgl.utils :refer [sbn]]
+   [fgl.wallet.core :as w]
+   [lambdaisland.glogi :as log]
+   [re-frame.core :as rf]
+   [reagent.core :as r]))
 
 (defn controllers []
   [{:start
@@ -55,6 +58,15 @@
 
       .guild-burn-land-deeds figcaption {
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+      }
+      figure.dt2>img {
+        filter: hue-rotate(230deg) saturate(.6);
+      }
+      figure.dt1>img {
+        filter: hue-rotate(171deg) saturate(.6);
+      }
+      figure.dt0>img {
+        filter: hue-rotate(57deg) saturate(.6);
       }"])
 
 (rf/reg-event-db ::payment (fn [db [_ p]] (assoc db ::payment p)))
@@ -63,33 +75,52 @@
 (rf/reg-sub
  ::data
  (fn [db _]
-   (let [{::w/keys [addr] ::keys [type token-id] ::landeed/keys [info eth-gold-ratio]}
+   (let [{::w/keys       [addr]
+          ::keys         [token-id]
+          ::landeed/keys [rgold reth total]}
          db
 
          token-ids (get-in db [addr ::landeed/token-ids])
 
-         type
-         (or type 3)
+         ttype     (get-in db [::landeed/type token-id])
+         locked-lp (get-in db [::landeed/locked (and token-id token-id)])
 
-         ethp
-         (or (:price (get info type)) (ethers/BigNumber.from 0))
+         eth (-> (sbn locked-lp)
+                 (.mul (sbn reth))
+                 (.mul 9)
+                 (.div 10)
+                 (.div (sbn total 1)))
 
-         goldp
-         (.mul (or eth-gold-ratio (ethers/BigNumber.from 0)) ethp)]
-     {:type      type
-      :token-ids (or (seq token-ids) '(1 2 3 4 5))
-      :ethp      ethp
-      :goldp     goldp
-      :token-id  (or token-id ::token-id)})))
+         gold (-> (sbn locked-lp)
+                  (.mul (sbn rgold))
+                  (.mul 9)
+                  (.div 10)
+                  (.div (sbn total 1)))]
+
+     {:token-ids token-ids
+      :token-id  (or token-id ::token-id)
+      :ttype     ttype
+      :eth       eth
+      :gold      gold})))
 
 (defn token [id]
-  (let [{:keys [token-id]} @(rf/subscribe [::data])]
-    ^{:key id}
-    [:button.text-left
-     {:on-click #(rf/dispatch [::token-id id])}
-     [:figure.relative.w-11_2rem
-      [:img {:src "/images/mega.png"}]
-      (and (= id token-id) [:div.selected])]]))
+  (r/create-class
+   {:component-did-mount
+    (fn []
+      (rf/dispatch [::landeed/type id])
+      (rf/dispatch [::landeed/locked id]))
+    :reagent-render
+    (fn []
+      (let [{:keys [ttype token-id]} @(rf/subscribe [::data])
+            class                    (str "dt" (or ttype 0))]
+
+        ^{:key id}
+        [:button.text-left
+         {:on-click #(rf/dispatch [::token-id id])}
+         [:figure.relative.w-11_2rem
+          {:className class}
+          [:img {:src "/images/mega.png"}]
+          (and (= id token-id) [:div.selected])]]))}))
 
 (defn tokens []
   (let [{:keys [token-ids]} @(rf/subscribe [::data])]
@@ -98,27 +129,38 @@
      (into [:div.flex.bg-C81c6dd1a.py-3.pl-2.pr-6.rounded-sm.relative] (map #(vector token %) token-ids))]))
 
 (defn returns []
-  (let [{:keys [payment token-id token-ids]} @(rf/subscribe [::data])]
+  (let [{:keys [eth gold]} @(rf/subscribe [::data])]
     [:<>
      [:p.text-C6bc9db.mb-4.mt-6.text-lg
       "Your returned token will be"]
-     [:div.grid.grid-cols-2.gap-x-6.text-3xl
-      [:button.bg-C81c6dd1a.leading-3rem.rounded-sm
-       {:className (if (= payment :eth) "bg-C71edf599" "")
-        :on-click  #(rf/dispatch [::payment :eth])}
+     [:ul.grid.grid-cols-2.gap-x-6.text-3xl
+      [:li.bg-C81c6dd1a.leading-3rem.rounded-sm
+       {:on-click #(rf/dispatch [::payment :eth])}
        [:div.flexr
         [ethimg/ui "2rem"]
-        [:span "18"]]]
-      [:button.bg-C81c6dd1a.leading-3rem.rounded-sm
-       {:className (if (= payment :gold) "bg-C71edf599" "")
-        :on-click  #(rf/dispatch [::payment :gold])}
+        [balance/ui eth {:fixed 4}]]]
+      [:li.bg-C81c6dd1a.leading-3rem.rounded-sm
+       {:on-click #(rf/dispatch [::payment :gold])}
        [:div.flexr
         [goldimg/ui "2rem"]
-        [:span "2.33"]]]]]))
+        [balance/ui gold {:fixed 4}]]]]]))
 
 (defn burn []
-  (let [{:keys [token-id token-ids]} @(rf/subscribe [::data])]
-    [:div.text-center [btn/ui {:t :osm} "BURN"]]))
+  (let [{:keys [token-id eth gold]} @(rf/subscribe [::data])]
+    [:div.text-center
+     [btn/ui
+      {:t :osm
+       :on-click
+       #(rf/dispatch
+         [::landeed/send
+          {:method :redeem
+           :params (log/spy [#js [token-id] eth gold])
+           :on-success
+           (fn []
+             (rf/dispatch [::landeed/init-raw])
+             (rf/dispatch [::landeed/pair-init-raw])
+             (dialog/on-success))}])}
+      "BURN"]]))
 
 (defn main []
   [:<>
