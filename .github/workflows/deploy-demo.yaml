@@ -54,13 +54,6 @@ jobs:
       - run: mkdir -p test
       - run: clojure -X:css-prod
 
-      - name: Deploy for-glory-demo.2rypto.com
-        uses: dswistowski/surge-sh-action@v1
-        with:
-          domain: "for-glory-demo.2rypto.com"
-          project: "./resources/app/public/"
-          login: ${{ secrets.SURGE_LOGIN}}
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
