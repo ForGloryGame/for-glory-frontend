@@ -17,8 +17,8 @@
     children]])
 
 (defn logo []
-  [:img.mr-8 {:width "4.75rem" :style {:width "4.75rem" :minWidth "76px"} :alt "link to home page"
-              :srcset "/images/logo-128.png 128w,
+  [:img.mr-8 {:width "4.75rem" :style {:width "4.75rem" :minWidth "4.75rem" :minHeight "3.28375rem"} :alt "link to home page"
+              :srcSet "/images/logo-128.png 128w,
                        /images/logo-256.png 256w,
                        /images/logo-512.png 512w,
                        /images/logo-1024.png 1024w,"

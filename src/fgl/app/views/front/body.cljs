@@ -19,7 +19,8 @@
     :style     {:backgroundImage "linear-gradient(180deg, #E8B239 0%, #EC7917 100%)"
                 :boxShadow       "0 2px 4px 0 rgba(255,197,90,0.24)"
                 :borderRadius    "1.25rem"
-                :cursor          :pointer}
+                :cursor          :pointer
+                :minWidth        "2.5rem"}
     :on-click  identity}
    "Start App"])
 
@@ -28,7 +29,8 @@
    {:className "px-3.25rem w-11.25rem"
     :style     {:boxShadow    "0 2px 4px 0 rgba(255,197,90,0.24)"
                 :borderRadius "1.25rem"
-                :cursor       :pointer}
+                :cursor       :pointer
+                :minWidth     "2.5rem"}
     :on-click  identity}
    "Whitepaper"])
 
