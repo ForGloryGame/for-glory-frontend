@@ -54,12 +54,13 @@
  ::connected
  [rf/trim-v]
  (fn [db [addr]]
-   (assoc db ::state :connected ::addr addr)))
+   (let [addr (if (string? addr) addr (first addr))]
+     (assoc db ::state :connected ::addr addr))))
 
 (rf/reg-event-db
  ::disconnected
  (fn [db _]
-   (assoc db ::state :installed :addr nil)))
+   (assoc db ::state :installed ::addr nil)))
 
 (rf/reg-event-fx
  ::accounts-changed
