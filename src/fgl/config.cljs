@@ -5,6 +5,7 @@
 
 (goog-define ^js/String version "unknown")
 
+(goog-define ^js/String backend-endpoint "")
 (goog-define ^js/String contract-addr-gold "unknown")
 (goog-define ^js/String contract-addr-glory "unknown")
 (goog-define ^js/String contract-addr-landeed "unknown")

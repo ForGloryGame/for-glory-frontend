@@ -24,7 +24,7 @@
 
 (defn gget [uri cb]
   (-> (js/fetch
-       (str "" uri)
+       (str conf/backend-endpoint uri)
        (clj->js
         {:method  :get
          :mode    :cors
@@ -45,7 +45,7 @@
 
 (defn post [uri body cb]
   (-> (js/fetch
-       (str "" uri)
+       (str conf/backend-endpoint uri)
        (clj->js
         {:method  :post
          :mode    :cors
