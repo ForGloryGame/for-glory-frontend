@@ -2,22 +2,18 @@
   (:require
    ["ethers" :as ethers]
    [clojure.string :as s]
-   [taoensso.encore :as enc]
+   [fgl.app.ui.balance :as balance]
+   [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.glory-img :as gloryimg]
+   [fgl.app.ui.gold-img :as goldimg]
+   [fgl.app.ui.separator :as separator]
+   [fgl.contracts.gold :as gold]
    [fgl.contracts.kingdoms :as kingdom]
    [fgl.contracts.sgold :as sgold]
-   [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
-   [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
-   [fgl.app.ui.separator :as separator]
-   [fgl.app.ui.gold-img :as goldimg]
-   [fgl.app.ui.glory-img :as gloryimg]
-   [fgl.contracts.gold :as gold]
-   [fgl.app.ui.sgold-img :as sgoldimg]
-   [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
-   [re-frame.core :as rf]
-   [reagent.core :as r]))
+   [re-frame.core :as rf]))
 
 (defn controllers []
   [{:start
@@ -129,8 +125,7 @@
                                                                (rf/dispatch [::sgold/init-raw]))}]
                                     [::gold/send
                                      {:method     :approve
-                                      :params     [(.-address sgold/c)
-                                                   "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"]
+                                      :params     [(.-address sgold/c) "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"]
                                       :on-success (fn [_]
                                                     (rf/dispatch
                                                      [::gold/allowance
@@ -140,13 +135,10 @@
 (comment
   (rf/dispatch [::gold/send
                 {:method     :approve
-                 :params     [(.-address sgold/c)
-                              "0x0"]
-                 :on-success (fn [_]
-                               (log/debug :hhhhhhh :h)
-                               (rf/dispatch
-                                [::gold/allowance
-                                 (.-address sgold/c)]))}]))
+                 :params     [(.-address sgold/c) "0x0"]
+                 :on-success
+                 (fn [_]
+                   (rf/dispatch [::gold/allowance (.-address sgold/c)]))}]))
 
 (defn right []
   (let [unlocked @(rf/subscribe [::right-data])]
