@@ -13,7 +13,7 @@
    (ocall @provider "send" method (clj->js params))))
 
 (defn check-installation [_]
-  (when-let [installed? (and js/ethereum js/ethereum.isMetaMask)]
+  (when (and js/ethereum js/ethereum.isMetaMask)
     (reset! provider (ethers/providers.Web3Provider. js/ethereum))
     (rf/dispatch [::installed])
     (js/ethereum.removeAllListeners)

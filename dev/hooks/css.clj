@@ -4,6 +4,7 @@
    ;; [garden.compiler :as gc]
    ;; [girouette.tw.preflight :as girouette-preflight]
    [xxx.app.grammer]
+   [clojure.string :as str]
    [xxx.app.css]
    ;; [xxx.app.styles]
    [girouette.processor :as css-processor]))
@@ -28,15 +29,22 @@
 ;;          (o/defined-styles)))
 ;;   build-state)
 
+(defn- css-resource-output-file [build-state]
+  (-> build-state
+      :shadow.build/config
+      :output-dir
+      (str/replace "/js/compiled" "/css/compiled/main.css")))
+
 (defn build
   {:shadow.build/stage :configure}
   [build-state & _]
-  (let [mode (:shadow.build/mode build-state)]
-    (css-processor/process {:css           {:output-file "resources/app/public/css/compiled/main.css"}
-                            :garden-fn     'xxx.app.grammer/class-name->garden
-                            :apply-classes 'xxx.app.css/composed-classes
-                            :watch?        true
-                            ;; :verbose?      false
-                            ;; :dry-run? true
-                            })
+  (let [build-id (:shadow.build/build-id build-state)
+        mode     (:shadow.build/mode build-state)]
+    (prn "hahaha" (some #{build-id} [:cards :app]))
+    (when (some #{build-id} [:cards :app])
+      (css-processor/process {:css           {:output-file (css-resource-output-file build-state)}
+                              :garden-fn     'xxx.app.grammer/class-name->garden
+                              :apply-classes 'xxx.app.css/composed-classes
+                              :watch?        (= mode :dev)
+                              :verbose?      true}))
     build-state))

@@ -1,7 +1,6 @@
 (ns xxx.app.ui.connect-btn-card
   (:require
    [reagent.core :as reagent]
-   [clojure.string :as str]
    [nubank.workspaces.core :as ws]
    [nubank.workspaces.card-types.react :as ct.react]
    [xxx.app.ui.connect-btn]))
