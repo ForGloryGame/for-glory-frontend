@@ -1,8 +1,9 @@
 (ns fgl.app.ui.gold-img)
 
 (defn ui [width]
-  [:img
-   {:style {:width (str width "rem")
-            :height (str width "rem")
-            :transform "translateY(5%)"}
-    :src "/images/gold-token.png"}])
+  (let [width (if string? width (str width "rem"))]
+    [:img
+     {:style {:width width
+              :height width
+              :transform "translateY(5%)"}
+      :src "/images/gold-token.png"}]))

@@ -6,7 +6,13 @@
    [fgl.app.ui.toast :as toast]
    [fgl.app.ui.nft-card :as nftc]
    [fgl.app.ui.connect-btn]
-   [fgl.app.ui.checkbox :as checkbox]))
+   [fgl.app.ui.checkbox :as checkbox]
+   [fgl.app.ui.panel :as panel]))
+
+(ws/defcard ^:dev/before-load panel
+  (ct.react/react-card
+   (reagent/as-element
+    [:div [panel/ui "COUNCEL" 100]])))
 
 (ws/defcard ^:dev/before-load nft-card
   (ct.react/react-card

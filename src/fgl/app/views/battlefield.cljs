@@ -8,10 +8,12 @@
    [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
    [fgl.utils :refer [->display-token ->token-ids]]
+   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
+   [fgl.app.ui.nft-card :as nftc]
    [reagent.core :as r]))
 
 (defn controllers []
@@ -93,6 +95,9 @@
       bf-approved
       all-selected])))
 
+(defn- to-home []
+  (rf/dispatch [:navigate :route/home]))
+
 (defn close []
   (let [to-home #(rf/dispatch [:navigate :route/home])]
     (fn []
@@ -107,7 +112,7 @@
           :value         type
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "cs2 ce3 rs2 re3 justify-self-start"}
+          {:className "cs1 ce2 rs1 re2 justify-self-start"}
           [:> S/Value type]
           [:> S/Icon ">"]]
          [:> S/Content
@@ -125,19 +130,20 @@
 
 (defn card [id is-lord gold glory staked? checked disabled]
   (let [onCheckedChange #(rf/dispatch [(if % ::select ::deselect) id])
-        name            (str (if is-lord "Lord#" "Knight#") id)]
-    [:> C/Root
-     {:disabled        disabled
-      :name            name
-      :value           name
-      :onCheckedChange onCheckedChange}
-     [:ul.border
-      [:li (str "Selected: " (if checked true false))]
-      (and staked? [:li "staked"])
-      [:li name]
-      (and staked? [:li "Gold earned: " [balance/ui gold]])
-      (and staked? is-lord [:li "Glory earned: " [balance/ui glory]])]
-     [:> C/Indicator [:span checked]]]))
+        name            (str (if is-lord "Lord#" "Knight#") id)
+        image (if is-lord "/images/lord-example.png" "/images/lord-example.png")]
+    [nftc/ui
+     {:id id
+      :name name
+      :image image
+      :gold gold
+      :staked staked?
+      :disabled disabled
+      :checked checked
+      :width "16rem"
+      :glory glory
+      :earned? (not glory)
+      :onCheckedChange onCheckedChange}]))
 
 (defn cards []
   (fn []
@@ -157,7 +163,7 @@
     (fn []
       (let [[_ _ _ all-selected] @(rf/subscribe [::data])]
         [:> C/Root
-         {:className       "cs2 ce3 rs4 re5 justify-self-start"
+         {:className       "cs1 ce2 rs4 re5 justify-self-start"
           :onCheckedChange select-all
           :checked         all-selected}
          "Select All"
@@ -189,11 +195,14 @@
             selected              @(rf/subscribe [::selected])
             staked?               (= type :staked)
             no-selected?          (not (seq selected))]
-        [:div.cs3.ce4.rs4.re5.justify-self-end.grid.grid-cols-3
+        [:div.cs2.ce3.rs4.re5.justify-self-end.grid.grid-cols-3
          (and (not approved?) [:button {:on-click approve} "APPROVE"])
          (and approved? (not staked?)  [:button {:on-click (enter selected) :disabled no-selected?} "ENTER"])
          (and approved? staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
          (and approved? staked? [:button {:on-click (claim selected) :disabled no-selected?} "CLAIM"])]))))
+
+(defn separator []
+  [:img {:src "/images/separator.svg"}])
 
 (defn main [_]
   (let []
@@ -201,14 +210,16 @@
       (r/create-class
        {:reagent-render
         (fn []
-          (let [[type]  @(rf/subscribe [::data])
+          (let [[type] @(rf/subscribe [::data])
                 ;; staked? (= type :staked)
                 ]
-            [:div.grid.p-1.border
-             [:h1.cs1.ce3.rs1.re2 "Battlefield"]
-             [close]
-             [select]
-             [:div.cs2.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-              [cards]]
-             [select-all]
-             [btns]]))}))))
+            [panel/ui "Battlefield" 80 to-home
+             [:div.grid.justify-center
+              {:style {:padding "2%"
+                       :margin  "2%"}}
+              [select]
+              [:img.cs1.rs2.re3 {:src "/images/separator.svg"}]
+              [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+               [cards]]
+              [select-all]
+              [btns]]]))}))))

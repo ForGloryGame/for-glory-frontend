@@ -3,11 +3,16 @@
    [fgl.config :as conf]
    ["ethers" :as ethers]))
 
-(defn ->display-token [bignumberish]
-  (-> bignumberish
-      ethers/BigNumber.from
-      (ethers/utils.formatUnits 18)
-      ethers/utils.commify))
+(defn ->display-token
+  ([bignumberish] (->display-token bignumberish 2))
+  ([bignumberish to-fixed-decimals]
+   (let [bignumberish (ethers/BigNumber.from bignumberish)
+         mod          (.pow (ethers/BigNumber.from 10) (- 18 to-fixed-decimals))
+         sub          (.mod bignumberish mod)]
+     (-> bignumberish
+         (.sub sub)
+         (ethers/utils.formatUnits 18)
+         ethers/utils.commify))))
 
 (defn ->token-ids [token-ids-in-str-or-int]
   (->> (map int token-ids-in-str-or-int)
