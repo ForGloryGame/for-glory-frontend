@@ -210,15 +210,17 @@
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"
   [route-name dispatch-fn]
-  (if (loader/loaded? (name route-name))
-    (dispatch-fn)
-    ;; load lazy page
-    (->
-     (loader/load (name route-name))
-     (.then dispatch-fn #(do
-                           (rf/dispatch [:navigate :route/server-error])
-                           ;; (log/error %)
-                           )))))
+  (let [route-name-str (name route-name)
+        route-name-str (if (= route-name-str "council") "battlefield" route-name-str)]
+    (if (loader/loaded? route-name-str)
+      (dispatch-fn)
+      ;; load lazy page
+      (->
+       (loader/load route-name-str)
+       (.then dispatch-fn #(do
+                             (rf/dispatch [:navigate :route/server-error])
+                             ;; (log/error %)
+                             ))))))
 
 ;;; init
 (defn on-navigate [new-match]
