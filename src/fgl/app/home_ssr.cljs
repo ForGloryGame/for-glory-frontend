@@ -1,4 +1,4 @@
-(ns fgl.app.core-ssr
+(ns fgl.app.home-ssr
   (:require
    [fgl.app.views :as views]
    [reagent.dom.server :as rs]))

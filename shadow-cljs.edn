@@ -25,7 +25,8 @@
  :http       {:port 9999 :host "localhost"}
  :dev-http
  {8880 "resources/app/public"
-  8881 "resources/cards/public"}
+  8881 "resources/front/public"
+  8882 "resources/cards/public"}
  :js-options {:js-package-dirs ["node_modules"]}
 
  :builds
@@ -35,23 +36,57 @@
    :asset-path    "/js/compiled"
    :module-loader true
    :modules
-   {;; :shared  {:entries []}
-    :main    {:init-fn fgl.app.core/init
-              :default true}
-    ;; :front   {:entries    [fgl.app.views.front]
-    ;;           :depends-on #{:main}}
-    :home    {:entries    [fgl.app.views.home]
-              :depends-on #{:main}}
+   {:shared  {:entries []
+              :default    true}
+    :main    {:init-fn    fgl.app.home-core/init
+              :depends-on #{:shared}}
     :profile {:entries    [fgl.app.views.profile]
-              :depends-on #{:main}}
+              :depends-on #{:shared}}
     :about   {:entries    [fgl.app.views.about]
-              :depends-on #{:main}}
+              :depends-on #{:shared}}
     :login   {:entries    [fgl.app.views.login]
-              :depends-on #{:main}}
+              :depends-on #{:shared}}
     :404     {:entries    [fgl.app.views.v404]
-              :depends-on #{:main}}
+              :depends-on #{:shared}}
     :500     {:entries    [fgl.app.views.v500]
-              :depends-on #{:main}}}
+              :depends-on #{:shared}}}
+   :devtools
+   {:preloads [;; day8.re-frame-10x.preload
+               hashp.core]}
+   :dev
+   {:compiler-options
+    {:closure-defines
+     {re-frame.trace.trace-enabled?                  true
+      day8.re-frame.tracing.trace-enabled?           true
+      fgl.app.config.contract-addr-gold              #shadow/env "CONTRACT_GOLD"
+      fgl.app.config.contract-addr-glory             #shadow/env "CONTRACT_GLORY"
+      fgl.app.config.contract-addr-landeed           #shadow/env "CONTRACT_LANDEED"
+      fgl.app.config.contract-addr-sgold             #shadow/env "CONTRACT_SGOLD"
+      fgl.app.config.contract-addr-kingdoms          #shadow/env "CONTRACT_KINGDOMS"
+      fgl.app.config.contract-addr-gamenft           #shadow/env "CONTRACT_GAMENFT"
+      fgl.app.config.contract-addr-gamepass          #shadow/env "CONTRACT_GAMEPASS"
+      fgl.app.config.contract-addr-battlefield       #shadow/env "CONTRACT_BATTLEFIELD"
+      fgl.app.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
+      fgl.app.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"}}}
+   :release
+   {:closure-defines {goog.DEBUG                 false
+                      goog.debug.LOGGING_ENABLED true}
+    :build-options
+    {:ns-aliases
+     {day8.re-frame.tracing day8.re-frame.tracing-stubs}}
+    :compiler-options
+    {:elide-asserts true}}}
+
+  :front
+  {:target        :browser
+   :output-dir    "resources/front/public/js/compiled"
+   :asset-path    "/js/compiled"
+   :module-loader true
+   :modules
+   {:shared {:entries []}
+    :main  {:init-fn    fgl.app.front-core/init
+            :default    true
+            :depends-on #{:shared}}}
    :devtools
    {:preloads [;; day8.re-frame-10x.preload
                hashp.core]}
@@ -70,9 +105,23 @@
     {:elide-asserts true}}}
 
   :app-ssr
+  {:target :node-script
+   :output-to  "resources/app/ssr.js"
+   :main  fgl.app.home-ssr/main
+   :devtools
+   {:preloads [hashp.core]}
+   :dev
+   {:compiler-options {}}
+   :release
+   {:closure-defines {goog.DEBUG false
+                      goog.debug.LOGGING_ENABLED true}
+    :build-options {}
+    :compiler-options {:elide-asserts true}}}
+
+  :front-ssr
   {:target    :node-script
-   :output-to "resources/app/ssr.js"
-   :main      fgl.app.core-ssr/main
+   :output-to "resources/front/ssr.js"
+   :main      fgl.app.front-ssr/main
    :devtools
    {:preloads [hashp.core]}
    :dev
@@ -84,15 +133,15 @@
     :compiler-options {:elide-asserts true}}}
 
   :cards
-  {:target      nubank.workspaces.shadow-cljs.target
-   :ns-regexp   "-?cards?$"
+  {:target nubank.workspaces.shadow-cljs.target
+   :ns-regexp  "-?cards?$"
    :output-dir  "resources/cards/public/js/compiled"
    :asset-path  "/js/compiled"
-   :preloads    [;; day8.re-frame-10x.preload
-                 hashp.core]                   ; optional, list namespaces to be pre loaded
-   :build-hooks [(hooks.css/build)]
+   :preloads  [;; day8.re-frame-10x.preload
+               hashp.core]                   ; optional, list namespaces to be pre loaded
+   :build-hooks  [(hooks.css/build)]
    :dev
    {:compiler-options
     {:closure-defines
-     {re-frame.trace.trace-enabled?        true
+     {re-frame.trace.trace-enabled? true
       day8.re-frame.tracing.trace-enabled? true}}}}}}

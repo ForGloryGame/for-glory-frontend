@@ -10,10 +10,11 @@
    ;; https://cljdoc.org/d/metosin/reitit/0.5.16/doc/coercion/malli
    [reitit.coercion.malli :as m]
    [reitit.coercion :as coercion]
+   [fgl.app.views.home :as home]
    ;; [reitit.exception :as exception]
    ;; [reitit.core :as r]
    [re-frame.core :as rf]
-   [taoensso.timbre :refer [warn error info debug]]))
+   [lambdaisland.glogi :as log]))
 
 ;; https://github.com/russmatney/starters/blob/master/fullstack/src/fullstack/ui/routes.cljs
 ;;; Subs
@@ -55,16 +56,16 @@
 ;;; Routes
 (def routes
   ["/"
+   ;; [""
+   ;;  {:name        :route/front
+   ;;   :view        front/main
+   ;;   :controllers (front/controllers)
+   ;;   :lazy        false}]
    [""
-    {:name        :route/front
-     :view        front/main
-     :controllers (front/controllers)
-     :lazy        false}]
-   ["home"
     {:name        :route/home
-     :view        #(resolve 'fgl.app.views.home/main)
-     :controllers #(resolve 'fgl.app.views.home/controllers)
-     :lazy        true
+     :view        home/main
+     :controllers (home/controllers)
+     ;; :lazy        true
      :conflicting true}]
    ["login"
     {:name        :route/login
@@ -72,22 +73,16 @@
      :controllers #(resolve 'fgl.app.views.login/controllers)
      :lazy        true
      :conflicting true}]
-   ["about"
-    {:name        :route/about
-     :view        front/main
-     :controllers (front/controllers)
-     :lazy        false}
-    ;; {:name        :route/about
-    ;;  :view        #(resolve 'fgl.app.views.about/main)
-    ;;  :controllers #(resolve 'fgl.app.views.about/controllers)
-    ;;  :lazy        true
-    ;;  :conflicting true}
-    ]
-   ["roadmap"
-    {:name        :route/roadmap
-     :view        front/main
-     :controllers (front/controllers)
-     :lazy        false}]
+   ;; ["about"
+   ;;  {:name        :route/about
+   ;;   :view        front/main
+   ;;   :controllers (front/controllers)
+   ;;   :lazy        false}]
+   ;; ["roadmap"
+   ;;  {:name        :route/roadmap
+   ;;   :view        front/main
+   ;;   :controllers (front/controllers)
+   ;;   :lazy        false}]
    ["404"
     {:name        :route/not-found
      :view        #(resolve 'fgl.app.views.v404/main)
@@ -132,7 +127,8 @@
      (loader/load (name route-name))
      (.then dispatch-fn #(do
                            (rf/dispatch [:navigate :route/server-error])
-                           (error %))))))
+                           ;; (log/error %)
+                           )))))
 
 ;;; init
 (defn on-navigate [new-match]
@@ -143,6 +139,5 @@
         (rf/dispatch [::navigated new-match])))))
 
 (defn init! []
-  (info "initializing routes")
-  (tap> router)
+  (log/debug :init :routes)
   (rfe/start! router on-navigate {:use-fragment true}))

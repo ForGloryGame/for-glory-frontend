@@ -1,4 +1,4 @@
-(ns fgl.app.contracts.erc20.abi)
+(ns fgl.contracts.erc20.abi)
 
 (defonce data
   [{:inputs [] :stateMutability "nonpayable" :type "constructor"}

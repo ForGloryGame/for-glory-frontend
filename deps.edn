@@ -25,6 +25,7 @@
   com.taoensso/truss          {:mvn/version "1.6.0"}
   cheshire/cheshire           {:mvn/version "5.10.2"}
   medley/medley               {:mvn/version "1.4.0"}
+  com.taoensso/encore         {:mvn/version "3.21.0"}
   funcool/promesa             {:mvn/version "8.0.450"}
   funcool/cuerdas             {:mvn/version "2022.03.27-397"}
   com.fzakaria/slf4j-timbre   {:mvn/version "0.3.21"} ;; no undertow debug logs
@@ -39,7 +40,7 @@
   cider/cider-nrepl             {:mvn/version "0.28.3"}
   refactor-nrepl/refactor-nrepl {:mvn/version "3.5.2"}
   clj-commons/fs                {:mvn/version "1.6.310"}
-  djblue/portal {:mvn/version "0.25.0"}}
+  djblue/portal                 {:mvn/version "0.25.0"}}
 
  :aliases
  {:repl/cider-refactor
@@ -74,6 +75,7 @@
     bidi/bidi                       {:mvn/version "2.1.6"}
     clj-commons/pushy               {:mvn/version "0.3.10"}
     garden/garden                   {:mvn/version "1.3.10"}
+    com.lambdaisland/glogi          {:mvn/version "1.1.144"}
     net.dhleong/spade               {:mvn/version "1.2.0-SNAPSHOT"}
     re-pressed/re-pressed           {:mvn/version "0.3.1"}
     breaking-point/breaking-point   {:mvn/version "0.1.2"}
@@ -102,6 +104,25 @@
    :ns-default girouette.processor
    :exec-fn    process
    :exec-args  {:css           {:output-file "resources/app/public/css/compiled/main.css"}
+                :garden-fn     fgl.app.grammer/class-name->garden
+                :apply-classes fgl.app.css/composed-classes
+                #_#_:dry-run? true}}
+  :css-front
+  {; clojure -X:css
+   :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
+   :ns-default girouette.processor
+   :exec-fn    process
+   :exec-args  {:css           {:output-file "resources/front/public/css/compiled/main.css"}
+                :garden-fn     fgl.app.grammer/class-name->garden
+                :apply-classes fgl.app.css/composed-classes
+                :watch?        true
+                #_#_:dry-run? true}}
+  :css-front-prod
+  {; clojure -X:css-prod
+   :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
+   :ns-default girouette.processor
+   :exec-fn    process
+   :exec-args  {:css           {:output-file "resources/front/public/css/compiled/main.css"}
                 :garden-fn     fgl.app.grammer/class-name->garden
                 :apply-classes fgl.app.css/composed-classes
                 #_#_:dry-run? true}}

@@ -5,8 +5,6 @@
    [nubank.workspaces.card-types.react :as ct.react]
    [fgl.app.ui.toast :as toast]))
 
-(enable-console-print!)
-
 (ws/defcard ^:dev/before-load toast
   (ct.react/react-card
    (reagent/as-element

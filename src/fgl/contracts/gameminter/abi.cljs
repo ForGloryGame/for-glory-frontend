@@ -1,29 +1,33 @@
-(ns fgl.app.contracts.kingdom.abi)
+(ns fgl.contracts.gameminter.abi)
 
 (defonce data
   [{:anonymous false
     :inputs
     [{:indexed      true
-      :internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}
-     {:indexed      true
       :internalType "address"
-      :name         "_account"
-      :type         "address"}]
-    :name      "Join"
+      :name         "_recipient"
+      :type         "address"}
+     {:indexed      false
+      :internalType "uint256"
+      :name         "_amount"
+      :type         "uint256"}
+     {:indexed      false
+      :internalType "bool"
+      :name         "_stake"
+      :type         "bool"}]
+    :name      "MintCommit"
     :type      "event"}
    {:anonymous false
     :inputs
-    [{:indexed      true
-      :internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}
+    [{:indexed      false
+      :internalType "address"
+      :name         "_caller"
+      :type         "address"}
      {:indexed      true
       :internalType "address"
       :name         "_account"
       :type         "address"}]
-    :name      "Leave"
+    :name      "Reveal"
     :type      "event"}
    {:anonymous false
     :inputs
@@ -73,64 +77,52 @@
       :type         "address"}]
     :name      "RoleRevoked"
     :type      "event"}
+   {:anonymous false
+    :inputs
+    [{:indexed      true
+      :internalType "uint256"
+      :name         "_tokenId"
+      :type         "uint256"}
+     {:indexed      false
+      :internalType "address"
+      :name         "_from"
+      :type         "address"}
+     {:indexed      false
+      :internalType "address"
+      :name         "_thief"
+      :type         "address"}]
+    :name      "Steal"
+    :type      "event"}
    {:inputs          []
     :name            "DEFAULT_ADMIN_ROLE"
     :outputs         [{:internalType "bytes32" :name "" :type "bytes32"}]
     :stateMutability "view"
     :type            "function"}
+   {:inputs          []
+    :name            "MAX_SUPPLY"
+    :outputs         [{:internalType "uint256" :name "" :type "uint256"}]
+    :stateMutability "view"
+    :type            "function"}
+   {:inputs          []
+    :name            "assigned"
+    :outputs         [{:internalType "uint256" :name "" :type "uint256"}]
+    :stateMutability "view"
+    :type            "function"}
+   {:inputs          []
+    :name            "battlefield"
+    :outputs         [{:internalType "address" :name "" :type "address"}]
+    :stateMutability "view"
+    :type            "function"}
    {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}
-     {:internalType "string" :name "_name" :type "string"}]
-    :name            "changeKingdomName"
+    [{:internalType "uint256" :name "_amount" :type "uint256"}
+     {:internalType "bool" :name "_stake" :type "bool"}]
+    :name            "commitMint"
     :outputs         []
-    :stateMutability "nonpayable"
+    :stateMutability "payable"
     :type            "function"}
    {:inputs          []
     :name            "devWallet"
     :outputs         [{:internalType "address" :name "" :type "address"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs          []
-    :name            "entryFee"
-    :outputs         [{:internalType "uint256" :name "" :type "uint256"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "address" :name "_account" :type "address"}]
-    :name            "getAccountInfo"
-    :outputs
-    [{:internalType "enum Kingdoms.Kingdom" :name "" :type "uint8"}
-     {:internalType "uint256" :name "" :type "uint256"}
-     {:internalType "uint256" :name "" :type "uint256"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}]
-    :name            "getElders"
-    :outputs
-    [{:internalType "address[5]" :name "" :type "address[5]"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}]
-    :name            "getMemberCount"
-    :outputs         [{:internalType "uint256" :name "" :type "uint256"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}
-     {:internalType "uint256" :name "_offset" :type "uint256"}
-     {:internalType "uint256" :name "_count" :type "uint256"}]
-    :name            "getMemberList"
-    :outputs         [{:internalType "address[]" :name "" :type "address[]"}]
     :stateMutability "view"
     :type            "function"}
    {:inputs          [{:internalType "bytes32" :name "role" :type "bytes32"}]
@@ -138,26 +130,13 @@
     :outputs         [{:internalType "bytes32" :name "" :type "bytes32"}]
     :stateMutability "view"
     :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}]
-    :name            "getSenators"
-    :outputs
-    [{:internalType "address[10]" :name "" :type "address[10]"}]
-    :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}
-     {:internalType "address" :name "_account" :type "address"}]
-    :name            "getVotingPower"
-    :outputs         [{:internalType "uint256" :name "" :type "uint256"}]
+   {:inputs          []
+    :name            "gloryNFT"
+    :outputs         [{:internalType "address" :name "" :type "address"}]
     :stateMutability "view"
     :type            "function"}
    {:inputs          []
-    :name            "goldToken"
+    :name            "gloryToken"
     :outputs         [{:internalType "address" :name "" :type "address"}]
     :stateMutability "view"
     :type            "function"}
@@ -175,42 +154,41 @@
     :outputs         [{:internalType "bool" :name "" :type "bool"}]
     :stateMutability "view"
     :type            "function"}
+   {:inputs          [{:internalType "uint256" :name "" :type "uint256"}]
+    :name            "height2hash"
+    :outputs         [{:internalType "bytes32" :name "" :type "bytes32"}]
+    :stateMutability "view"
+    :type            "function"}
    {:inputs
-    [{:internalType "address" :name "_goldToken" :type "address"}
-     {:internalType "address" :name "_sGold" :type "address"}
-     {:internalType "address" :name "_treasury" :type "address"}
-     {:internalType "address" :name "_devWallet" :type "address"}]
+    [{:internalType "address" :name "_treasury" :type "address"}
+     {:internalType "address" :name "_devWallet" :type "address"}
+     {:internalType "address" :name "_gloryNFT" :type "address"}
+     {:internalType "address" :name "_gloryToken" :type "address"}
+     {:internalType "address" :name "_battlefield" :type "address"}]
     :name            "initialize"
     :outputs         []
     :stateMutability "nonpayable"
     :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom"
-      :name         "_kingdom"
-      :type         "uint8"}]
-    :name            "join"
-    :outputs         []
-    :stateMutability "nonpayable"
-    :type            "function"}
-   {:inputs
-    [{:internalType "enum Kingdoms.Kingdom" :name "" :type "uint8"}]
-    :name            "kingdoms"
+   {:inputs          [{:internalType "address" :name "" :type "address"}]
+    :name            "mintCommits"
     :outputs
-    [{:internalType "address" :name "treasury" :type "address"}
-     {:internalType "uint256" :name "power" :type "uint256"}
-     {:internalType "uint256" :name "nonce" :type "uint256"}
-     {:internalType "string" :name "name" :type "string"}]
+    [{:internalType "uint64" :name "height" :type "uint64"}
+     {:internalType "uint16" :name "offset" :type "uint16"}
+     {:internalType "uint16" :name "amount" :type "uint16"}
+     {:internalType "uint152" :name "salt" :type "uint152"}
+     {:internalType "bool" :name "stake" :type "bool"}]
     :stateMutability "view"
-    :type            "function"}
-   {:inputs          []
-    :name            "leave"
-    :outputs         []
-    :stateMutability "nonpayable"
     :type            "function"}
    {:inputs
     [{:internalType "bytes32" :name "role" :type "bytes32"}
      {:internalType "address" :name "account" :type "address"}]
     :name            "renounceRole"
+    :outputs         []
+    :stateMutability "nonpayable"
+    :type            "function"}
+   {:inputs
+    [{:internalType "address" :name "_account" :type "address"}]
+    :name            "revealMint"
     :outputs         []
     :stateMutability "nonpayable"
     :type            "function"}
@@ -221,10 +199,12 @@
     :outputs         []
     :stateMutability "nonpayable"
     :type            "function"}
-   {:inputs          []
-    :name            "sGold"
-    :outputs         [{:internalType "address" :name "" :type "address"}]
-    :stateMutability "view"
+   {:inputs
+    [{:internalType "uint256[]" :name "_heights" :type "uint256[]"}
+     {:internalType "bytes32[]" :name "_hashes" :type "bytes32[]"}]
+    :name            "setRevealHints"
+    :outputs         []
+    :stateMutability "nonpayable"
     :type            "function"}
    {:inputs
     [{:internalType "bytes4" :name "interfaceId" :type "bytes4"}]
@@ -236,17 +216,4 @@
     :name            "treasury"
     :outputs         [{:internalType "address" :name "" :type "address"}]
     :stateMutability "view"
-    :type            "function"}
-   {:inputs
-    [{:internalType "uint256" :name "_entryFee" :type "uint256"}]
-    :name            "updateEntryFee"
-    :outputs         []
-    :stateMutability "nonpayable"
-    :type            "function"}
-   {:inputs
-    [{:internalType "address" :name "_account" :type "address"}
-     {:internalType "uint256" :name "_newPower" :type "uint256"}]
-    :name            "updatePower"
-    :outputs         []
-    :stateMutability "nonpayable"
     :type            "function"}])

@@ -22,3 +22,18 @@
                  template
                  {:main html}))]
   (spit template-file rendered))
+
+(let [html          (-> ['node (-> (get-pwd)
+                                   (fs/file "./resources/front/ssr.js"))]
+                        p/process
+                        :out
+                        slurp)
+      template-file (fs/file (get-pwd) "./resources/front/public/index.html")
+
+      template (slurp template-file)
+
+      rendered (selmer.util/without-escaping
+                (selmer/render
+                 template
+                 {:main html}))]
+  (spit template-file rendered))

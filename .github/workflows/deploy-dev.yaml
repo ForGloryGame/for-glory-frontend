@@ -51,13 +51,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --immutable
-      - run: npx shadow-cljs release app app-ssr
+      - run: npx shadow-cljs release app front app-ssr front-ssr
       - run: mkdir -p test
       - run: clojure -X:css-prod
+      - run: clojure -X:css-front-prod
       - run: bb dev/ssr.clj
 
-      - name: Deploy 🚀
+      - name: Deploy Front 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.0
         with:
-          branch: dev-pages # The branch the action should deploy to.
+          branch: dev-front-pages # The branch the action should deploy to.
+          folder: resources/front/public
+
+      - name: Deploy App 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: dev-app-pages
           folder: resources/app/public

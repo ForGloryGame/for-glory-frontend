@@ -5,8 +5,6 @@
    [nubank.workspaces.card-types.react :as ct.react]
    [fgl.app.ui.connect-btn]))
 
-(enable-console-print!)
-
 (ws/defcard ^:dev/before-load connect-btn
   (ct.react/react-card
    (reagent/as-element
