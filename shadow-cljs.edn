@@ -53,7 +53,8 @@
     :500     {:entries    [fgl.app.views.v500]
               :depends-on #{:main}}}
    :devtools
-   {:preloads [day8.re-frame-10x.preload hashp.core]}
+   {:preloads [;; day8.re-frame-10x.preload
+               hashp.core]}
    :dev
    {:compiler-options
     {:closure-defines
