@@ -5,9 +5,9 @@
    [taoensso.encore :as enc]
    [fgl.re-frame]
    [fgl.app.ui.balance :as balance]
+   [fgl.contracts.gameminter :as minter]
    [fgl.wallet.core :as w]
    [fgl.contracts.landeed :as landeed]
-   [fgl.contracts.gameminter :as minter]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.loading-dot :as ld]
@@ -17,31 +17,36 @@
    [reagent.core :as r]))
 
 (defn controllers []
-  [{:start identity
+  [{:start #(rf/dispatch [::minter/init])
     :stop  identity}])
 
-(defn submitting []
-  [ld/text "Waiting For Wallet Confirmation"])
-
 (defn- reveal [addr]
-  (rf/dispatch [::minter/send {:method :revealMint :params [addr]}])
-  (rf/dispatch [::dialog/set :merchant-mint :description [submitting] :actions nil]))
+  (rf/dispatch
+   [::minter/send
+    {:method       :revealMint
+     :params       [addr]
+     :on-submitted #(rf/dispatch
+                     [::dialog/set
+                      :merchant-mint
+                      :description
+                      [dialog/pending]])
+     :on-success   #(rf/dispatch
+                     [::dialog/set
+                      :merchant-mint
+                      :close? true
+                      :description
+                      [dialog/confirmed]
+                      :actions [dialog/close {:id :merchant-mint :t :bsm} "OK"]])
+     :on-failure   (partial dialog/failed :merchant-mint)}])
 
-(defn pending []
-  [:<>
-   [:span "TX Submitted"]
-   [:br]
-   [ld/text "Waiting For TX Confirmation"]])
+  (rf/dispatch [::dialog/set :merchant-mint :description [dialog/submitting] :actions nil]))
 
-(defn commit-confirmed [addr]
+(defn commit-confirmed []
   [::dialog/set :merchant-mint
    :description [:<>
                  [:span "TX Submitted"]
                  [:br]
-                 [:span "TX Confirmed"]
-                 [:br]
-                 [:span "Click below button to reveal the MINT"]]
-   :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]])
+                 [:span "TX Confirmed"]]])
 
 (defn tx-failed [{:keys [title desc]}]
   (rf/dispatch
@@ -53,7 +58,7 @@
     [:<>
      [:span "Reason:"]
      [:br]
-     [:p desc]]
+     [:p (or desc title)]]
     :actions
     (dialog/close
      {:id :merchant-mint :t :bsm}
@@ -62,44 +67,62 @@
 (rf/reg-sub
  ::data
  (fn [db _]
-   (let [{::w/keys [addr]} db]
-     {:addr addr})))
+   (let [{::w/keys [addr]} db
+         to-reveal         (get-in db [addr ::minter/to-reveal])]
+     {:addr      addr
+      :to-reveal to-reveal})))
+
+(defn maybe-show-reveal-dialog []
+  (when-let [{:keys [addr to-reveal]} @(rf/subscribe [::data])]
+    (rf/dispatch
+     [::dialog/set
+      :merchant-mint
+      :open true
+      :title
+      "Reveal Mint Commits"
+      :description
+      [:<>
+       [:p
+        "Found " [:b to-reveal] " to-reveal commit" (and (> to-reveal 1) "s")]
+       [:br]
+       [:p "Click the REVEAL button below to reveal them"]]
+      :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]])))
 
 (defn main []
-  (let [{:keys [addr]} @(rf/subscribe [::data])]
-    [:div.flexb.px-24.w-full
-     [dialog/root
-      {:id          :merchant-mint
-       :title       "Minting"
-       :description [submitting]
-       :modal       true
-       :close       false}
-      [dialog/trigger
-       {:className "w-45% relative block"
-        :on-click  #(do
-                      (rf/dispatch
-                       [::minter/send
-                        {:method :commitMint
-                         :params [1 false]
-                         :on-submitted
-                         (fn [_]
-                           (rf/dispatch
-                            [::dialog/set
-                             :merchant-mint
-                             :description
-                             [pending]]))
-                         :on-success
-                         (fn [_]
-                           (rf/dispatch (commit-confirmed addr)))
-                         :on-failure tx-failed}])
-                      (rf/dispatch
-                       [::dialog/set
-                        :merchant-mint
-                        :open
-                        true]))}
-       [:img {:src "/images/mint.png"}]
-       [:div.absolute.bottom-10%.right-13%.flexr
-        [gloryimg/ui "3rem"]
-        [balance/ui "40000000000000000000" {:className "text-2xl"}]]]]
+  (maybe-show-reveal-dialog)
+  [:div.flexb.px-24.w-full
+   [dialog/root
+    {:id          :merchant-mint
+     :title       "Minting"
+     :description [dialog/submitting]
+     :modal       true}
+    [dialog/trigger
+     {:className "w-45% relative block"
+      :on-click  #(do
+                    (rf/dispatch
+                     [::minter/send
+                      {:method     :commitMint
+                       :params     [1 false]
+                       :on-submitted
+                       (fn [_]
+                         (rf/dispatch
+                          [::dialog/set
+                           :merchant-mint
+                           :description
+                           [dialog/pending]]))
+                       :on-success
+                       (fn [_]
+                         (rf/dispatch (commit-confirmed))
+                         (rf/dispatch [::minter/init-raw]))
+                       :on-failure (partial dialog/failed :merchant-mint)}])
+                    (rf/dispatch
+                     [::dialog/set
+                      :merchant-mint
+                      :open
+                      true]))}
+     [:img {:src "/images/mint.png"}]
+     [:div.absolute.bottom-10%.right-13%.flexr
+      [gloryimg/ui "3rem"]
+      [balance/ui "40000000000000000000" {:className "text-2xl"}]]]]
 
-     [:img.w-45% {:src "/images/weapon.png"}]]))
+   [:img.w-45% {:src "/images/weapon.png"}]])

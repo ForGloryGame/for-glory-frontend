@@ -4,17 +4,26 @@
    ["@radix-ui/react-dialog" :as D]
    [re-frame.core :as rf]
    [reagent.core :as r]
-   [fgl.app.ui.loading :as loading]
+   [fgl.app.ui.loading-dot :as ld]
    [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]))
+
+(defonce !refresh-count (r/atom 0))
 
 (rf/reg-event-db
  ::set
  (fn [db [_ id & kvs]]
-   (if (->> kvs
-            (partition 2)
-            (some (fn [[k v]] (and (= k :remove) v))))
-     (enc/dissoc-in db [::data id])
+   (cond
+     (and (= (first kvs) :remove)
+          (true? (second kvs)))
+     (assoc-in db [::data id] (get-in db [::default-data id]))
+     (nil? (get-in db [::default-data id]))
+     (-> db
+         (assoc-in [::data id]
+                   (apply assoc (get-in db [::data id] {}) kvs))
+         (assoc-in [::default-data id]
+                   (apply assoc (get-in db [::data id] {}) kvs)))
+     :else
      (assoc-in db [::data id]
                (apply assoc (get-in db [::data id] {}) kvs)))))
 
@@ -23,7 +32,7 @@
  (fn [db [_ id]]
    (get-in db [::data id] {})))
 
-(defn root [{:keys [id defaultOpen title description loading close actions] :as opt} trigger]
+(defn root [{:keys [id defaultOpen title description close actions] :as opt} trigger]
   (r/create-class
    {:component-did-mount
     (fn []
@@ -31,25 +40,22 @@
        [::set id
         :open defaultOpen
         :title title
-        :loading loading
         :description description
         :actions actions
         :close? close]))
     :reagent-render
     (fn []
-      (let [{:keys [open title description loading close? actions]}
+      (let [{:keys [open title description close? actions]}
             @(rf/subscribe [::data id :open])
 
-            close #(rf/dispatch [::set id :open false :remove true])
+            close #(rf/dispatch [::set id :remove true])
 
             opt
             (-> opt (assoc :id (name id))
                 (assoc :open open)
-                (dissoc :loading)
                 (dissoc :actions)
                 (dissoc :title)
                 (dissoc :description))]
-        ^{:key id}
         [:> D/Root opt
          trigger
          [:> D/Portal
@@ -67,7 +73,6 @@
              D/Description
              {:className "px-16 text-lg flex flex-col justify-center h-76% overflow-auto" :asChild true}
              [:div
-              (and loading [loading/ui])
               (and description description)]])
            (and actions [:div.w-full.flexr actions])
            (and close?
@@ -88,3 +93,34 @@
         (dissoc :id)
         (assoc :on-click #(rf/dispatch [::set id :remove true])))
     text]])
+
+(defn submitting []
+  [ld/text "Waiting For Wallet Confirmation"])
+
+(defn pending []
+  [:<>
+   [:span "TX Submitted"]
+   [:br]
+   [ld/text "Waiting For TX Confirmation"]])
+
+(defn confirmed []
+  [:<>
+   [:span "TX Submitted"]
+   [:br]
+   [:span "TX Confirmed"]])
+
+(defn failed [id {:keys [title desc]}]
+  (rf/dispatch
+   [::set
+    id
+    :title
+    title
+    :description
+    [:<>
+     [:span "Reason:"]
+     [:br]
+     [:p (or desc title)]]
+    :actions
+    (close
+     {:id id :t :bsm}
+     "OK")]))
