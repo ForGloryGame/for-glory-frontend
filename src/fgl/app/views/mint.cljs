@@ -139,7 +139,7 @@
       [:li>button.border {:on-click #(rf/dispatch [::nft/send {:method :grantRole :params [minter-role conf/contract-addr-minter]}])}
        "Grant Minter to mint Glory NFT"]
       [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :updateKindoms :params [conf/contract-addr-kingdoms]}])}
-       "Set sgold kingdoms contract addr"]
+       "Set sglory kingdoms contract addr"]
       [:li>button.border
        {:on-click #(rf/dispatch
                     [::battlefield/send
@@ -171,20 +171,20 @@
                      {:method :grantRole :params
                       [minter-role
                        conf/contract-addr-battlefield]}])}
-       "Grant Battlefield To Mint Gold"]
+       "Grant Battlefield To Mint Glory"]
       [:li>button.border
        {:on-click #(rf/dispatch [::gold/send {:method :mint :params [addr (-> "1000"
                                                                               ethers/BigNumber.from
                                                                               (.mul (ethers/BigNumber.from "1000000000000000000")))]}])}
-       "Mint Gold"]
+       "Mint Glory"]
       [:li>button.border
        {:on-click #(rf/dispatch [::glory/send {:method :mint :params [addr (-> "200"
                                                                                ethers/BigNumber.from
                                                                                (.mul (ethers/BigNumber.from "1000000000000000000")))]}])}
        "Mint Glory"]]
-     [:ul.list-disc.mt-10 "Gold Token"
-      [:li>span "balance: " [balance/ui gold-balance]]]
      [:ul.list-disc.mt-10 "Glory Token"
+      [:li>span "balance: " [balance/ui gold-balance]]]
+     [:ul.list-disc.mt-10 "Virtue Token"
       [:li>span "balance: " [balance/ui glory-balance]]]
      [:ul.list-disc.mt-10 "Game Pass Token"
       [:li>span "balance: " [balance/ui gamepass-balance]]]
@@ -205,7 +205,7 @@
       [:li (str "Which: " kingdom-id)]
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :join :params [2]}])} "Join kingdom 2"]
       [:li>button.border {:on-click #(rf/dispatch [::kingdoms/send {:method :leave}])} "Leave current kingdom"]]
-     [:ul.list-disc.mt-10 "sGold"
+     [:ul.list-disc.mt-10 "sGlory"
       [:li "User balance: " [balance/ui sgold-balance]]
       [:li "User locked: " [balance/ui sgold-locked]]
       [:li "User unlocked: " [balance/ui sgold-unlocked]]
@@ -215,13 +215,13 @@
                [:li "Amount: " [balance/ui amount]]
                [:li (str "Date: " date)]])
             sgold-info)]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 2]}])} "Lock 1 sgold for 2 weeks"]
-      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sgold"]]
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :lock :params [1 2]}])} "Lock 1 sglory for 2 weeks"]
+      [:li>button.border {:on-click #(rf/dispatch [::sgold/send {:method :withdraw}])} "Withdraw all unlocked sglory"]]
      [:ul.list-disc.mt-10 "Battlefield"
       [:li (str "User staked NFT token ids: " battlefield-token-ids)]
       [:li
        (str
-        "User pending reward gold: "
+        "User pending reward glory: "
         @(rf/subscribe
           [::battlefield/reward addr
            (first

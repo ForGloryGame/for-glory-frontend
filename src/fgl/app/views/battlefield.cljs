@@ -346,7 +346,7 @@
                                 :desc [:<>
                                        [:p.ffd.text-base.dialog-body
                                         "Notice: If you choose to FLEE, You have 50% chance of receiving all earned
-§Glory without any taxing and it WILL NOT be locked as $sGlarx, However,
+§Glory without any taxing and it WILL NOT be locked as $sGlory, However,
 by doing this, there's 50% chance of AlL.of your accumulated $Glory being
 seized by the Council, distributed to Lords accordingly."]
                                        [:br]
@@ -378,7 +378,7 @@ seized by the Council, distributed to Lords accordingly."]
                                 :desc [:<>
                                        [:p.ffd.text-base.dialog-body
                                         "Notice: If you choose to CLAIM, You are guaranteed to receive 80% your
-yield $Glory as $sGlark, locked for 16 weeks by default. Rest 20% as taxes
+yield $Glory as $sGlory, locked for 16 weeks by default. Rest 20% as taxes
 to the Council, distributed to Lords accordingly."]
                                        [:br]
                                        [claim-checkbox]]

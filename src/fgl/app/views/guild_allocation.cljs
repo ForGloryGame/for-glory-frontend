@@ -76,11 +76,11 @@
   [:div.relative.px-10.py-8.text-center.fb
    [:div.flex.bg-C81c6dd1a.py-2.items-center
     [:div.grow.flex.flex-col.items-center
-     [:span.text-C6bc9db "Weekly Glory amount"]
+     [:span.text-C6bc9db "Weekly Virtue amount"]
      [:span.guild-font-family.text-xl.mt-2.flexr [gloryimg/ui "2rem"] "360"]]
     [:div.h-10.border-l.border-solid.border-C79c5da87.mt-2]
     [:div.grow.flex.flex-col.items-center
-     [:span.text-C6bc9db "Glory for you to allocate"]
+     [:span.text-C6bc9db "Virtue for you to allocate"]
      [:span.guild-font-family.text-xl.mt-2.flexr [gloryimg/ui "2rem"] "88"]]
     [:div.h-10.border-l.border-solid.border-C79c5da87.mt-2]
     [:div.grow.flex.flex-col.items-center
@@ -90,12 +90,12 @@
       [:span.text-base.ffd.text-C6bc9db.mr-3 " H"] "20"
       [:span.text-base.ffd.text-C6bc9db " M"]]]]
    [:p.w-full.text-center.text-C6bc9db.mt-10.mb-3
-    "Your reserved $GLORY percentage:"]
+    "Your reserved $VIRTUE percentage:"]
    [input]
    [:div.border-t-2.border-solid.border-white.w-full.mt-14.mb-4]
    [:div.grid.grid-cols-2.gap-x-2.rounded-sm.mb-20
     [:div.bg-C81c6dd1a.rounded-sm
-     [:p.text-C6bc9db "Your reserved $GLORY amount:"]
+     [:p.text-C6bc9db "Your reserved $VIRTUE amount:"]
      [:span.guild-font-family.text-4xl.inline-block.my-6.flexr [gloryimg/ui "2rem"] "18"]]
     [:div.bg-C81c6dd1a.rounded-sm
      [:p.text-C6bc9db "Everyone else will receive:"]

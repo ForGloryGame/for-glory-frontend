@@ -195,7 +195,7 @@
   [:div.grid.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold.items-center
    {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
    [:span (simple-date-str date)]
-   [:span.flexr [goldimg/ui "1.5rem"] [:span "Gold"]]
+   [:span.flexr [goldimg/ui "1.5rem"] [:span "Glory"]]
    [balance/ui amount]])
 
 (defn table []
@@ -212,7 +212,7 @@
      {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
      [:span "DATE"]
      [:span "ASSET"]
-     [:span "sGold locked"]]
+     [:span "sGlory locked"]]
     (let [{:keys [sgold-info]} @(rf/subscribe [::data])]
       [into
        [:div.overflow-auto

@@ -112,7 +112,7 @@
       [week-btn 16]
       [week-btn 32]]
      [separator/ui {:className "my-12"}]
-     [:div.w-full.mb-2.ffd.text-C6bc9db "Your sGOLD in return will be:"]
+     [:div.w-full.mb-2.ffd.text-C6bc9db "Your sGLORY in return will be:"]
      [:div.flexr.w-full.bg-C81c6dd1a.py-3.text-4xl [gloryimg/ui "2.5rem"] [balance/ui output {:style {:maxWidth "40rem"}}]]
      [btn/ui
       {:className "absolute bottom-12 transform left-1/2 -translate-x-1/2 bg-Ced8e28 border-Cffd386 w-14rem text-xl"
@@ -148,7 +148,7 @@
      {:style {:backgroundImage    "url(/images/for-glory-bg.svg)"
               :backgroundSize     "140%"
               :backgroundPosition "50% 2%"}}
-     [:p.mt-12.text-base.px-16.ffd "Your $GOLD eligible to redeem"]
+     [:p.mt-12.text-base.px-16.ffd "Your $GLORY eligible to redeem"]
      [:p.guild-font-family.text-4xl.mt-6.flexr [goldimg/ui "2.5rem"] (balance/ui unlocked)]
      [btn/ui
       {:className "absolute bottom-12 left-1/2 transform -translate-x-1/2 text-xl"
