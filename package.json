@@ -1,0 +1,31 @@
+{
+  "name": "shring",
+  "scripts": {
+    "ancient": "clojure -Sdeps '{:deps {com.github.liquidz/antq {:mvn/version \"RELEASE\"}}}' -m antq.core",
+    "watch": "npx shadow-cljs watch app browser-test karma-test",
+    "release": "npx shadow-cljs release app",
+    "build-report": "npx shadow-cljs run shadow.cljs.build-report app target/build-report.html",
+    "ci": "npx shadow-cljs compile karma-test && npx karma start --single-run --reporters junit,dots"
+  },
+  "dependencies": {
+    "@cljs-oss/module-deps": "^1.1.1",
+    "@fluree/sjcl": "^1.0.8-3",
+    "axios": "^0.24.0",
+    "bufferutil": "^4.0.5",
+    "ethers": "^5.5.4",
+    "highlight.js": "11.1.0",
+    "js-sha3": "^0.8.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-grid-layout": "^0.16.6",
+    "react-icons": "^2.2.7",
+    "reakit": "^0.11.1",
+    "scrypt-js": "^3.0.1",
+    "source-map-support": "^0.5.21",
+    "utf-8-validate": "^5.0.7",
+    "ws": "^8.3.0"
+  },
+  "devDependencies": {
+    "shadow-cljs": ">=2.16.12"
+  }
+}
