@@ -37,7 +37,7 @@
 
 (defn kingdom->img [k]
   (let [n (-> kingdom/kingdoms-name
-              (nth k)
+              (get k)
               .toLowerCase)]
     (str "/images/kingdom-" n ".png")))
 
@@ -74,7 +74,7 @@
        {:src (kingdom->img k)}]
       [:p.text-xl.tracking-wider
        (-> kingdom/kingdoms-name
-           (nth k))]
+           (get k))]
       [sgold]]
      [:div.rank-bg
       {:className (if mine? "active" "")}]

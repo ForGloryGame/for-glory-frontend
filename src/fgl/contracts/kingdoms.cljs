@@ -13,12 +13,12 @@
 (def c (ctc/init :id :kingdoms :address conf/contract-addr-kingdoms :abi abi/data))
 
 (defonce kingdoms-name
-  ["None"
-   "Dragon"
-   "Phoenix"
-   "Lion"
-   "Griffin"
-   "Fenrir"])
+  {0 "None"
+   1 "Astas"
+   2 "Dawns"
+   3 "Luclars"
+   4 "MorningStar"
+   5 "Flamingo"})
 
 (rf/reg-event-db
  ::set
@@ -43,7 +43,7 @@
          kingdoms
          (map
           (fn [[idx {:keys [elders senators member-count]}]]
-            {:name         (nth kingdoms-name idx)
+            {:name         (get kingdoms-name idx)
              :member-count member-count
              :elders       elders
              :senators     senators})
@@ -95,8 +95,8 @@
                  elders (and has-kingdom? (r :getElders kingdom-id))
                  senators (and has-kingdom? (r :getSenators kingdom-id))
 
-                 role (and has-kingdom? (cond (some #{addr} elders)   :elders
-                                              (some #{addr} senators) :senators
+                 role (and has-kingdom? (cond (some #{addr} elders)   :elder
+                                              (some #{addr} senators) :senator
                                               :else                   nil))]
            (if has-kingdom?
              (do
@@ -137,7 +137,7 @@
                (rf/dispatch [::set treasury  ::kingdom kingdom-id :treasury])
                (rf/dispatch [::set power ::kingdom kingdom-id :power])
                (rf/dispatch [::set nonce ::kingdom kingdom-id :nonce])
-               (rf/dispatch [::set (nth kingdoms-name kingdom-id) ::kingdom kingdom-id :name]))
+               (rf/dispatch [::set (get kingdoms-name kingdom-id) ::kingdom kingdom-id :name]))
              (rf/dispatch [::set (js->clj (nth elders (dec kingdom-id))) ::kingdom kingdom-id :elders])
              (rf/dispatch [::set (js->clj (nth senators (dec kingdom-id))) ::kingdom kingdom-id :senators])
              (rf/dispatch [::set (nth membersCount (dec kingdom-id)) ::kingdom kingdom-id :member-count]))))))

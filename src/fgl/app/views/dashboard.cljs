@@ -11,7 +11,7 @@
    [fgl.contracts.gamenft :as nft]
    [fgl.contracts.glory :as glory]
    [fgl.contracts.gold :as gold]
-   [fgl.contracts.kingdoms :as kingdoms]
+   [fgl.contracts.kingdoms :as kingdom]
    [fgl.contracts.landeed :as landeed]
    [fgl.contracts.sgold :as sgold]
    [fgl.utils :refer [scan-addr-url shorten-addr]]
@@ -28,7 +28,7 @@
        (rf/dispatch [::landeed/init])
        (rf/dispatch [::gold/init])
        (rf/dispatch [::glory/init])
-       (rf/dispatch [::kingdoms/init]))
+       (rf/dispatch [::kingdom/init]))
     :stop identity}])
 
 (rf/reg-sub
@@ -41,7 +41,9 @@
           glory-balance   ::glory/balance
           sgold-balance   ::sgold/balance
           landeed-balance ::landeed/balance
-          sgold-info      ::sgold/info}
+          sgold-info      ::sgold/info
+          kingdom-id      ::kingdom/kingdom-id
+          kingdom-role ::kingdom/role}
          addr-db]
 
      {:addr       addr
@@ -49,6 +51,8 @@
       :glory      glory-balance
       :sgold      sgold-balance
       :landeed    landeed-balance
+      :kingdom-id kingdom-id
+      :kingdom-role kingdom-role
       :sgold-info (sgold/->unlock-info sgold-info)})))
 
 (when-not (js/localStorage.getItem "user-avatar")
@@ -60,7 +64,8 @@
      [:img {:src (case type :knight "/images/avatar-knight.png" "/images/avatar-lord.png")}]]))
 
 (defn user-info []
-  (let [{:keys [addr]} @(rf/subscribe [::data])]
+  (let [{:keys [addr kingdom-id kingdom-role]} @(rf/subscribe [::data])
+        role                                   (or role :member)]
     [:div.flexrs.mb-4
      ;; user
      [:div.mr-8
@@ -78,16 +83,17 @@
               (rf/dispatch [:toast/success {:title "Copied!" :no-close true}]))}
         [:span.flexr [:img.mr-2.w-4 {:src "/images/copy.png"}] "Copy Address"]]]]
      ;; user kingdom
-     [:div.flexr
-      [:img.h-30.mr-4 {:src "/images/k1.png"}]
-      [:div
-       [:div.flex.flex-row.items-baseline.mb-4
-        [:div.uppercase.text-3xl.fi.mr-4 "ASTAS"]
-        [:div.text-xl "ROLE:XXXXX"]]
-       [btn/ui
-        {:on-click #(js/open (scan-addr-url addr))
-         :t        :bxs}
-        [:span.flexr [:img.w-4.mr-2 {:src "/images/share.png"}] "View on explorer"]]]]]))
+     (and kingdom-id (pos? kingdom-id)
+      [:div.flexr
+       [:img.h-30.mr-4 {:src (str "/images/k" kingdom-id ".png")}]
+       [:div
+        [:div.flex.flex-row.items-baseline.mb-4
+         [:div.uppercase.text-3xl.fi.mr-4 (get kingdom/kingdoms-name kingdom-id)]
+         [:div.text-xl.uppercase (str "ROLE:" (name role))]]
+        [btn/ui
+         {:on-click #(js/open (scan-addr-url addr))
+          :t        :bxs}
+         [:span.flexr [:img.w-4.mr-2 {:src "/images/share.png"}] "View on explorer"]]]])]))
 
 (defn balances []
   (let [{:keys [glory gold sgold landeed]} @(rf/subscribe [::data])]

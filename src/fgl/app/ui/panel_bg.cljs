@@ -7,6 +7,7 @@
    [:div
     {:style {:backgroundImage "url(/images/panel-bg-small.png)"
              :backgroundSize  "100%"
+             :minWidth        (str width "rem")
              :width           (str width "rem")
              :height          (str (/ width 2.08157647) "rem")}}]
    children))
