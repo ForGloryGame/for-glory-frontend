@@ -24,7 +24,8 @@
 
  :http       {:port 9999 :host "localhost"}
  :dev-http
- {8880 "resources/app/public"
+ {8880 {:root "resources/app/public"
+        :proxy-url "http://api.glory.game:8080/api"}
   8881 "resources/front/public"
   8882 "resources/cards/public"}
  :js-options {:js-package-dirs ["node_modules"]}
@@ -99,7 +100,8 @@
      fgl.config.contract-addr-minter            #shadow/env "CONTRACT_MINTER"
      fgl.config.contract-addr-battlefield-proxy #shadow/env "CONTRACT_BATTLEFIELD_PROXY"
      fgl.config.contract-addr-exchange          #shadow/env "CONTRACT_EXCHANGE"
-     fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"}}
+     fgl.config.target-chain-id                 #shadow/env "TARGET_CHAIN_ID"
+     fgl.app.config.backend-endpoint            #shadow/env "BACKEND_ENDPOINT"}}
    :dev
    {}
    :release

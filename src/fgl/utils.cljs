@@ -1,8 +1,8 @@
 (ns fgl.utils
   (:require
-   [lambdaisland.glogi :as log]
+   ["ethers" :as ethers]
    [fgl.config :as conf]
-   ["ethers" :as ethers]))
+   [lambdaisland.glogi :as log]))
 
 (defn calc [w x]
   (str "calc(" w " * " x ")"))
@@ -63,7 +63,9 @@
   (scan-url "/address/" addr))
 
 (defn shorten-addr [addr]
-  (str (.substring addr 0 6) "...." (.substring addr 34)))
+  (if addr
+    (str (.substring addr 0 6) "...." (.substring addr 34))
+    ""))
 
 (defn sbn
   ([x] (sbn x 0))
