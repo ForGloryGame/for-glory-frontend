@@ -60,26 +60,26 @@ url(\"/images/header-bg.svg\")
         [header-tag/ui
          [:div.flex.flex-row.justify-between.items-center.text-xl
           [gloryimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
-          [balance/ui glory-balance]]]]
+          [balance/ui glory-balance {:className "fi mr-1"}]]]]
 
        ^{:key 'gold}
        [:> Nav/Item {:className "cs9 ce11"}
         [header-tag/ui
          [:div.flex.flex-row.justify-between.items-center.text-xl
           [goldimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
-          [balance/ui gold-balance]]]]
+          [balance/ui gold-balance {:className "fi mr-1"}]]]]
 
        ^{:key 'ratio}
        [:> Nav/Item {:className "cs11 ce13"}
         [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl
+         [:div.flex.flex-row.justify-between.items-center.text-xl.fi
           [goldimg/ui "2rem"]
           [:span.mx-2 "1"]
           [:div.flex.flex-col
            [:img.w-6 {:src "/images/ratio.svg"}]
            [:img.w-6 {:style {:transform "rotate(180deg)"} :src "/images/ratio.svg"}]]
           "100"
-          [gloryimg/ui "2rem" {:className "mx-2"}]]]]
+          [gloryimg/ui "2rem" {:className "mx-1"}]]]]
 
        ^{:key 'connect-btn}
        [:> Nav/Item {:className "cs13 ce15"}

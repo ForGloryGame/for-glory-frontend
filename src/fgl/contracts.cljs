@@ -50,7 +50,7 @@
 
            on-success
            (cond (fn? on-success)                               on-success
-                 (or (nil? on-success) (= on-success :success)) #(rf/dispatch [:toast/success (log/spy %)])
+                 (or (nil? on-success) (= on-success :success)) #(rf/dispatch [:toast/success %])
                  (keyword? on-success)                          #(rf/dispatch [on-success %])
                  :else                                          identity)
            on-failure
@@ -74,9 +74,9 @@
                                (on-success
                                 {:title "Tx Confirmed"
                                  :desc  [:a
-                                         (log/spy {:href   (scan-tx-url (.-transactionHash (log/spy receipt)))
-                                                   :rel    "noopener noreferrer"
-                                                   :target "_blank"})
+                                         {:href   (scan-tx-url (.-transactionHash receipt))
+                                          :rel    "noopener noreferrer"
+                                          :target "_blank"}
                                          "View On Blockchain Explorer"]}))))
 
                           (on-success {:title "Tx Succeeded"}))))

@@ -19,7 +19,7 @@
         guild? (-> n (or :_) name (.startsWith "guild"))
 
         guild-wrapper
-        (if (log/spy guild?)
+        (if guild?
           #(vector gpanel/ui route-data %)
           identity)
 

@@ -29,9 +29,8 @@ linear-gradient(
           text]]))))
 
 (defn ui []
-  [:ul
-   {:className "text-lg guild-font-family text-center pt-12"
-    :style
+  [:ul.text-lg.text-center.pt-12.fb
+   {:style
     {:background "linear-gradient(to right, transparent, rgb(80, 146, 158, 0.231))"
      :color      "rgb(213, 228, 232)"
      :textShadow "1px 1px 1px rgba(0, 0, 0, 0.64)"}}

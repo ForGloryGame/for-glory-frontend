@@ -1,5 +1,6 @@
 (ns fgl.app.grammer
   (:require
+   [clojure.string :as str]
    [girouette.tw.common :refer [value-unit->css]]
    [girouette.tw.core :refer [make-api]]
    [girouette.tw.common :as common]
@@ -67,6 +68,13 @@
          :garden (fn [{[param] :component-data}]
                    {:grid-row-end (value-unit->css param)})}))
 
+;; Adds colors to the existing default ones.
+(def my-color-map
+  (assoc color/default-color-map
+         "cat-white"  "eeeeee"
+         "cat-orange" "e58c56"
+         "cat-black"  "333333"))
+
 (def my-chosen-components
   [common/components
    layout/components
@@ -86,13 +94,6 @@
    ;svg/components
    ;accessibility/components
    my-custom-components])
-
-;; Adds colors to the existing default ones.
-(def my-color-map
-  (assoc color/default-color-map
-         "cat-white"  "eeeeee"
-         "cat-orange" "e58c56"
-         "cat-black"  "333333"))
 
 ;; This example shows how to Girouette on a custom grammar.
 ;; Here, we use only a subset of the Girouette components, and we add your own.

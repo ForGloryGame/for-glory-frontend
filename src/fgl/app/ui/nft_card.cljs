@@ -51,7 +51,7 @@
                    :transform    "translateX(-50%)"
                    :width        (calc 0.93894009)
                    :borderRadius (calc 0.01497696)}}
-          [:span.block.font-bold
+          [:span.block.fb
            {:style {:transform "translateY(50%)"
                     :fontSize  (calc 0.10368664)}}
            name]]
@@ -64,7 +64,7 @@
                         :width           (calc 0.29032258)
                         :top             "5%"
                         :transform       (str "translateX(" (calc 0.01843318) ")")}}
-               [:span.block
+               [:span.block.ffd
                 {:style {:fontSize  (calc 0.06912442)
                          :color     "rgb(11, 57, 66)"
                          :transform "translateY(-5%)"}}

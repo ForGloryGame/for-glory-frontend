@@ -11,7 +11,7 @@
     [bg/ui width
      [:div.flex.flex-row.justify-between.items-start
       {:style {:padding "0.5%"}}
-      [:span.pl-2 {:style {:color "rgb(213, 228, 232)" :fontSize (wf 60)}} name]
+      [:span.pl-2.text-Cd5e4e8.fb {:style {:fontSize (wf 60)}} name]
       [:button
        {:on-click on-close}
        [:img {:src   "/images/panel-close.svg"

@@ -106,7 +106,6 @@
     ["guild/basic"
      {:name        :route/guild-basic
       :panel-name  "Guild"
-      :css         "/css/guild-basic.css"
       :view        #(resolve 'fgl.app.views.guild-basic/main)
       :controllers #(resolve 'fgl.app.views.guild-basic/controllers)
       :lazy        true
@@ -114,7 +113,6 @@
     ["guild/alter"
      {:name        :route/guild-alter
       :panel-name  "Guild"
-      :css         "/css/guild-alter.css"
       :view        #(resolve 'fgl.app.views.guild-alter/main)
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true

@@ -28,40 +28,61 @@
     :stop identity}])
 
 (defn member-row [role addr locked]
-  [:div.guild-table-row.grid.grid-1-3-1.justify-items-center.pb-1
-   {:className "pt-1.125rem"}
+  ^{:key addr}
+  [:div.grid.grid-1-3-1.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold
+   {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
    [:span role]
    [:span addr]
-   [:span locked]])
+   [balance/ui locked]])
+
+(defn kingdom-logo [src]
+  [:img.w-36.mr-12 {:src src}])
+
+(defn kingdom-info []
+  [:div.flex.pt-9.pb-4.pl-11
+   [kingdom-logo "/images/guild-avatar.png"]
+   [:div.grid.grid-cols-3.text-3xl.gap-x-8.items-center
+    [:span.text-4xl.col-span-full "Kingdom Name"]
+    [:span
+     [:span "20"]
+     [:span.text-xl.text-C74bfcee6 "/ Members"]]
+    [:span
+     [:span "No.28"]
+     [:span.text-xl.text-C74bfcee6 "/ Rank"]]
+    [:span
+     [:span "888"]
+     [:span.text-xl.text-C74bfcee6 "/ Locked"]]
+    [:span
+     [:span "knight"]
+     [:span.text-xl.text-C74bfcee6 "/ Your Role"]]]])
+
+(defn kingdom-members []
+  (let [member-data
+        (map-indexed
+         (fn [idx addr] ["Elder" (str addr idx) "10000000000000000000000"])
+         (repeat 10 "0xA932480195801951510509DA0000000000000"))]
+    [:div.px-6.py-4
+     {:style {:height "calc(100% - 180px - 3.5rem)"}}
+     [:div.text-xl.mb-2 "Member status"]
+     [:div.rounded-sm.text-base.p-2.pb-0.grow
+      {:style {:height     "calc(100% - 2.25rem)"
+               :outline    "2px ridge #50929e33"
+               :background "linear-gradient(
+    rgba(163, 218, 226, 0.1),
+    rgba(163, 218, 226, 0.05)
+  )"}}
+      [:div.rounded-sm.grid.justify-items-center.py-0_5.bg-C79c5da66.fb
+       {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
+       [:span "ROLE"]
+       [:span "ADDRESS"]
+       [:span "RUNE LOCKED"]]
+      [into
+       [:div.overflow-auto
+        {:style {:height "calc(100% - 1.625rem)"}}]
+       (map #(vector apply member-row %) member-data)]]]))
 
 (defn main []
   [:div
-   [:div.flex.pt-9.pb-4.pl-11
-    [:img.w-36.mr-12 {:src "/images/guild-avatar.png"}]
-    [:div.grid.grid-cols-3.text-3xl.gap-x-8.items-center
-     [:span.text-4xl.guild-font-family.col-span-full "Kingdom Name"]
-     [:span
-      [:span.guild-font-family "20"]
-      [:span.text-xl.guild-color "/ Members"]]
-     [:span
-      [:span.guild-font-family "No.28"]
-      [:span.text-xl.guild-color "/ Rank"]]
-     [:span
-      [:span.guild-font-family "888"]
-      [:span.text-xl.guild-color "/ Locked"]]
-     [:span
-      [:span.guild-font-family "knight"]
-      [:span.text-xl.guild-color "/ Your Role"]]]]
-   [:div.border-t-2.border-solid.border-white.w-full]
-   [:div.guild-members.px-6.py-4
-    [:div.text-xl.guild-font-family.mb-2 "Member status"]
-    [:div.guild-table.rounded-sm.text-base.p-2.pb-0.grow
-     [:div.guild-table-header.rounded-sm.grid.grid-1-3-1.justify-items-center
-      {:className "py-0.5"}
-      [:span "ROLE"]
-      [:span "ADDRESS"]
-      [:span "RUNE LOCKED"]]
-     (let [member-data (repeat 10 ["Elder" "0xA932480195801951510509DA00000000000000" "10000"])]
-       [into
-        [:div.guild-table-body.overflow-auto]
-        (mapv #(vector apply member-row %) member-data)])]]])
+   [kingdom-info]
+   [separator/ui]
+   [kingdom-members]])

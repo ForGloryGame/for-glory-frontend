@@ -117,7 +117,7 @@
           :value         type
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded relative"
+          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded relative fb"
            :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
           [:> S/Value (if (= type :staked) "Staked" "Unstaked")]
           [:> S/Icon [:img.inline-block.ml-6
@@ -177,7 +177,7 @@
       (let [[_ _ _ all-selected] @(rf/subscribe [::data])]
         [checkbox/ui
          {:width "1.5rem"
-          :text  [:span.text-xl.ml-2 {:style {:color "rgb(213, 228, 232)"}} "SELECT ALL"]}
+          :text  [:span.text-xl.ml-2.fb {:style {:color "rgb(213, 228, 232)"}} "SELECT ALL"]}
          {:className "flex flex-row cs1 ce2 rs5 re6 justify-self-start items-center"
           :onCheckedChange select-all
           :checked         all-selected}]))))
@@ -226,9 +226,8 @@
               [btn/ui
                {:disabled no-selected?
                 :on-click (claim selected)
-                :style    {:width           "14rem"
-                           :backgroundColor "rgb(237, 142, 40)"
-                           :borderColor     "rgb(255, 211, 134)"}}
+                :c        :orange
+                :style    {:width "14rem"}}
                "CLAIM"])]))))
 
 (defn main [_]
