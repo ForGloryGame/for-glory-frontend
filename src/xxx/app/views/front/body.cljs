@@ -60,12 +60,14 @@
   [:p.text-sm.font-medium text])
 (defn letter-br []
   [:br.text-sm.font-medium])
-(defn letter-h1 [text]
-  [:h1.text-4xl.leading-10 {:style {:fontFamily "old_londonregular"}} text])
+(defn letter-h1
+  ([text] (letter-h1 {} text))
+  ([opt text] [:h1.text-4xl.leading-10 (merge {:style {:fontFamily "old_londonregular"}} opt) text]))
 
 (defn letter []
   [:article.border-5px.border-rgb-480909.bg-rgb-f4e8d4.text-black.pt-10.text-justify
-   {:style {:maxWidth         "43.75rem"
+   {:id "about"
+    :style {:maxWidth         "43.75rem"
             :background-image "url(\"/images/bg-2-1.png\")"
             :padding-left     "2.875rem"
             :padding-right    "2.875rem"
@@ -89,7 +91,8 @@
     [:li [ava "/images/avatar-4.png" "Angella Philip" "Head of Operations"]]]])
 
 (defn h2 []
-  [:h2.font-bold {:style {:fontSize     "2.375rem"
+  [:h2.font-bold {:id "roadmap"
+                  :style {:fontSize     "2.375rem"
                           :marginBottom "2.375rem"}}
    "Roadmap"])
 

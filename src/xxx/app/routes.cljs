@@ -11,6 +11,7 @@
    [reitit.coercion.malli :as m]
    [reitit.coercion :as coercion]
    [reitit.exception :as exception]
+   ;; [reitit.core :as r]
    [re-frame.core :as rf]
    [taoensso.timbre :refer [warn error info debug]]))
 
@@ -54,8 +55,8 @@
 ;;; Routes
 
 (def routes
-  ["/"
-   [""
+  [""
+   ["/"
     {:name        :route/front
      :view        front/main
      :controllers (front/controllers)
@@ -74,10 +75,20 @@
      :conflicting true}]
    ["about"
     {:name        :route/about
-     :view        #(resolve 'xxx.app.views.about/main)
-     :controllers #(resolve 'xxx.app.views.about/controllers)
-     :lazy        true
-     :conflicting true}]
+     :view        front/main
+     :controllers (front/controllers)
+     :lazy        false}
+    ;; {:name        :route/about
+    ;;  :view        #(resolve 'xxx.app.views.about/main)
+    ;;  :controllers #(resolve 'xxx.app.views.about/controllers)
+    ;;  :lazy        true
+    ;;  :conflicting true}
+    ]
+   ["roadmap"
+    {:name        :route/roadmap
+     :view        front/main
+     :controllers (front/controllers)
+     :lazy        false}]
    ["404"
     {:name        :route/not-found
      :view        #(resolve 'xxx.app.views.v404/main)
@@ -88,13 +99,19 @@
      :view        #(resolve 'xxx.app.views.v500/main)
      :lazy        true
      :conflicting true}]
-   [":id"
-    {:name        :route/profile
-     :view        #(resolve 'xxx.app.views.profile/main)
-     :controllers #(resolve 'xxx.app.views.profile/controllers)
+   [":fallback"
+    {:name        :route/fallback
+     :view        #(resolve 'xxx.app.views.v404/main)
      :lazy        true
-     :parameters  {:path [:map [:id string?]]}
-     :conflicting true}]])
+     :conflicting true}]
+   ;; [":id"
+   ;;  {:name        :route/profile
+   ;;   :view        #(resolve 'xxx.app.views.profile/main)
+   ;;   :controllers #(resolve 'xxx.app.views.profile/controllers)
+   ;;   :lazy        true
+   ;;   :parameters  {:path [:map [:id string?]]}
+   ;;   :conflicting true}]
+   ])
 
 (def router
   (rtf/router
@@ -110,7 +127,7 @@
   [route-name dispatch-fn]
   (if (loader/loaded? (name route-name))
     (dispatch-fn)
-      ;; load lazy page
+    ;; load lazy page
     (->
      (loader/load (name route-name))
      (.then dispatch-fn #(do

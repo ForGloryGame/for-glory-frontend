@@ -2,7 +2,8 @@
   (:require
    ;; ["@radix-ui/react-visually-hidden" :as Invisible]
    ["@radix-ui/react-navigation-menu" :as Nav]
-   [re-frame.core :as rf]))
+   ;; [re-frame.core :as rf]
+   ))
 
 (defn nav-root [x]
   [:> Nav/Root {:className "absolute flex justify-center w-screen z-10"} x])
@@ -31,16 +32,16 @@
   [:img.w-24px.h-24px {:src "/images/discord.svg" :alt "link to discord"}])
 
 (defn nav-btn [opts children]
-  [:button.text-sm.py-1.bg-rgb-dc961a.mr-4
+  [:a.text-sm.py-1.bg-rgb-dc961a.mr-4.block
    (merge {:className "px-3.25rem" :style {:borderRadius "1.25rem"}}
           opts)
    children])
 
 (defn about []
-  [nav-btn {:on-click #(rf/dispatch [:navigate :route/about])} "About"])
+  [nav-btn {:href "#about"} "About"])
 
 (defn roadmap []
-  [nav-btn {:on-click #(rf/dispatch [:navigate :route/about])} "Roadmap"])
+  [nav-btn {:href "#roadmap"} "Roadmap"])
 
 (defn ui []
   [:header.sticky.top-0

@@ -6,8 +6,13 @@
    [xxx.app.views.front.body :as body]
    [xxx.app.views.front.footer :as footer]))
 
+(defn jump []
+  (when-let [el (and (not (= "" js/location.hash)) (js/document.getElementById (.slice js/location.hash 1)))]
+    ;; (js/scrollTo #js {:top (= js/window.scrollY (.-top (.getBoundingClientRect el)))})
+    (.scrollIntoView el)))
+
 (defn controllers []
-  [{:start identity
+  [{:start #(js/setTimeout jump 500)
     :stop  identity}])
 
 (defn main [_]
