@@ -2,6 +2,7 @@
   (:require
    [fgl.app.config :as conf]
    [fgl.wallet.core :as w]
+   [lambdaisland.glogi :as log]
    [oops.core :refer [oget ocall]]
    [promesa.core :as p]
    [re-frame.core :as rf]))
@@ -11,8 +12,15 @@
  (fn [db [_ v & paths]]
    (assoc-in db paths v)))
 
-(defn- ->body [x]
+(defn ->body [x]
   (-> x clj->js js/JSON.stringify))
+
+(defn then-res [res]
+  (if (oget res "ok")
+    (ocall res "json")
+    (do
+      (js/console.error "Error in response" res)
+      (throw (js/Error. res)))))
 
 (defn gget [uri cb]
   (-> (js/fetch
@@ -21,12 +29,7 @@
         {:method  :get
          :mode    :cors
          :headers {"content-type" "application/json"}}))
-      (p/then (fn [res]
-                (if (oget res "ok")
-                  (ocall res "json")
-                  (do
-                    (js/console.error "Error in response" res)
-                    (throw (js/Error. res))))))
+      (p/then then-res)
       (p/then cb)
       (p/catch js/console.error)))
 
@@ -62,6 +65,18 @@
                    (cb err))))))
 
 (rf/reg-event-fx
+ ::kingdom-proposals
+ (fn [{:keys [db]} [_ kingdom-name]]
+   (let [{::w/keys [addr]} db]
+     (when addr
+       (gget
+        (str "/proposals/" kingdom-name)
+        (fn [d]
+          (let [d (-> d (js->clj :keywordize-keys true) :proposals)]
+            (rf/dispatch [::set d ::kingdom-proposals kingdom-name]))))))
+   {}))
+
+(rf/reg-event-fx
  ::rank-personal
  (fn [{:keys [db]}]
    (let [{::w/keys [addr]} db]
@@ -92,6 +107,12 @@
  ::new-proposal
  (fn [_ [_ data cb]]
    (post "/proposals/create" (clj->js data) (or cb identity))
+   {}))
+
+(rf/reg-event-fx
+ ::vote
+ (fn [_ [_ kingdom-id data cb]]
+   (post (str "/proposals/" kingdom-id)  (clj->js data) (or cb identity))
    {}))
 
 (defonce proposal-domain

@@ -71,3 +71,28 @@
   ([x] (sbn x 0))
   ([x n]
    (or x (ethers/BigNumber.from n))))
+
+(defonce month-map
+  {1 "Jan"
+   2 "Feb"
+   3 "Mar"
+   4 "Apr"
+   5 "May"
+   6 "June"
+   7 "July"
+   8 "Aug"
+   9 "Sept"
+   10 "Oct"
+   11 "Nov"
+   12 "Dec"})
+
+(defn format-date [^js/Date date]
+  (let [m    (inc (.getMonth date))
+        d    (.getDate date)
+        y    (.getFullYear date)
+        mabb (get month-map m)
+        h    (.getHours date)
+        pm?  (> h 12)
+        h    (if pm? (- h 12) h)
+        min  (.getMinutes date)]
+    (str mabb " " d "," y "," h ":" min (if pm? "PM" "AM"))))

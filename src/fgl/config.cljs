@@ -17,6 +17,7 @@
 (goog-define ^js/String contract-addr-battlefield-proxy "unknown")
 (goog-define ^js/String contract-addr-exchange "0x0000000000000000000000000000000000000000")
 (goog-define ^js/String target-chain-id "unknown")
+(goog-define ^js/String snapshot-space "unknown")
 
 (defonce explorer-url (case target-chain-id
                         "0x4" "https://rinkeby.etherscan.io"
