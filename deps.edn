@@ -95,6 +95,16 @@
                 :apply-classes xxx.app.css/composed-classes
                 :watch?        true
                 #_#_:dry-run? true}}
+  :girouette-processor-cards
+  {; clojure -X:girouette-processor-cards
+   :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
+   :ns-default girouette.processor
+   :exec-fn    process
+   :exec-args  {:css           {:output-file "resources/cards/public/css/compiled/main.css"}
+                :garden-fn     xxx.app.grammer/class-name->garden
+                :apply-classes xxx.app.css/composed-classes
+                :watch?        true
+                #_#_:dry-run? true}}
 
   :outdated
   {:extra-deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}

@@ -16,7 +16,7 @@
   (when (and js/ethereum js/ethereum.isMetaMask)
     (reset! provider (ethers/providers.Web3Provider. js/ethereum))
     (rf/dispatch [::installed])
-    (js/ethereum.removeAllListeners)
+    (ocall js/ethereum "?.removeAllListeners")
     (js/ethereum.on "accountsChanged" #(rf/dispatch [::accounts-changed %]))
     (js/ethereum.on "chainChanged" #(rf/dispatch [::chain-changed %]))))
 
