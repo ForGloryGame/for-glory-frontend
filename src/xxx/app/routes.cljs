@@ -108,7 +108,7 @@
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"
   [route-name dispatch-fn]
-  (if (loader/loaded? #p (name route-name))
+  (if (loader/loaded? (name route-name))
     (dispatch-fn)
       ;; load lazy page
     (->

@@ -95,6 +95,15 @@
                 :apply-classes xxx.app.css/composed-classes
                 :watch?        true
                 #_#_:dry-run? true}}
+  :css-prod
+  {; clojure -X:girouette-processor
+   :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
+   :ns-default girouette.processor
+   :exec-fn    process
+   :exec-args  {:css           {:output-file "resources/app/public/css/compiled/main.css"}
+                :garden-fn     xxx.app.grammer/class-name->garden
+                :apply-classes xxx.app.css/composed-classes
+                #_#_:dry-run? true}}
   :css-cards
   {; clojure -X:girouette-processor-cards
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}

@@ -1,0 +1,64 @@
+name: Deploy Sites
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-sites:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.5]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cli: latest
+      # - run: sudo apt install rlwrap -y
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v2
+        id: yarn-and-maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: |
+            ~/.m2/repository
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            ./.shadow-cljs
+          key: ${{ runner.os }}-yarn-and-maven-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('./shadow-cljs.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-and-maven-
+      - run: yarn install --immutable
+      - run: npx shadow-cljs release app
+      - run: mkdir -p test
+      - run: clojure -X:css-prod
+
+      - name: Deploy for-glory-demo.2rypto.com
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: "for-glory-demo.2rypto.com"
+          project: "./resources/app/public/"
+          login: ${{ secrets.SURGE_LOGIN}}
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: pages # The branch the action should deploy to.
+          folder: resources/app/public
