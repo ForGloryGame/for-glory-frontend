@@ -53,7 +53,6 @@
      (assoc db :current-route (assoc new-match :controllers controllers)))))
 
 ;;; Routes
-
 (def routes
   [""
    ["/"
@@ -120,7 +119,8 @@
     :compile coercion/compile-request-coercers
     :conflicts
     (fn [conflicts]
-      (warn (exception/format-exception :path-conflicts nil conflicts)))}))
+      ;; (warn (exception/format-exception :path-conflicts nil conflicts))
+      )}))
 
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"
