@@ -4,6 +4,7 @@
    [clojure.string :as s]
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.separator :as separator]
@@ -116,20 +117,21 @@
      [btn/ui
       {:className "absolute bottom-12 transform left-1/2 -translate-x-1/2 bg-Ced8e28 border-Cffd386 w-14rem text-xl"
        :t         :olg
-       :on-click  #(rf/dispatch (if approved? [::sgold/send {:method :lock :params [input weeks]
-                                                             :on-success
-                                                             (fn []
-                                                               (rf/dispatch [::input ""])
-                                                               (rf/dispatch [::gold/init-raw])
-                                                               (rf/dispatch [::gold/allowance (.-address sgold/c)])
-                                                               (rf/dispatch [::sgold/init-raw]))}]
-                                    [::gold/send
-                                     {:method     :approve
-                                      :params     [(.-address sgold/c) "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"]
-                                      :on-success (fn [_]
-                                                    (rf/dispatch
-                                                     [::gold/allowance
-                                                      (.-address sgold/c)]))}]))}
+       :on-click  #(rf/dispatch (if approved?
+                                  [::sgold/send {:method :lock :params [input weeks]
+                                                 :on-success
+                                                 (fn []
+                                                   (rf/dispatch [::input ""])
+                                                   (rf/dispatch [::gold/init-raw])
+                                                   (rf/dispatch [::gold/allowance (.-address sgold/c)])
+                                                   (rf/dispatch [::sgold/init-raw])
+                                                   (dialog/on-success))}]
+                                  [::gold/send
+                                   {:method     :approve
+                                    :params     [(.-address sgold/c) "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"]
+                                    :on-success (fn [_]
+                                                  (rf/dispatch [::gold/allowance (.-address sgold/c)])
+                                                  (dialog/on-success))}]))}
       (if approved? "SACRIFICED" "APPROVE")]]))
 
 (comment

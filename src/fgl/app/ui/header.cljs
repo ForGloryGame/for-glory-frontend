@@ -31,10 +31,10 @@ url(\"/images/header-bg.svg\")
                 :backgroundBlendMode "multiply"
                 :backgroundPosition
                 "
--10px -33%"
+-10px 0.625rem"
                 :backgroundSize
                 "
-100% 77%"}}
+100% 100%"}}
    x])
 
 (rf/reg-sub
@@ -53,13 +53,15 @@ url(\"/images/header-bg.svg\")
     [:header.w-100vw.grid-area-header.fixed.z-10
      [nav-root
       [:> Nav/List
-       {:className "grid justify-items-stretch justify-between items-center content-center pt-2"}
+       {:className "grid justify-items-stretch justify-between items-center content-center"}
 
        ^{:key 'logo}
-       [:> Nav/Item {:className "cs1 ce3 rs1 re3"}
+       [:> Nav/Item {:className "cs1 ce3"}
         [:> Nav/Link {:className "cursor-pointer block p-2"
                       :on-click  #(rf/dispatch [:navigate :route/home])}
-         [logo/ui {:style {:minWidth "8.8125rem"}}]]]
+         [logo/ui {:style {:minWidth "8.8125rem"
+                           :marginTop "-0.5rem"
+                           :marginBottom "-0.5rem"}}]]]
 
        ^{:key 'glory}
        [:> Nav/Item {:className "cs6 ce8"}

@@ -14,7 +14,7 @@
    [taoensso.encore :as enc]))
 
 (defn controllers []
-  [{:start #(rf/dispatch [::minter/init])
+  [{:start identity ;; #(rf/dispatch [::minter/init])
     :stop  identity}])
 
 (defn- reveal [addr]
@@ -41,47 +41,61 @@
      {:addr      addr
       :to-reveal to-reveal})))
 
-(defn maybe-show-reveal-dialog []
-  (let [{:keys [addr to-reveal]} @(rf/subscribe [::data])]
-    (when to-reveal
-      (rf/dispatch
-       [::dialog/set
-        :open true
-        :title
-        "Reveal Mint Commits"
-        :desc
-        [:div.dialog-body
-         [:p "Found pending commit"]
-         [:br]
-         [:p "Click the REVEAL button below to reveal them"]]
-        :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))))
+;; (defn maybe-show-reveal-dialog []
+;;   (rf/dispatch [::minter/init-raw])
+;;   (let [{:keys [addr to-reveal]} @(rf/subscribe [::data])]
+;;     (when to-reveal
+;;       (rf/dispatch
+;;        [::dialog/set
+;;         :open true
+;;         :title
+;;         "Reveal Mint Commits"
+;;         :desc
+;;         [:div.dialog-body
+;;          [:p "Found pending commit"]
+;;          [:br]
+;;          [:p "Click the REVEAL button below to reveal them"]]
+;;         :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))))
 
 (defn main []
   (r/create-class
-   {:component-did-mount maybe-show-reveal-dialog
+   {:component-did-mount #(rf/dispatch [::minter/init-raw true])
     :reagent-render
     (fn []
-      [:div.flexb.px-24.w-full
-       [:button
-        {:className "w-45% relative block"
-         :on-click  #(do
-                       (rf/dispatch
-                        [::minter/send
-                         {:method     :commitMint
-                          :params     [1 false]
-                          :on-submitted (fn [_]
-                                          (rf/dispatch
-                                           [::dialog/set
-                                            :desc
-                                            [dialog/pending]]))
-                          :on-success (fn [_]
-                                        (dialog/on-success)
-                                        (rf/dispatch [::minter/init-raw]))
-                          :on-failure dialog/failed}])
-                       (rf/dispatch [::dialog/set :open true]))}
-        [:img {:src "/images/mint.png"}]
-        [:div.absolute.bottom-10%.right-13%.flexr
-         [gloryimg/ui "3rem"]
-         [balance/ui "40000000000000000000" {:className "text-2xl"}]]]
+      (let [{:keys [addr to-reveal]} @(rf/subscribe [::data])]
+        (when to-reveal
+          (rf/dispatch
+           [::dialog/set
+            :open true
+            :title
+            "Reveal Mint Commits"
+            :desc
+            [:div.dialog-body
+             [:p "Found pending commit"]
+             [:br]
+             [:p "Click the REVEAL button below to reveal them"]]
+            :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))
+        [:div.flexb.px-24.w-full
+         [:button
+          {:className "w-45% relative block"
+           :on-click  #(do
+                         (rf/dispatch
+                          [::minter/send
+                           {:method       :commitMint
+                            :params       [1 false]
+                            :on-submitted (fn [_]
+                                            (rf/dispatch
+                                             [::dialog/set
+                                              :desc
+                                              [dialog/pending]]))
+                            :on-success   (fn [_]
+                                            (dialog/on-success)
+                                            (rf/dispatch [::minter/init-raw]))
+                            :on-failure   dialog/failed}])
+                         (rf/dispatch [::dialog/set :open true]))}
+          [:img {:src "/images/mint.png"}]
+          [:div.absolute.bottom-10%.right-13%.flexr
+           [gloryimg/ui "3rem"]
+           [balance/ui "40000000000000000000" {:className "text-2xl"}]]]
 
-       [:img.w-45% {:src "/images/weapon.png"}]])}))
+         [:img.w-45% {:src "/images/weapon.png"}]]))}))

@@ -1,15 +1,15 @@
 (ns fgl.contracts.gold
   (:require
-   [fgl.re-frame :refer [reg-event-pfx]]
    ["ethers" :as ethers]
+   [fgl.config :as conf]
+   [fgl.contracts :as ctc]
+   [fgl.contracts.erc20.abi :as abi]
+   [fgl.re-frame :refer [reg-event-pfx]]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [oops.core :refer [oapply+ ocall]]
-   [fgl.wallet.core :as w]
-   [re-frame.core :as rf]
-   [fgl.config :as conf]
-   [fgl.contracts.erc20.abi :as abi]
-   [fgl.contracts :as ctc]
-   [promesa.core :as p]))
+   [promesa.core :as p]
+   [re-frame.core :as rf]))
 
 (def c (ctc/init :id :gold :address conf/contract-addr-gold :abi abi/data))
 
@@ -31,7 +31,7 @@
    (let [{::w/keys [addr provider]} db]
      (when addr
        (ctc/with-provider c provider
-         (p/then (r :allowance addr spender) #(rf/dispatch [::set % addr ::allowance spender])))))
+         (p/then (r :allowance addr spender) #(rf/dispatch [::set (log/spy %) addr ::allowance spender])))))
    {}))
 
 (reg-event-pfx

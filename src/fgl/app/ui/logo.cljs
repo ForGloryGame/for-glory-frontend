@@ -5,7 +5,7 @@
   ([{:keys [style] :as opts}]
    [:img.mr-8
     (merge
-     {:width  "4.75rem" :alt "link to home page"
+     {:alt "link to home page"
       :srcSet "/images/logo-128.png 128w,
                 /images/logo-256.png 256w,
                 /images/logo-512.png 512w,

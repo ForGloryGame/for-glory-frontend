@@ -37,7 +37,7 @@
 
           ;; kingdom
           [:button.absolute
-           {:on-click #(rf/dispatch [:navigate :route/guild-basic])
+           {:on-click     #(rf/dispatch [:navigate :route/guild-basic])
             :onMouseEnter #(fg-reset! :kingdom)
             :onMouseLeave #(fg-reset! nil)
             :style        {:width "calc(1000vw * 1377 / 5120)"
@@ -56,7 +56,7 @@
 
           ;; council
           [:button.absolute
-           {:on-click #(rf/dispatch [:navigate :route/council])
+           {:on-click     #(rf/dispatch [:navigate :route/council])
             :onMouseEnter #(fg-reset! :council)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 4341 / 5120)"
@@ -75,7 +75,7 @@
 
           ;; ruins
           [:button.absolute
-           {:on-click identity
+           {:on-click     #(rf/dispatch [:navigate :route/rank-personal])
             :onMouseEnter #(fg-reset! :ruins)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 3810 / 5120)"
@@ -94,7 +94,7 @@
 
           ;; merchant
           [:button.absolute
-           {:on-click #(rf/dispatch [:navigate :route/merchant-mint])
+           {:on-click     #(rf/dispatch [:navigate :route/merchant-mint])
             :onMouseEnter #(fg-reset! :merchant)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 2356 / 5120)"
@@ -112,7 +112,7 @@
 
           ;; battlefield
           [:button.absolute
-           {:on-click #(rf/dispatch [:navigate :route/battlefield])
+           {:on-click     #(rf/dispatch [:navigate :route/battlefield])
             :onMouseEnter #(fg-reset! :battlefield)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 523 / 5120)"

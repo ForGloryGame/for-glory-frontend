@@ -370,7 +370,7 @@ seized by the Council, distributed to Lords accordingly."]
                                 (dialog/on-success)
                                 (rf/dispatch [::gold/init-raw])
                                 (rf/dispatch [::glory/init-raw]))}])]
-                (if (and (skip?) (not battlefield?))
+                (if (or (skip?) (not battlefield?))
                   (f2)
                   (rf/dispatch [::dialog/set
                                 :open true
