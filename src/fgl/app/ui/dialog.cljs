@@ -30,7 +30,7 @@
                           (apply assoc (get-in db [::data id] {}) kvs)))}
 
          rst (if (and (not (get-in db [::data id :open])) (some (fn [[k v]] (and (= k :open) v)) (partition 2 kvs)))
-               (assoc rst :fx [[:dispatch-later {:ms 5000 :dispatch [::set :close? true]}]])
+               (assoc rst :fx [[:dispatch-later {:ms 10000 :dispatch [::set :close? true]}]])
                rst)]
      rst)))
 

@@ -4,7 +4,6 @@
    ["ethers" :as ethers]
    [fgl.contracts.gamenft :as nft]
    [lambdaisland.glogi :as log]
-   [oops.core :refer [oapply+ ocall]]
    [fgl.wallet.core :as w]
    [re-frame.core :as rf]
    [fgl.config :as conf]

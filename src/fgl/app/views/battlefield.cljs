@@ -30,7 +30,7 @@
        (rf/dispatch [::bfproxy/init])
        ;; get unstaked info
        (rf/dispatch [::nft/init]))
-    :stop  identity}])
+    :stop identity}])
 
 (rf/reg-event-db
  ::set-type
@@ -89,17 +89,19 @@
 
          data (get
                {:staked   (->> staked-token-ids
+                               (map #(.toString %))
+                               distinct
                                (map (fn [id]
-                                      (let [id (.toString id)]
-                                        (-> {:id id}
-                                            (merge (get traits id))
-                                            (merge (get reward id))))))
+                                      (-> {:id id}
+                                          (merge (get traits id))
+                                          (merge (get reward id)))))
                                (filter filter-by))
                 :unstaked (->> unstaked-token-ids
+                               (map #(.toString %))
+                               distinct
                                (map (fn [id]
-                                      (let [id (.toString id)]
-                                        (-> {:id id}
-                                            (merge (get traits id))))))
+                                      (-> {:id id}
+                                          (merge (get traits id)))))
                                (filter filter-by))}
                type)
 
@@ -176,14 +178,14 @@
       :disabled        disabled
       :checked         checked
       :width           "16rem"
-      :glory           glory
-      :earned?         (and gold (not glory))
+      :glory           (and is-lord glory)
+      :earned?         (and gold (not is-lord))
       :onCheckedChange onCheckedChange}
      {:className "mr-4"
       :style     {:flexShrink 0}}]))
 
 (defn cards [route-name]
-  (let [!cards   (r/atom nil)
+  (let [!cards (r/atom nil)
         on-wheel
         (fn [e]
           (when-let [!cards-div @!cards]
@@ -262,8 +264,8 @@
                                         (fn []
                                           (dialog/on-success)
                                           (rf/dispatch [::battlefield/init-raw])
-                                          (rf/dispatch [::bfproxy/init-raw])
-                                          (rf/dispatch [::nft/init-raw]))}]))
+                                          (rf/dispatch [::nft/init-raw])
+                                          (rf/dispatch [::bfproxy/init-raw]))}]))
         unstake
         (fn [token-ids] #(rf/dispatch [::bfproxy/send
                                        {:method :commitUnstake
@@ -273,8 +275,8 @@
                                         (fn []
                                           (dialog/on-success)
                                           (rf/dispatch [::battlefield/init-raw])
-                                          (rf/dispatch [::bfproxy/init-raw])
-                                          (rf/dispatch [::nft/init-raw]))}]))]
+                                          (rf/dispatch [::nft/init-raw])
+                                          (rf/dispatch [::bfproxy/init-raw]))}]))]
     (fn []
       (let [{:keys [type bf-approved]} @(rf/subscribe [::data])
             selected                   @(rf/subscribe [::selected])

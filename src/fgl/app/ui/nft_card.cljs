@@ -76,10 +76,10 @@
                   :fontSize (calc 0.08640553)
                   :padding  (str "0 " (calc (if earned? 0.1843318 0.13824885)))}}
          (and
-          (some? gold)
+          gold
           [:div.flex.flex-row.items-center.font-bold [gold-logo/ui (calc 0.13824885)] [uib/ui gold {:style {:maxWidth (calc 0.2764977)}}]])
          (and
-          (some? glory)
+          glory
           [:div.flex.flex-row.items-center.font-bold [glory-logo/ui (calc 0.13824885)] [uib/ui glory {:style {:maxWidth (calc 0.2764977)}}]])
          (and earned? [:span "Earned"])]]]
 

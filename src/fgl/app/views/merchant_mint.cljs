@@ -26,12 +26,14 @@
                      [::dialog/set
                       :desc
                       [dialog/pending]])
-     :on-success   #(rf/dispatch
-                     [::dialog/set
-                      :close? true
-                      :desc
-                      [dialog/confirmed]
-                      :actions [dialog/close {:t :bsm} "OK"]])
+     :on-success   #(do
+                      (rf/dispatch
+                       [::dialog/set
+                        :close? true
+                        :desc
+                        [dialog/confirmed]
+                        :actions [dialog/close {:t :bsm} "OK"]])
+                      (rf/dispatch [::minter/init-raw]))
      :on-failure   dialog/failed}])
 
   (rf/dispatch [::dialog/set :desc [dialog/submitting] :actions nil]))
