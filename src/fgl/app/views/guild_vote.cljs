@@ -189,10 +189,12 @@
             @(rf/subscribe [::pdata proposal-id])
 
             start (and start (format-date (js/Date. (* 1000 start))))
-            end   (and end (format-date (js/Date. (* 1000 end))))]
-        [:div "vote"
-         [:pre (str proposal)]
-         [:pre (str votes)]]
+            end   (and end (format-date (js/Date. (* 1000 end))))
+
+            votes-choices  (map :choice votes)
+            choices-count  (count votes-choices)
+            choice-1-count (->> votes-choices (filter #(= 1 %)) count)
+            choice-2-count (- choices-count choice-1-count)]
         [:div.py-6.px-8
          [:style
           "
@@ -250,14 +252,36 @@
              "THE CURRENT RESULT"]
             [:p.flex.justify-between.mb-1_5
              [:span (first choices)]
-             [:span "The current result"]]
+             (and (pos? choices-count) (> choice-1-count choice-2-count)
+                  [:span "The current result"])
+             (and (pos? choices-count) (< choice-1-count choice-2-count)
+                  [:span (str choice-1-count
+                              (if (> choice-1-count 1) " Votes " " Vote ")
+                              (if (pos? choices-count)
+                                (str (-> choice-1-count (/ choices-count) (* 100)))
+                                "0")
+                              "%")])]
             [:div.relative.w-full.h-1_5.rounded-l-full.bg-C00000033.mb-4
-             [:div.absolute.w-50%.h-1_5.rounded-l-full.bg-C96a1ae]]
+             [:div.absolute.h-1_5.rounded-l-full.bg-C96a1ae
+              {:style {:width (if (pos? choices-count)
+                                (str (-> choice-1-count (/ choices-count) (* 100)) "%")
+                                0)}}]]
             [:p.flex.justify-between.mb-1_5
              [:span (second choices)]
-             [:span "520k Votes 95.32%"]]
+             (and (pos? choices-count) (> choice-2-count choice-1-count)
+                  [:span "The current result"])
+             (and (pos? choices-count) (< choice-2-count choice-1-count)
+                  [:span (str choice-2-count
+                              (if (> choice-2-count 1) " Votes " " Vote ")
+                              (if (pos? choices-count)
+                                (str (-> choice-2-count (/ choices-count) (* 100)))
+                                "0")
+                              "%")])]
             [:div.relative.w-full.h-1_5.rounded-l-full.bg-C00000033
-             [:div.absolute.w-25%.h-1_5.rounded-l-full.bg-C96a1ae]]]
+             [:div.absolute.h-1_5.rounded-l-full.bg-C96a1ae
+              {:style {:width (if (pos? choices-count)
+                                (str "" (-> choice-2-count (/ choices-count) (* 100)) "%")
+                                0)}}]]]
            [:div.flex.flex-col
             [:div.rounded-sm.bg-C79c5da66.text-lg.text-center
              (str "VOTE (" voute-count ")")]
