@@ -1,0 +1,63 @@
+name: Deploy Sites
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy-sites:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.5]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "11"
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cli: latest
+          bb: latest
+      # - run: sudo apt install rlwrap -y
+
+      - uses: actions/cache@v3
+        id: maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ~/.m2/
+          key: ${{ runner.os }}-maven-${{ hashFiles('./deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - run: yarn install --immutable
+      - run: npx shadow-cljs release app app-ssr
+      - run: mkdir -p test
+      - run: clojure -X:css-prod
+      - run: bb dev/ssr.clj
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: dev-pages # The branch the action should deploy to.
+          folder: resources/app/public
