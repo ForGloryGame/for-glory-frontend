@@ -42,7 +42,7 @@
          kingdoms
          (map
           (fn [[idx {:keys [elders senators member-count]}]]
-            {:name         (nth kingdoms-name (inc idx))
+            {:name         (nth kingdoms-name idx)
              :member-count member-count
              :elders       elders
              :senators     senators})
@@ -59,18 +59,18 @@
        (ctc/with-provider c provider
          (p/let [kingdom-id (r :getAccountInfo addr)
                  kingdom-id (first kingdom-id)
-                 _ (rf/dispatch [::set kingdom-id addr ::kingdom-id])
+                 has-kingdom? (pos? kingdom-id)
+                 elders (and has-kingdom? (r :getElders kingdom-id))
+                 senators (and has-kingdom? (r :getSenators kingdom-id))
 
-                 elders (r :getElders kingdom-id)
-                 _ (rf/dispatch [::set elders ::kingdom kingdom-id :elders])
-
-                 senators (r :getSenators kingdom-id)
-                 _ (rf/dispatch [::set senators ::kingdom kingdom-id ::senators])
-
-                 role (cond (some #{addr} elders)   :elders
-                            (some #{addr} senators) :senators
-                            :else                   nil)
-                 _ (rf/dispatch [::set role addr ::role])]))))
+                 role (and has-kingdom? (cond (some #{addr} elders)   :elders
+                                              (some #{addr} senators) :senators
+                                              :else                   nil))]
+           (when has-kingdom?
+             (rf/dispatch [::set kingdom-id addr ::kingdom-id])
+             (rf/dispatch [::set (js->clj elders) ::kingdom kingdom-id :elders])
+             (rf/dispatch [::set (js->clj senators) ::kingdom kingdom-id ::senators])
+             (rf/dispatch [::set role addr ::role]))))))
 
    {}))
 
@@ -83,19 +83,28 @@
      (when addr
        (ctc/with-provider c provider
          (p/let [kingdoms (range 1 6)
+                 kdoms (map #(r :kingdoms %) kingdoms)
                  elders (map #(r :getElders %) kingdoms)
                  senators (map #(r :getSenators %) kingdoms)
                  membersCount (map #(r :getMemberCount %) kingdoms)
 
-                 [elders senators membersCount]
-                 (->> (concat elders senators membersCount)
-                      p/all
-                      (partition (count kingdoms)))]
+                 promises
+                 (->> (concat kdoms elders senators membersCount)
+                      p/all)
+
+                 [kdoms elders senators membersCount] (partition (count kingdoms) promises)]
 
            (doseq [kingdom-id kingdoms]
-             (rf/dispatch [::set (nth elders kingdom-id) ::kingdom kingdom-id :elders])
-             (rf/dispatch [::set (nth senators kingdom-id) ::kingdom kingdom-id :senators])
-             (rf/dispatch [::set (nth membersCount kingdom-id) ::kingdom kingdom-id :member-count]))))))
+             (let [[treasury power nonce ;; name
+                    ]
+                   (nth kdoms (dec kingdom-id))]
+               (rf/dispatch [::set treasury  ::kingdom kingdom-id :treasury])
+               (rf/dispatch [::set power ::kingdom kingdom-id :power])
+               (rf/dispatch [::set nonce ::kingdom kingdom-id :nonce])
+               (rf/dispatch [::set (nth kingdoms-name kingdom-id) ::kingdom kingdom-id :name]))
+             (rf/dispatch [::set (js->clj (nth elders (dec kingdom-id))) ::kingdom kingdom-id :elders])
+             (rf/dispatch [::set (js->clj (nth senators (dec kingdom-id))) ::kingdom kingdom-id :senators])
+             (rf/dispatch [::set (nth membersCount (dec kingdom-id)) ::kingdom kingdom-id :member-count]))))))
 
    {}))
 

@@ -20,7 +20,7 @@
 (rf/reg-sub
  ::balance
  (fn [db [_ addr]]
-   (.toString (get-in db [addr ::balance] 0))))
+   (get-in db [addr ::balance] 0)))
 (rf/reg-sub
  ::locked
  (fn [db [_ addr]]
@@ -51,6 +51,14 @@
  (fn [db [_ addr]]
    (let [unlockInfos (get-in db [addr ::info] [])]
      (->unlock-info unlockInfos))))
+
+(rf/reg-event-fx
+ ::balance
+ (fn [{:keys [db]} [_ addr]]
+   (let [{::w/keys [provider]} db]
+     (ctc/with-provider c provider
+       (p/then (r :balanceOf addr) #(rf/dispatch [::set % addr ::balance]))))
+   {}))
 
 (reg-event-pfx
  ::init

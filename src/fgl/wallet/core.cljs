@@ -84,7 +84,6 @@
  [(rf/after check-connection)
   (rf/after check-chain)]
  (fn [db _]
-   (log/debug :wallet ::installed :provider @provider)
    (assoc db
           ::state :installed
           ::provider @provider)))

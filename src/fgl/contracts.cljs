@@ -31,7 +31,6 @@
 (defn get-request-fn [contract]
   (assert contract "Invalid contract instance")
   (fn [method-name & args]
-    ;; (log/debug :contract-call [(name method-name) args])
     (p/let [rst (oapply+ contract (name method-name) args)]
       rst)))
 

@@ -1,9 +1,9 @@
 (ns fgl.app.views.guild-basic
   (:require
+   ["ethers" :as ethers]
    [taoensso.encore :as enc]
-   [fgl.app.views.guild-route :as groute]
-   [fgl.config :as conf]
    [fgl.contracts.kingdoms :as kingdom]
+   [fgl.contracts.sgold :as sgold]
    [fgl.contracts.bfproxy :as bfproxy]
    [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
@@ -23,44 +23,84 @@
     #(do
        ;; get staked info
        (rf/dispatch [::kingdom/init])
+       (rf/dispatch [::kingdom/init-all])
        ;; get unstaked info
        (rf/dispatch [::nft/init]))
     :stop identity}])
 
-(defn member-row [role addr locked]
-  ^{:key addr}
-  [:div.grid.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold
-   {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
-   [:span role]
-   [:span addr]
-   [balance/ui locked]])
+(rf/reg-sub
+ ::data
+ (fn [db [_ kingdom-id]]
+   (let [kingdom-id        (or kingdom-id 1)
+
+         {::w/keys [addr]} db
+
+         kingdoms-db       (get db ::kingdom/kingdom)
+
+         ranks (->> kingdoms-db
+                    (map (fn [[k v]] [k (:power (or v (ethers/BigNumber.from 0)))]))
+                    (sort-by second (fn [x y] (try (.gt x y)
+                                                   (catch js/Error e true))))
+                    (enc/reduce-indexed (fn [acc idx [k]] (assoc acc k (inc idx))) {}))
+
+         kingdom-db (get kingdoms-db kingdom-id)
+
+         {:keys [elders senators
+                 member-count name]}
+         kingdom-db
+
+         role (cond
+                (some #{addr} elders)   :elder
+                (some #{addr} senators) :senator
+                :else :member)]
+
+     {:addr         addr
+      :rank         (get ranks kingdom-id)
+      :role         role
+      :kname        name
+      :elders       elders
+      ;; :senators     senators
+      :member-count (or (and member-count (.toNumber member-count)) 0)})))
+
+(defn member-row [idx addr]
+  (r/create-class
+   {:component-did-mount
+    (fn []
+      (rf/dispatch [::sgold/balance addr]))
+    :reagent-render
+    (fn []
+      (let [balance @(rf/subscribe [::sgold/balance addr])]
+        ^{:key idx}
+        [:div.grid.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold
+         {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
+         [:span "Elder"]
+         [:span addr]
+         [balance/ui balance]]))}))
 
 (defn kingdom-logo [src]
   [:img.w-36.mr-12 {:src src}])
 
 (defn kingdom-info []
-  [:div.flex.pt-9.pb-4.pl-11
-   [kingdom-logo "/images/guild-avatar.png"]
-   [:div.grid.grid-cols-3.text-3xl.gap-x-8.items-center
-    [:span.text-4xl.col-span-full "Kingdom Name"]
-    [:span
-     [:span "20"]
-     [:span.text-xl.text-C74bfcee6 "/ Members"]]
-    [:span
-     [:span "No.28"]
-     [:span.text-xl.text-C74bfcee6 "/ Rank"]]
-    [:span
-     [:span "888"]
-     [:span.text-xl.text-C74bfcee6 "/ Locked"]]
-    [:span
-     [:span "knight"]
-     [:span.text-xl.text-C74bfcee6 "/ Your Role"]]]])
+  (let [{:keys [kname member-count rank role]} @(rf/subscribe [::data])]
+    [:div.flex.pt-9.pb-4.pl-11
+     [kingdom-logo "/images/guild-avatar.png"]
+     [:div.grid.grid-cols-3.text-3xl.gap-x-8.items-center
+      [:span.text-4xl.col-span-full kname]
+      [:span
+       [:span member-count]
+       [:span.text-xl.text-C74bfcee6 "/ Members"]]
+      [:span
+       [:span (str "No." rank)]
+       [:span.text-xl.text-C74bfcee6 "/ Rank"]]
+      [:span
+       [:span "XXX"]
+       [:span.text-xl.text-C74bfcee6 "/ Locked"]]
+      [:span
+       [:span.capitalize (name role)]
+       [:span.text-xl.text-C74bfcee6 "/ Your Role"]]]]))
 
 (defn kingdom-members []
-  (let [member-data
-        (map-indexed
-         (fn [idx addr] ["Elder" (str addr idx) "10000000000000000000000"])
-         (repeat 10 "0xA932480195801951510509DA0000000000000"))]
+  (let [{:keys [elders]} @(rf/subscribe [::data])]
     [:div.px-6.py-4
      {:style {:height "calc(100% - 180px - 3.5rem)"}}
      [:div.text-xl.mb-2 "Member status"]
@@ -79,7 +119,7 @@
       [into
        [:div.overflow-auto
         {:style {:height "calc(100% - 1.625rem)"}}]
-       (map #(vector apply member-row %) member-data)]]]))
+       (map-indexed (fn [idx addr]  [member-row idx addr]) elders)]]]))
 
 (defn main []
   [:div
