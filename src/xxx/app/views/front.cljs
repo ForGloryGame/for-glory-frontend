@@ -1,15 +1,18 @@
 (ns xxx.app.views.front
   (:require
-   [re-frame.core :as rf]
-   [taoensso.timbre :refer [info]]))
+   ;; [re-frame.core :as rf]
+   ;; [taoensso.timbre :as log]
+   [xxx.app.views.front.header :as header]
+   [xxx.app.views.front.body :as body]
+   [xxx.app.views.front.footer :as footer]))
 
 (defn controllers []
-  [{:start #(info "start" "front controller")
-    :stop  #(info "stop" "front controller")}])
+  [{:start identity
+    :stop  identity}])
 
 (defn main [_]
-  [:section "Front page"
-   [:p>button {:on-click #(rf/dispatch [:navigate :route/login])} "> Login"]
-   [:p>button {:on-click #(rf/dispatch [:navigate :route/home])} "> Home"]
-   [:p>button {:on-click #(rf/dispatch [:navigate :route/about])} "> About"]
-   [:p>button {:on-click #(rf/dispatch [:navigate :route/profile {:id :cz}])} "> Profile"]])
+  [:div.main
+   [:link {:rel "stylesheet" :href "/fonts/family.css"}]
+   [header/ui]
+   [body/ui]
+   [footer/ui]])

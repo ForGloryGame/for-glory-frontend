@@ -85,7 +85,7 @@
     girouette/girouette             {:mvn/version "0.0.7"}
     girouette/processor             {:mvn/version "RELEASE"}}}
 
-  :girouette-processor
+  :css
   {; clojure -X:girouette-processor
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor
@@ -95,7 +95,7 @@
                 :apply-classes xxx.app.css/composed-classes
                 :watch?        true
                 #_#_:dry-run? true}}
-  :girouette-processor-cards
+  :css-cards
   {; clojure -X:girouette-processor-cards
    :extra-deps {girouette/processor {:mvn/version "0.0.7"}}
    :ns-default girouette.processor

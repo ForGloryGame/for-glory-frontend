@@ -8,7 +8,8 @@
 
  :build-defaults
  {:build-hooks [(shadow-git-inject.core/hook)
-                (hooks.css/build)]
+                ;; (hooks.css/build)
+                ]
   :closure-defines
   {xxx.config/version :shadow-git-inject/version}
   :compiler-options
