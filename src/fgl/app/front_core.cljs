@@ -1,6 +1,7 @@
 (ns fgl.app.front-core
   (:require
-   [log]
+   [lambdaisland.glogi :as log]
+   [lambdaisland.glogi.console :as glogi-console]
    [reagent.dom :as rdom]
    [re-frame.core :as rf]
    ;; [re-pressed.core :as rp]
@@ -9,10 +10,12 @@
    [fgl.app.events :as events]
    [fgl.app.views.front :as front-view]
    [fgl.config :as config]))
+(glogi-console/install!)
+(log/set-levels {:glogi/root (if goog.DEBUG :all :info)})
 
 (defn dev-setup []
   (when config/debug?
-    (println "dev mode")))
+    (log/debug "dev mode")))
 
 (defn ^:dev/after-load mount-root []
   (rf/clear-subscription-cache!)
