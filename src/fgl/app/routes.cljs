@@ -118,6 +118,27 @@
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
+    ["guild/vote"
+     {:name        :route/guild-vote
+      :panel-name  "Guild"
+      :view        #(resolve 'fgl.app.views.guild-vote/main)
+      :controllers #(resolve 'fgl.app.views.guild-vote/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["guild/management"
+     {:name        :route/guild-management
+      :panel-name  "Guild"
+      :view        #(resolve 'fgl.app.views.guild-management/main)
+      :controllers #(resolve 'fgl.app.views.guild-management/controllers)
+      :lazy        true
+      :conflicting true}]
+    ["guild/allocation"
+     {:name        :route/guild-allocation
+      :panel-name  "Guild"
+      :view        #(resolve 'fgl.app.views.guild-allocation/main)
+      :controllers #(resolve 'fgl.app.views.guild-allocation/controllers)
+      :lazy        true
+      :conflicting true}]
     ["merchant/mint"
      {:name        :route/merchant-mint
       :panel-name  "MERCHANT"

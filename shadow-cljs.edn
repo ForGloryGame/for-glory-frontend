@@ -50,6 +50,12 @@
                         :depends-on #{:shared}}
     :guild-alter       {:entries    [fgl.app.views.guild-alter]
                         :depends-on #{:shared}}
+    :guild-vote        {:entries    [fgl.app.views.guild-vote]
+                        :depends-on #{:shared}}
+    :guild-management  {:entries    [fgl.app.views.guild-management]
+                        :depends-on #{:shared}}
+    :guild-allocation  {:entries    [fgl.app.views.guild-allocation]
+                        :depends-on #{:shared}}
     :merchant-mint     {:entries    [fgl.app.views.merchant-mint]
                         :depends-on #{:shared}}
     :merchant-burn     {:entries    [fgl.app.views.merchant-burn]
