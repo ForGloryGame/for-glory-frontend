@@ -89,7 +89,7 @@
         role                                   (or kingdom-role :member)
         leave-checked?                         @(rf/subscribe [::leave-checked])
 
-        skip? (js/localStorage.getItem "leave-checked")
+        skip? #(js/localStorage.getItem "leave-checked")
         f1    #(if leave-checked?
                  (js/localStorage.setItem "leave-checked" 1)
                  (js/localStorage.removeItem "leave-checked"))
@@ -103,7 +103,7 @@
                     (rf/dispatch [::kingdom/get-account-info true]))}])
         leave
         (fn []
-          (if skip?
+          (if (skip?)
             (f2)
             (rf/dispatch
              [::dialog/set

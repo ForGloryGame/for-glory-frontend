@@ -322,7 +322,7 @@
             className                  (if staked? "grid-cols-3 gap-4" "grid-cols-1")
             unstake
             (fn []
-              (let [skip? (js/localStorage.getItem "flee-checked")
+              (let [skip? #(js/localStorage.getItem "flee-checked")
                     f1    #(if flee-checked?
                              (js/localStorage.setItem "flee-checked" 1)
                              (js/localStorage.removeItem "flee-checked"))
@@ -337,7 +337,7 @@
                                 (rf/dispatch [::battlefield/init-raw])
                                 (rf/dispatch [::nft/init-raw])
                                 (rf/dispatch [::bfproxy/init-raw]))}])]
-                (if skip?
+                (if (skip?)
                   (f2)
                   (rf/dispatch [::dialog/set
                                 :open true
@@ -354,7 +354,7 @@ seized by the Council, distributed to Lords accordingly."]
                                           [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]]))))
             claim
             (fn []
-              (let [skip? (js/localStorage.getItem "claim-checked")
+              (let [skip? #(js/localStorage.getItem "claim-checked")
                     f1    #(if claim-checked?
                              (js/localStorage.setItem "claim-checked" 1)
                              (js/localStorage.removeItem "claim-checked"))
@@ -368,7 +368,7 @@ seized by the Council, distributed to Lords accordingly."]
                                 (dialog/on-success)
                                 (rf/dispatch [::gold/init-raw])
                                 (rf/dispatch [::glory/init-raw]))}])]
-                (if (and skip? (not battlefield?))
+                (if (and (skip?) (not battlefield?))
                   (f2)
                   (rf/dispatch [::dialog/set
                                 :open true

@@ -3,6 +3,7 @@
    ["ethers" :as ethers]
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.checkbox :as checkbox]
    [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.eth-img :as ethimg]
    [fgl.app.ui.gold-img :as goldimg]
@@ -145,21 +146,63 @@
         [goldimg/ui "2rem"]
         [balance/ui gold {:fixed 4}]]]]]))
 
+(rf/reg-event-db
+ ::burn-checked
+ (fn [db [_ checked?]]
+   (assoc db ::burn-checked checked?)))
+
+(rf/reg-sub
+ ::burn-checked
+ (fn [db _]
+   (get db ::burn-checked false)))
+
+(defn burn-checkbox []
+  (let [checked? @(rf/subscribe [::burn-checked])]
+    [checkbox/ui
+     {:width "1.5rem"
+      :text  [:span.text-xl.ml-2.fb "Do not remind me next time"]}
+     {:className       "flex flex-row cs1 ce2 rs1 re2 justify-self-start items-center"
+      :onCheckedChange #(rf/dispatch [::burn-checked %])
+      :checked         checked?}]))
+
 (defn burn []
-  (let [{:keys [token-id eth gold]} @(rf/subscribe [::data])]
+  (let [{:keys [token-id eth gold]} @(rf/subscribe [::data])
+        burn-checked?               @(rf/subscribe [::burn-checked])
+        skip?                       #(js/localStorage.getItem "burn-checked")
+        f1                          #(if burn-checked?
+                                       (js/localStorage.setItem "burn-checked" 1)
+                                       (js/localStorage.removeItem "burn-checked"))
+        f2                          #(rf/dispatch
+                                      [::landeed/send
+                                       {:method :redeem
+                                        :params [#js [token-id] eth gold]
+                                        :on-success
+                                        (fn []
+                                          (rf/dispatch [::landeed/init-raw])
+                                          (rf/dispatch [::landeed/pair-init-raw])
+                                          (dialog/on-success))}])
+        burn                        (fn []
+                                      (if (skip?)
+                                        (f2)
+                                        (rf/dispatch
+                                         [::dialog/set
+                                          :open true
+                                          :title ""
+                                          :desc [:<>
+                                                 [:p.ffd.text-base
+                                                  "Notice: If you choose to Burn your Land Deed, you will receive 95% of the
+token you used to mint the Land Deed. The rest 5% are being charged as
+handling fee. Afterwards, you will lose corresponding utilities of this Land
+Deed."]
+                                                 [:br]
+                                                 [burn-checkbox]]
+                                          :actions [:<>
+                                                    [btn/ui {:t :osm :on-click (comp f2 f1) :className "mr-8"} "Confirm"]
+                                                    [btn/ui {:t :bsm :on-click #(rf/dispatch [::dialog/set :remove true])} "Cancel"]]])))]
     [:div.text-center
      [btn/ui
-      {:t :osm
-       :on-click
-       #(rf/dispatch
-         [::landeed/send
-          {:method :redeem
-           :params [#js [token-id] eth gold]
-           :on-success
-           (fn []
-             (rf/dispatch [::landeed/init-raw])
-             (rf/dispatch [::landeed/pair-init-raw])
-             (dialog/on-success))}])}
+      {:t        :osm
+       :on-click burn}
       "BURN"]]))
 
 (defn main []

@@ -104,7 +104,7 @@
 (defn kingdom-info []
   (let [{:keys [kname member-count rank role]} @(rf/subscribe [::data])
         leave-checked?                         @(rf/subscribe [::leave-checked])
-        skip?                                  (js/localStorage.getItem "leave-checked")
+        skip?                                  #(js/localStorage.getItem "leave-checked")
         f1
         #(if leave-checked?
            (js/localStorage.setItem "leave-checked" 1)
@@ -120,7 +120,7 @@
               (rf/dispatch [::kingdom/get-account-info true]))}])
         leave
         (fn []
-          (if skip?
+          (if (skip?)
             (f2)
             (rf/dispatch
              [::dialog/set
