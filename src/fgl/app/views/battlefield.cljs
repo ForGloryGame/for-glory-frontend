@@ -6,8 +6,10 @@
    [fgl.contracts.battlefield :as battlefield]
    [fgl.contracts.bfproxy :as bfproxy]
    [fgl.contracts.gamenft :as nft]
+   [fgl.re-frame]
    [fgl.utils :refer [->display-token ->token-ids]]
    [fgl.wallet.core :as w]
+   [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
    [reagent.core :as r]))
 
@@ -26,6 +28,17 @@
    (assoc db ::type type
           ::selected #{})))
 
+(rf/reg-event-fx
+ ::select-all
+ [(rf/inject-cofx :inject/sub [::data])]
+ (fn [{::keys [data] :keys [db]} [_ select?]]
+   (if select?
+     (let [[_ items] data]
+       {:db (assoc db ::selected (->> items (map :id) (into #{}))
+                   ::all-selected true)})
+     {:db (assoc db ::selected #{}
+                 ::all-selected false)})))
+
 (rf/reg-event-db
  ::select
  (fn [db [_ id]]
@@ -34,7 +47,8 @@
 (rf/reg-event-db
  ::deselect
  (fn [db [_ id]]
-   (assoc db ::selected (disj (get db ::selected #{}) id))))
+   (assoc db ::selected (disj (get db ::selected #{}) id)
+          ::all-selected false)))
 
 (rf/reg-sub
  ::selected
@@ -57,7 +71,9 @@
          unstaked-token-ids
          (::nft/token-ids addr-db)
 
-         bf-approved (::nft/bf-approved addr-db)]
+         bf-approved (::nft/bf-approved addr-db)
+
+         all-selected (::all-selected db)]
 
      [type
       (get
@@ -73,7 +89,8 @@
                                (merge (get traits id)))))
                        unstaked-token-ids)}
        type)
-      bf-approved])))
+      bf-approved
+      all-selected])))
 
 (defn close []
   (let [to-home #(rf/dispatch [:navigate :route/home])]
@@ -134,6 +151,17 @@
                   ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
                 data)))))))
 
+(defn select-all []
+  (let [select-all #(rf/dispatch [::select-all %])]
+    (fn []
+      (let [[_ _ _ all-selected] @(rf/subscribe [::data])]
+        [:> C/Root
+         {:className       "cs2 ce3 rs4 re5 justify-self-start"
+          :onCheckedChange select-all
+          :checked         all-selected}
+         "Select All"
+         [:> C/Indicator [:span (str "checked: " all-selected)]]]))))
+
 (defn btns []
   (let [approve
         #(rf/dispatch [::nft/send
@@ -156,11 +184,11 @@
                                        {:method :commitUnstake
                                         :params [(->token-ids token-ids)]}]))]
     (fn []
-      (let [[type _ approved?] @(rf/subscribe [::data])
-            selected           @(rf/subscribe [::selected])
-            staked?            (= type :staked)
-            no-selected?       (not (seq selected))]
-        [:div.cs2.ce4.rs4.re5.justify-self-end.grid.grid-cols-3
+      (let [[type data approved?] @(rf/subscribe [::data])
+            selected              @(rf/subscribe [::selected])
+            staked?               (= type :staked)
+            no-selected?          (not (seq selected))]
+        [:div.cs3.ce4.rs4.re5.justify-self-end.grid.grid-cols-3
          (and (not approved?) [:button {:on-click approve} "APPROVE"])
          (and approved? (not staked?)  [:button {:on-click (enter selected) :disabled no-selected?} "ENTER"])
          (and approved? staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
@@ -181,4 +209,5 @@
              [select]
              [:div.cs2.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
               [cards]]
+             [select-all]
              [btns]]))}))))
