@@ -47,7 +47,7 @@ url(\"/images/header-bg.svg\")
 (defn ui []
   (init-balances)
   (let [[gold-balance glory-balance ratio] @(rf/subscribe [::data])]
-    [:header.grid-area-header
+    [:header.w-100vw.grid-area-header.fixed.z-10
      [nav-root
       [:> Nav/List
        {:className "grid auto-cols-max auto-rows-max justify-items-stretch justify-between items-center content-center pt-2"}

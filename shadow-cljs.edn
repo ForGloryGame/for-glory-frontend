@@ -42,6 +42,8 @@
                         :depends-on #{:shared}}
     :profile           {:entries    [fgl.app.views.profile]
                         :depends-on #{:shared}}
+    :the-map           {:entries    [fgl.app.views.map]
+                        :depends-on #{:shared}}
     :dashboard         {:entries    [fgl.app.views.dashboard]
                         :depends-on #{:shared}}
     :battlefield       {:entries    [fgl.app.views.battlefield]

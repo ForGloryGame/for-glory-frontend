@@ -20,4 +20,6 @@
    [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/merchant-mint])} "-> merchant"]
    [:br]
+   [:button {:on-click #(rf/dispatch [:navigate :route/the-map])} "-> map"]
+   [:br]
    [:button {:on-click #(rf/dispatch [:navigate :route/mint])} "-> mint"]])

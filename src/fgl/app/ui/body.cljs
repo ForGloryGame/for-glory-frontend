@@ -19,6 +19,7 @@
 
         guild?    (-> n (or :_) name (.startsWith "guild"))
         merchant? (-> n (or :_) name (.startsWith "merchant"))
+        global?   (-> n (or :_) name (.startsWith "the-map"))
 
         sub-wrapper
         (cond guild?
@@ -32,8 +33,10 @@
           #(vector panel/ui route-data panel-name 80 to-home %)
           identity)
 
-        body [wrapper [panel-wrapper [sub-wrapper children]]]]
-    [:main.grid-area-main.grid.justify-strech
+        outer-wrapper (if global? identity wrapper)
+
+        body [outer-wrapper [panel-wrapper [sub-wrapper children]]]]
+    [:main.grid-area-main.grid.justify-strech.mt-30
      {:style {:gridTemplateColumns "1fr auto 1fr"
               :justifyContent      "strech"}}
      body
