@@ -4,6 +4,7 @@
    [re-frame.core :as rf]
    [breaking-point.core :as bp]
    [xxx.app.routes :as routes]
+   [xxx.app.views.front :as front]
    [xxx.app.events :as events]
    [xxx.app.subs :as subs]
    [xxx.config :as config]))
@@ -16,4 +17,4 @@
       [:div
        (if current-route
          [view route-data]
-         [:p "Loading..."])])))
+         [front/main])])))
