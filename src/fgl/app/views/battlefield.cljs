@@ -317,12 +317,15 @@
                "CLAIM"])]))))
 
 (defn main [route-data]
-  (maybe-show-reveal-dialog)
-  [:div.grid.gap-4
-   {:style {:padding "2%" :width "98%"}}
-   [select]
-   [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
-   [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-    [cards (:name route-data)]]
-   [select-all (:name route-data)]
-   [btns]])
+  (r/create-class
+   {:component-did-mount maybe-show-reveal-dialog
+    :reagent-render
+    (fn []
+      [:div.grid.gap-4
+       {:style {:padding "2%" :width "98%"}}
+       [select]
+       [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
+       [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
+        [cards (:name route-data)]]
+       [select-all (:name route-data)]
+       [btns]])}))

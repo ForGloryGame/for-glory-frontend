@@ -1,17 +1,17 @@
 (ns fgl.app.views.merchant-mint
   (:require
    ["ethers" :as ethers]
-   [taoensso.encore :as enc]
-   [fgl.re-frame]
    [fgl.app.ui.balance :as balance]
-   [fgl.contracts.gameminter :as minter]
-   [fgl.wallet.core :as w]
-   [fgl.app.ui.glory-img :as gloryimg]
-   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
+   [fgl.app.ui.glory-img :as gloryimg]
+   [fgl.contracts.gameminter :as minter]
+   [fgl.re-frame]
+   [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
-   [reagent.core :as r]))
+   [reagent.core :as r]
+   [taoensso.encore :as enc]))
 
 (defn controllers []
   [{:start #(rf/dispatch [::minter/init])
@@ -57,33 +57,36 @@
         :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))))
 
 (defn main []
-  (maybe-show-reveal-dialog)
-  [:div.flexb.px-24.w-full
-   [:button
-    {:className "w-45% relative block"
-     :on-click  #(do
-                   (rf/dispatch
-                    [::minter/send
-                     {:method     :commitMint
-                      :params     [1 false]
-                      :on-submitted
-                      (fn [_]
-                        (rf/dispatch
-                         [::dialog/set
-                          :desc
-                          [dialog/pending]]))
-                      :on-success
-                      (fn [_]
-                        (dialog/on-success)
-                        (rf/dispatch [::minter/init-raw]))
-                      :on-failure dialog/failed}])
-                   (rf/dispatch
-                    [::dialog/set
-                     :open
-                     true]))}
-    [:img {:src "/images/mint.png"}]
-    [:div.absolute.bottom-10%.right-13%.flexr
-     [gloryimg/ui "3rem"]
-     [balance/ui "40000000000000000000" {:className "text-2xl"}]]]
+  {:component-did-mount
+   maybe-show-reveal-dialog
+   :reagent-render
+   (fn []
+     [:div.flexb.px-24.w-full
+      [:button
+       {:className "w-45% relative block"
+        :on-click  #(do
+                      (rf/dispatch
+                       [::minter/send
+                        {:method     :commitMint
+                         :params     [1 false]
+                         :on-submitted
+                         (fn [_]
+                           (rf/dispatch
+                            [::dialog/set
+                             :desc
+                             [dialog/pending]]))
+                         :on-success
+                         (fn [_]
+                           (dialog/on-success)
+                           (rf/dispatch [::minter/init-raw]))
+                         :on-failure dialog/failed}])
+                      (rf/dispatch
+                       [::dialog/set
+                        :open
+                        true]))}
+       [:img {:src "/images/mint.png"}]
+       [:div.absolute.bottom-10%.right-13%.flexr
+        [gloryimg/ui "3rem"]
+        [balance/ui "40000000000000000000" {:className "text-2xl"}]]]
 
-   [:img.w-45% {:src "/images/weapon.png"}]])
+      [:img.w-45% {:src "/images/weapon.png"}]])})
