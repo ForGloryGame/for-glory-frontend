@@ -64,13 +64,18 @@
             color: white;
         }
 
-        body::-webkit-scrollbar {
+        ::-webkit-scrollbar {
             width: 0.5rem;
+            height: 0.5rem;
         }
 
-        body::-webkit-scrollbar-thumb {
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.102);
+        }
+
+        ::-webkit-scrollbar-thumb {
             border-radius: 0.25rem;
-            background-color: gray;
+            background-color: rgba(255, 255, 255, 0.8);
         }
 
         .cursor-pointer {
