@@ -18,7 +18,9 @@
         wrong-network?                            (rf/subscribe [::w/wrong-network])
         current-route                             @(rf/subscribe [::routes/current-route])
         {:keys [view] rname :name :as route-data} (get current-route :data)
-        guild?                                    (and (keyword? rname) (-> rname name (.startsWith "guild-")))]
+        guild?                                    (and (keyword? rname)
+                                                       (or (-> rname name (.startsWith "guild-"))
+                                                           (-> rname name (.startsWith "kingdom-"))))]
     (and (not conf/debug?)
          (js/setTimeout
           #(cond (and (not (= @state :connected)) rname (not (= rname :route/home)))

@@ -8,7 +8,6 @@
    [fgl.app.ui.header-tag :as header-tag]
    [fgl.app.ui.logo :as logo]
    [fgl.config :as conf]
-   [fgl.contracts :as c]
    [fgl.contracts.exchange :as exchange]
    [fgl.contracts.glory :as glory]
    [fgl.contracts.gold :as gold]
@@ -23,18 +22,11 @@
 (defn nav-root [x]
   [:> Nav/Root
    {:className "bg-no-repeat"
-    :style     {:backgroundImage
-                "
-url(\"/images/header-bg.svg\")
-"
-
+    :style     {:backgroundImage     "url(\"/images/header-bg.svg\")"
                 :backgroundBlendMode "multiply"
-                :backgroundPosition
-                "
--10px 0.625rem"
-                :backgroundSize
-                "
-100% 100%"}}
+                :backgroundPosition  "-1rem -0.5rem"
+                :height              "6.625rem"
+                :backgroundSize      "100%"}}
    x])
 
 (rf/reg-sub
@@ -54,15 +46,13 @@ url(\"/images/header-bg.svg\")
      [nav-root
       [:> Nav/List
        {:className "grid justify-items-stretch justify-between items-center content-center"}
-
        ^{:key 'logo}
        [:> Nav/Item {:className "cs1 ce3"}
         [:> Nav/Link {:className "cursor-pointer block p-2"
                       :on-click  #(rf/dispatch [:navigate :route/home])}
-         [logo/ui {:style {:minWidth "8.8125rem"
-                           ;; :marginTop "-0.1rem"
-                           ;; :marginBottom "-0.1rem"
-                           }}]]]
+         [logo/ui {:style {:width "7rem"
+                           :marginTop "-0.5rem"
+                           :marginBottom "-2rem"}}]]]
 
        ^{:key 'glory}
        [:> Nav/Item {:className "cs6 ce8"}
