@@ -18,11 +18,44 @@
     <link rel="icon" href="/favicon.png" type="image/png">
     <title>For Glory</title>
     <style type="text/css" media="screen">
-        body {
-            font-size: 16px;
-            background-color: #000;
-            color: white;
+      html {
+        --base-font-size: 16px;
+        font-size: var(--base-font-size);
+      }
+      @media (min-width: 120rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 1.4);
         }
+      }
+      @media (min-width: 160rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 1.6);
+        }
+      }
+      @media (min-width: 180rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 1.8);
+        }
+      }
+      @media (min-width: 200rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 2);
+        }
+      }
+      @media (min-width: 240rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 2.2);
+        }
+      }
+      @media (min-width: 280rem) {
+        html {
+          font-size: calc(var(--base-font-size) * 2.4);
+        }
+      }
+      body {
+        background-color: #000;
+        color: white;
+      }
     </style>
     <link rel="preload" href="css/compiled/main.css" as="style">
     <link rel="stylesheet" href="css/compiled/main.css" type="text/css" media="print" onload="this.media='all'">

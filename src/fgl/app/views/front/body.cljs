@@ -3,7 +3,7 @@
    ["@radix-ui/react-avatar" :as Avatar]))
 
 (defn h1 []
-  [:h1.font-bold {:style {:fontSize "3.125rem"}} "Explore Middle Ages in Metaverse"])
+  [:h1.font-bold.text-center {:style {:fontSize "3.125rem"}} "Explore Middle Ages in Metaverse"])
 
 (defn h3 []
   [:h3.font-bold.text-lg.mb-5 "A brand new experience"])
@@ -34,12 +34,12 @@
 
 (defn avatar [src]
   [:> Avatar/Root
-   {:className "block border-2px border-rgb-8f816a"
+   {:className "block border-0.125rem border-rgb-8f816a"
     :style     {:borderRadius "50%"}}
    [:> Avatar/Image
     {:src       src
      :alt       "avatar"
-     :className "border-2px border-rgb-4f3926 w-108px"
+     :className "border-0.125rem border-rgb-4f3926 w-6.75rem"
      :style     {:borderRadius "50%"
                  :boxShadow    "inset 0 0 3px 0 rgba(0,0,0,0.50)"}}]])
 
@@ -65,9 +65,10 @@
   ([opt text] [:h1.text-4xl.leading-10 (merge {:style {:fontFamily "old_londonregular"}} opt) text]))
 
 (defn letter []
-  [:article.border-5px.border-rgb-480909.bg-rgb-f4e8d4.text-black.pt-10.text-justify
-   {:id "about"
+  [:article.border-rgb-480909.bg-rgb-f4e8d4.text-black.pt-10.text-justify
+   {:id    "about"
     :style {:maxWidth         "43.75rem"
+            :border           "0.3125rem"
             :background-image "url(\"/images/bg-2-1.png\")"
             :padding-left     "2.875rem"
             :padding-right    "2.875rem"
@@ -132,8 +133,9 @@
 
 (defn ui []
   [:main.flex.flex-col.items-center.w-full
+   {:style {:minWidth "42.5rem"}}
    [:section.section-1.w-full.flex.flex-col.items-center.pt-45vh.pb-60.mb-7rem.bg-no-repeat.bg-scroll
-    {:style {:backgroundImage    "radial-gradient(circle, transparent 40%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url(\"/images/bg-new.jpg\")"
+    {:style {:backgroundImage    "radial-gradient(circle, transparent 10%, transparent 75%),linear-gradient(to right, rgba(0,0,0,0.9), rgba(0,0,0,0.9)),url(\"/images/bg-new.jpg\")"
              :backgroundSize     "cover" ;; "100%"
              :backgroundBlendMode "normal, darken"
              :backgroundPosition "center center"
