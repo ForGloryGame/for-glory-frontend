@@ -14,7 +14,7 @@
   ([method params] (request method params identity identity))
   ([method on-success on-failure] (request method [] on-success on-failure))
   ([method params on-success on-failure]
-   (let [p @provider
+   (let [p      @provider
          params (or params [])
          promise
          (ocall p "send" method (clj->js params))]
@@ -24,9 +24,12 @@
          (on-failure (js/Error. "No provider found")))
      promise)))
 
+(defn reinit-provider []
+  (reset! provider (ethers/providers.Web3Provider. js/ethereum)))
+
 (defn check-installation [_]
   (when (and js/ethereum js/ethereum.isMetaMask)
-    (reset! provider (ethers/providers.Web3Provider. js/ethereum))
+    (reinit-provider)
     (rf/dispatch [::installed])
     (ocall js/ethereum "?.removeAllListeners")
     (js/ethereum.on "accountsChanged" #(rf/dispatch [::accounts-changed %]))
@@ -70,8 +73,10 @@
  ::chain-changed
  [rf/trim-v]
  (fn [db [chainId]]
+   (reinit-provider)
    (let [target-chain (::target-chain db)]
      (assoc db ::current-chain chainId
+            ::provider @provider
             ::wrong-network (and target-chain (not (= target-chain chainId)))))))
 
 (rf/reg-event-db

@@ -1,5 +1,6 @@
 (ns fgl.app.views.battlefield
   (:require
+   [taoensso.encore :as enc]
    ["@radix-ui/react-checkbox" :as C]
    ["@radix-ui/react-select" :as S]
    [fgl.config :as conf]
@@ -112,20 +113,25 @@
           :value         type
           :onValueChange set-type}
          [:> S/Trigger
-          {:className "cs1 ce2 rs1 re2 justify-self-start"}
-          [:> S/Value type]
-          [:> S/Icon ">"]]
+          {:className "cs1 ce2 rs1 re2 justify-self-start text-xl text-center pl-14 pr-10 py-0.5 rounded"
+           :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
+          [:> S/Value (if (= type :staked) "Staked" "Unstaked")]
+          [:> S/Icon [:img.inline-block.ml-6
+                      {:style {:width "0.825rem"}
+                       :src   "/images/select-down-arrow.svg"}]]]
          [:> S/Content
+          {:className "text-xl text-center pl-12 pr-12 py-0.5 rounded"
+           :style     {:backgroundColor "rgba(129, 198, 221, 0.2)"}}
           [:> S/Viewport
            ^{:key 'staked}
            [:> S/Item
             {:value :staked}
-            [:> S/ItemText "Staked"]
+            [:> S/ItemText {:className "text-2xl"} "Staked"]
             [:> S/ItemIndicator (or (nil? type) (= type :staked))]]
            ^{:key 'unstaked}
            [:> S/Item
             {:value :unstaked}
-            [:> S/ItemText "Unstaked"]
+            [:> S/ItemText {:className "text-2xl"} "Unstaked"]
             [:> S/ItemIndicator (= type :unstaked)]]]]]))))
 
 (defn card [id is-lord gold glory staked? checked disabled]
@@ -143,7 +149,9 @@
       :width "16rem"
       :glory glory
       :earned? (not glory)
-      :onCheckedChange onCheckedChange}]))
+      :onCheckedChange onCheckedChange}
+     {:className "mr-4"
+      :style {:flexShrink 0}}]))
 
 (defn cards []
   (fn []
@@ -153,7 +161,7 @@
               staked?     (= type :staked)
               selected    @(rf/subscribe [::selected])]
           (into
-           [:div.overflow-x-auto.flex]
+           [:div.overflow-x-auto.flex.pb-8]
            (map (fn [{:keys [id is-lord gold glory]}]
                   ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
                 data)))))))
@@ -201,8 +209,15 @@
          (and approved? staked? [:button {:on-click (unstake selected) :disabled no-selected?} "FLEE"])
          (and approved? staked? [:button {:on-click (claim selected) :disabled no-selected?} "CLAIM"])]))))
 
-(defn separator []
-  [:img {:src "/images/separator.svg"}])
+(defn separator
+  ([] (separator {}))
+  ([opt]
+   [:div
+    (enc/nested-merge
+     {:style {:height          0
+              :boxShadow       "rgb(8 30 38) -1px -0.5px 0.5px 0.5px, rgb(0 182 255 / 12%) 1px 1px 0.5px 1px"
+              :backgroundColor "rgba(100, 186, 214, 0)"}}
+     opt)]))
 
 (defn main [_]
   (let []
@@ -214,11 +229,11 @@
                 ;; staked? (= type :staked)
                 ]
             [panel/ui "Battlefield" 80 to-home
-             [:div.grid.justify-center
+             [:div.grid.justify-center.gap-4
               {:style {:padding "2%"
                        :margin  "2%"}}
               [select]
-              [:img.cs1.rs2.re3 {:src "/images/separator.svg"}]
+              [separator {:className "cs1 ce4 rs2 re3"}]
               [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
                [cards]]
               [select-all]
