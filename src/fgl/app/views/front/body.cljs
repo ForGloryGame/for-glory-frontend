@@ -90,11 +90,10 @@
    [letter-br]
    [letter-h1 "The Team"]
    [:br]
-   [:ul.avatars.flex.flex-row.justify-between
+   [:ul.avatars.flex.flex-row.justify-start
     [:li [ava "/images/avatar-1.png" "0xP" "Founder"]]
     [:li [ava "/images/avatar-2.png" "0xChiaki" "Head of Devs"]]
-    [:li [ava "/images/avatar-3.png" "0xCT" "Game Design"]]
-    [:li [ava "/images/avatar-4.png" "Angella Philip" "Head of Operations"]]]])
+    [:li [ava "/images/avatar-3.png" "0xCT" "Game Design"]]]])
 
 (defn h2 []
   [:h2.font-bold {:id    "roadmap"
