@@ -30,7 +30,7 @@
 (defn twitter []
   [:img {:style {:width "1.5rem" :minWidth "24px"} :src "/images/twitter.svg" :alt "link to twitter"}])
 
-(defn open-sea []
+(defn opensea []
   [:img {:style {:width "1.5rem" :minWidth "24px"} :src "/images/open-sea.svg" :alt "link to opensea"}])
 
 (defn medium []
@@ -65,10 +65,10 @@
                     [nav-link {:href   "https://twitter.com/GloryGameNFT"
                                :rel    "noreferrer"
                                :target "_blank"} [twitter]]
-                    ^{:key 'open-sea}
+                    ^{:key 'opensea}
                     [nav-link {:rel    "noreferrer"
                                :target "_blank"
-                               :href   "https://open-sea.com"} [open-sea]]
+                               :href   "https://opensea.io"} [opensea]]
                     ^{:key 'medium}
                     [nav-link {:rel    "noreferrer"
                                :target "_blank"
