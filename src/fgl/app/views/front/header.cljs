@@ -59,11 +59,24 @@
    [nav-root
     [:> Nav/List {:className "flex justify-between  py-4 mx-auto max-w-screen-2xl"}
      ^{:key 'left} [:> Nav/List {:className "flex justify-center items-center"}
-                    ^{:key 'logo} [nav-link {:href "/"} [logo]]
-                    ^{:key 'twitter} [nav-link {:href "https://twitter.com/GloryGameNFT"} [twitter]]
-                    ^{:key 'open-sea} [nav-link {:href "https://open-sea.com"} [open-sea]]
-                    ^{:key 'medium} [nav-link {:href "https://medium.com/glorygame"} [medium]]
-                    ^{:key 'discord} [nav-link {:href "https://discord.com"} [discord]]]
+                    ^{:key 'logo}
+                    [nav-link {:href "/"} [logo]]
+                    ^{:key 'twitter}
+                    [nav-link {:href   "https://twitter.com/GloryGameNFT"
+                               :rel    "noreferrer"
+                               :target "_blank"} [twitter]]
+                    ^{:key 'open-sea}
+                    [nav-link {:rel    "noreferrer"
+                               :target "_blank"
+                               :href   "https://open-sea.com"} [open-sea]]
+                    ^{:key 'medium}
+                    [nav-link {:rel    "noreferrer"
+                               :target "_blank"
+                               :href   "https://medium.com/glorygame"} [medium]]
+                    ^{:key 'discord}
+                    [nav-link {:rel    "noreferrer"
+                               :target "_blank"
+                               :href   "https://discord.com"} [discord]]]
      ^{:key 'right} [:> Nav/List {:className "flex justify-center items-center"}
                      ^{:key 'logo} [nav-link {:className "invisible" :disabled true} [logo]]
                      ^{:key 'about} [nav-item [about]]

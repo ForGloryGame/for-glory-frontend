@@ -31,7 +31,9 @@
                 :borderRadius "1.25rem"
                 :cursor       :pointer
                 :minWidth     "2.5rem"}
-    :on-click  identity}
+    :rel       "noreferrer"
+    :target    "_blank"
+    :href      "https://for-glory.gitbook.io/for-glory/"}
    "Whitepaper"])
 
 (defn avatar [src]
@@ -90,7 +92,7 @@
    [letter-br]
    [letter-h1 "The Team"]
    [:br]
-   [:ul.avatars.flex.flex-row.justify-start
+   [:ul.avatars.flex.flex-row.justify-between.px-14
     [:li [ava "/images/avatar-1.png" "0xP" "Founder"]]
     [:li [ava "/images/avatar-2.png" "0xChiaki" "Head of Devs"]]
     [:li [ava "/images/avatar-3.png" "0xCT" "Game Design"]]]])
@@ -173,29 +175,33 @@
     [card {:left? true :last? false}
      [card-h1 "2022 Q2 - Pre-Launch"]
      [card-h2 {:className "mb-2"} "March - May"]
-     [card-h2 "Launch of Social Media"]
+     ;; [card-h2 "Launch of Social Media"]
      [card-ul
+      [:li "Launch of Social Media"]
       [:li "Incentivized Rinkeby Testnet"]
       [:li "Bug testing and Rewarding Early Contributor"]]]
     [card {:left? false :last? false}
      [card-h1 "2022 Q2 - Glory Game"]
      [card-h2 {:className "mb-2"} "May - June"]
-     [card-h2 "Genesis Collection Minted Out"]
+     ;; [card-h2 "Genesis Collection Minted Out"]
      [card-ul
+      [:li "Genesis Collection Minted Out"]
       [:li "Public Launch of For Glory Dapp on Ethereum Mainnet"]
       [:li "Cleaning the BattleField Feature Open"]]]
     [card {:left? true :last? false}
      [card-h1 "2022 Q3"]
      [card-h2 {:className "mb-2"} "July - Sept"]
-     [card-h2 "Refinement of Graphics and Gameplay Interface"]
+     ;; [card-h2 "Refinement of Graphics and Gameplay Interface"]
      [card-ul
+      [:li "Refinement of Graphics and Gameplay Interface"]
       [:li "Clash of Kingdoms"]
       [:li "Weapons Feature"]
       [:li "Kingdom Construction Feature"]]]
     [card {:left? false :last? true}
      [card-h1 "2022 Q4"]
      [card-h2 {:className "mb-2"} "Oct - Dec"]
-     [card-h2 "Partnership"]
+     ;; [card-h2 "Partnership"]
      [card-ul
+      [:li "Partnership"]
       [:li "Explore Gloryverse"]
       [:li "Lost Chapters Features"]]]]])
