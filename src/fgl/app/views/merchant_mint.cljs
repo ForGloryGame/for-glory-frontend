@@ -36,13 +36,6 @@
 
   (rf/dispatch [::dialog/set :desc [dialog/submitting] :actions nil]))
 
-(defn commit-confirmed []
-  [::dialog/set
-   :desc [:<>
-          [:span "TX Submitted"]
-          [:br]
-          [:span "TX Confirmed"]]])
-
 (rf/reg-sub
  ::data
  (fn [db _]
@@ -84,7 +77,7 @@
                           [dialog/pending]]))
                       :on-success
                       (fn [_]
-                        (rf/dispatch (commit-confirmed))
+                        (dialog/on-success)
                         (rf/dispatch [::minter/init-raw]))
                       :on-failure dialog/failed}])
                    (rf/dispatch

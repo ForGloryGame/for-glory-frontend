@@ -10,23 +10,29 @@
 
 (defonce !refresh-count (r/atom 0))
 
-(rf/reg-event-db
+(rf/reg-event-fx
  ::set
- (fn [db [_ & kvs]]
-   (let [id :gglobal]
-     (cond
-       (and (= (first kvs) :remove)
-            (true? (second kvs)))
-       (assoc-in db [::data id] (get-in db [::default-data id]))
-       (nil? (get-in db [::default-data id]))
-       (-> db
-           (assoc-in [::data id]
-                     (apply assoc (get-in db [::data id] {}) kvs))
-           (assoc-in [::default-data id]
-                     (apply assoc (get-in db [::data id] {}) kvs)))
-       :else
-       (assoc-in db [::data id]
-                 (apply assoc (get-in db [::data id] {}) kvs))))))
+ (fn [{:keys [db]} [_ & kvs]]
+   (let [id :gglobal
+         rst
+         {:db (cond
+                (and (= (first kvs) :remove)
+                     (true? (second kvs)))
+                (assoc-in db [::data id] (get-in db [::default-data id]))
+                (nil? (get-in db [::default-data id]))
+                (-> db
+                    (assoc-in [::data id]
+                              (apply assoc (get-in db [::data id] {}) kvs))
+                    (assoc-in [::default-data id]
+                              (apply assoc (get-in db [::data id] {}) kvs)))
+                :else
+                (assoc-in db [::data id]
+                          (apply assoc (get-in db [::data id] {}) kvs)))}
+
+         rst (if (and (not (get-in db [::data id :open])) (some (fn [[k v]] (and (= k :open) v)) (partition 2 kvs)))
+               (assoc rst :fx [[:dispatch-later {:ms 5000 :dispatch [::set :close? true]}]])
+               rst)]
+     rst)))
 
 (rf/reg-sub
  ::data
@@ -38,7 +44,7 @@
    {:component-did-mount
     (fn []
       (rf/dispatch
-       [::set :gglobal
+       [::set
         :open defaultOpen
         :title title
         :desc desc
