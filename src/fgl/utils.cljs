@@ -49,3 +49,6 @@
 
 (defn scan-addr-url [addr]
   (scan-url "/address/" addr))
+
+(defn shorten-addr [addr]
+  (str (.substring addr 0 6) "...." (.substring addr 34)))

@@ -12,7 +12,7 @@
    [fgl.app.ui.balance :as balance]
    [fgl.wallet.core :as w]
    [fgl.app.ui.separator :as separator]
-   [fgl.app.ui.rune-img :as runeimg]
+   [fgl.app.ui.sgold-img :as sgoldimg]
    [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]
@@ -29,7 +29,7 @@
 
 (defn member-row [role addr locked]
   ^{:key addr}
-  [:div.grid.grid-1-3-1.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold
+  [:div.grid.justify-items-center.pb-1.border-b.border-C79c5da.pt-1_125rem.fp.font-bold
    {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
    [:span role]
    [:span addr]

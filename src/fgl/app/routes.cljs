@@ -85,6 +85,7 @@
          :conflicting true}]
     ["dashboard"
      {:name        :route/dashboard
+      :panel-name  "Personal Center"
       :view        #(resolve 'fgl.app.views.dashboard/main)
       :controllers #(resolve 'fgl.app.views.dashboard/controllers)
       :lazy        true

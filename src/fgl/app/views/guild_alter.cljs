@@ -13,7 +13,7 @@
    [fgl.app.ui.separator :as separator]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.glory-img :as gloryimg]
-   [fgl.app.ui.rune-img :as runeimg]
+   [fgl.app.ui.sgold-img :as sgoldimg]
    [fgl.app.ui.btn :as btn]
    [lambdaisland.glogi :as log]
    [re-frame.core :as rf]

@@ -1,4 +1,4 @@
-(ns fgl.app.ui.rune-img
+(ns fgl.app.ui.sgold-img
   (:require
    [taoensso.encore :as enc]))
 
