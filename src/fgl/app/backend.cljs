@@ -34,7 +34,7 @@
   (-> (js/fetch
        (str "" uri)
        (clj->js
-        {:method  :get
+        {:method  :post
          :mode    :cors
          :headers {"content-type" "application/json"}
          :body    (when body (->body body))}))
@@ -45,7 +45,10 @@
                     (js/console.error "Error in response" res)
                     (throw (js/Error. res))))))
       (p/then cb)
-      (p/catch js/console.error)))
+      (p/catch (fn [err]
+                 (js/console.error err)
+                 (when (fn? cb)
+                   (cb err))))))
 
 (rf/reg-event-fx
  ::rank-personal
@@ -76,6 +79,17 @@
 
 (rf/reg-event-fx
  ::new-proposal
- (fn [_ [_ data]]
-   (post "/proposals/create" data identity)
+ (fn [_ [_ data cb]]
+   (post "/proposals/create" (clj->js data) (or cb identity))
    {}))
+
+(defonce proposal-domain
+  {:name "glory game" :version "1.0.0"})
+
+(defonce proposal-types
+  {:Proposal
+   [{:name :account :type :address}
+    {:name :kind :type :string}
+    {:name :kingdom :type :string}
+    {:name :snapshot :type :uint64}
+    {:name :description :type :string}]})

@@ -3,9 +3,13 @@
    ["@radix-ui/react-select" :as S]
    ["ethers" :as ethers]
    [clojure.string :as s]
+   [fgl.app.backend :as backend]
+   [fgl.app.snapshot :as snapshot]
    [fgl.app.ui.balance :as balance]
    [fgl.app.ui.btn :as btn]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.app.ui.glory-img :as gloryimg]
+   [fgl.app.ui.loading-dot :as ld]
    [fgl.app.ui.separator :as separator]
    [fgl.app.ui.sgold-img :as sgoldimg]
    [fgl.contracts.gamenft :as nft]
@@ -15,13 +19,14 @@
    [fgl.re-frame]
    [fgl.wallet.core :as w]
    [lambdaisland.glogi :as log]
-   [oops.core :refer [oget]]
+   [oops.core :refer [oget ocall]]
+   [promesa.core :as p]
    [re-frame.core :as rf]
    [reagent.core :as r]
    [taoensso.encore :as enc]))
 
 (defn controllers []
-  [{:start identity
+  [{:start #(rf/dispatch [::kingdom/init])
     :stop  identity}])
 
 (rf/reg-event-db
@@ -38,6 +43,65 @@
  ::desc
  (fn [db [_ desc]]
    (assoc db ::desc (or desc ""))))
+
+(rf/reg-event-fx
+ ::proposal
+ (fn [{:keys [db]} _]
+   (p/let [{::w/keys [addr provider]
+            ::keys   [;; title
+                      desc type]}
+           db
+           kingdom-id   (get-in db [addr ::kingdom/kingdom-id])
+           kingdom-name (get kingdom/kingdoms-name-2 kingdom-id)
+           message      {:account     addr
+                         :kind        (or type "AvatarChange")
+                         :kingdom     kingdom-name
+                         :snapshot    snapshot/id
+                         :description desc}
+           ;; network (ocall provider "getNetwork")
+           ;; chainId (oget network "chainId")
+           block_number (w/request "eth_blockNumber")
+           _ (dialog/submitting)
+           ;; _ (enc/log (clj->js backend/proposal-domain) (clj->js backend/proposal-types) (clj->js message))
+           signature (-> provider
+                         (ocall "getSigner")
+                         (ocall "_signTypedData"
+                                (clj->js backend/proposal-domain)
+                                ;; (clj->js (assoc backend/proposal-domain
+                                ;;                 :chainId chainId))
+                                (clj->js backend/proposal-types)
+                                (clj->js message))
+                         (p/catch #(dialog/failed {:title "Typed Sign Failed" :desc "User rejected typed sign in wallet"})))
+           _ (rf/dispatch [::dialog/set
+                           :open true
+                           :desc [:<>
+                                  [:span "Message signed"]
+                                  [:br]
+                                  [ld/text "Submitting proposal"]]])
+           message (assoc message
+                          :blockNumber (-> block_number
+                                           (js/parseInt 16))
+                          :signature signature)]
+     (rf/dispatch [::backend/new-proposal message
+                   (fn [res] (if (instance? js/Error res)
+                               (rf/dispatch [::dialog/set
+                                             :open true
+                                             :close true
+                                             :desc
+                                             [:<>
+                                              [:span "Message signed"]
+                                              [:br]
+                                              [:span (oget res "message")]
+                                              [:span "Failed to create proposal, please try again"]]])
+                               (rf/dispatch [::dialog/set
+                                             :open true
+                                             :close true
+                                             :desc
+                                             [:<>
+                                              [:span "Message signed"]
+                                              [:br]
+                                              [:span "Proposal created"]]])))]))
+   {}))
 
 (rf/reg-sub
  ::data
@@ -128,6 +192,7 @@
       [:div.flexrr.justify-end
        [btn/ui
         {:t         :olg
-         :disabled (or (= title "") (= desc ""))
-         :className "mt-12"}
+         :disabled  (or (= title "") (= desc ""))
+         :className "mt-12"
+         :on-click #(rf/dispatch [::proposal])}
         "Confirm"]]]]))

@@ -20,6 +20,14 @@
    4 "MorningStar"
    5 "Flamingo"})
 
+(defonce kingdoms-name-2
+  {0 "None"
+   1 "Dragon"
+   2 "Phoenix"
+   3 "Lion"
+   4 "Griffin"
+   5 "Fenrir"})
+
 (rf/reg-event-db
  ::set
  (fn [db [_ v & paths]]
