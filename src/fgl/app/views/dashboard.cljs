@@ -64,7 +64,7 @@
     [:div.flexrs.mb-4
      ;; user
      [:div.mr-8
-      [:div.text-3xl.fi.mb-4 (and (log/spy addr) (shorten-addr addr))]
+      [:div.text-3xl.fi.mb-4 (and addr (shorten-addr addr))]
       [:div.flex.flex-row.justify-between.items-center
        [btn/ui
         {:on-click  #(js/open (scan-addr-url addr))

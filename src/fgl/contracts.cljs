@@ -43,7 +43,7 @@
 (defn reg-send [c id]
   (rf/reg-event-fx
    id
-   (fn [{:keys [db]} [_ {:keys [method params on-success on-failure err-handler]}]]
+   (fn [{:keys [db]} [_ {:keys [method params on-success on-submitted on-failure err-handler]}]]
      (let [{::w/keys [provider]} db
            params                (or params [])
 
@@ -52,6 +52,9 @@
                  (or (nil? on-success) (= on-success :success)) #(rf/dispatch [:toast/success %])
                  (keyword? on-success)                          #(rf/dispatch [on-success %])
                  :else                                          identity)
+           on-submitted
+           (cond (fn? on-submitted) on-submitted
+                 :else              identity)
            on-failure
            (cond (fn? on-failure)                               on-failure
                  (or (nil? on-failure) (= on-failure :failure)) #(rf/dispatch [:toast/failure %])
@@ -63,27 +66,24 @@
              (p/then #(do
                         (if (and (.-hash %) (.-wait %))
                           (do
-                            ;; (on-success
-                            ;;  {:title "Tx Executed"
-                            ;;   :desc  [:a {:href (scan-tx-url (.-hash %))}
-                            ;;           "View On Blockchain Explorer"]})
+                            (on-submitted (.-hash %))
                             (p/then
                              (.wait % 1)
                              (fn [receipt]
                                (on-success
-                                {:title "Tx Confirmed"
+                                {:title "TX Confirmed"
                                  :desc  [:a
                                          {:href   (scan-tx-url (.-transactionHash receipt))
                                           :rel    "noopener noreferrer"
                                           :target "_blank"}
                                          "View On Blockchain Explorer"]}))))
 
-                          (on-success {:title "Tx Succeeded"}))))
+                          (on-success {:title "TX Succeeded"}))))
 
              (p/catch #(if (instance? js/Error %)
                          (do
                            (js/console.error %)
-                           (on-failure {:title "Tx Failed"
+                           (on-failure {:title "TX Failed"
                                         :desc  (or (oget % "?.error.message") (oget % "?.reason") (oget % "message"))}))
-                         (on-failure {:title "Tx Failed"}))))))
+                         (on-failure {:title "TX Failed"}))))))
      {})))

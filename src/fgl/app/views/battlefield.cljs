@@ -141,7 +141,7 @@
 (defn card [id is-lord gold glory staked? checked disabled]
   (let [onCheckedChange #(rf/dispatch [(if % ::select ::deselect) id])
         name            (str (if is-lord "Lord#" "Knight#") id)
-        image           (if is-lord "/images/lord-example.png" "/images/lord-example.png")]
+        image           (if is-lord "/images/lord-example.png" "/images/knight-example.png")]
     [nftc/ui
      {:id              id
       :name            name
