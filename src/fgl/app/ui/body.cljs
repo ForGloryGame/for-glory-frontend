@@ -2,6 +2,7 @@
   (:require
    [lambdaisland.glogi :as log]
    [taoensso.encore :as enc]
+   [fgl.app.ui.dialog :as dialog]
    [re-frame.core :as rf]
    [fgl.app.ui.panel :as panel]
    [fgl.app.ui.guild-panel :as gpanel]
@@ -36,4 +37,5 @@
      {:style {:gridTemplateColumns "1fr auto 1fr"
               :justifyContent      "strech"}}
      body
-     [toast/ui]]))
+     [toast/ui]
+     [dialog/ui]]))

@@ -1,11 +1,14 @@
 (ns fgl.app.views.battlefield
   (:require
+   [fgl.app.ui.dialog :as dialog]
    [taoensso.encore :as enc]
    [fgl.app.ui.checkbox :as checkbox]
    ["@radix-ui/react-select" :as S]
    [fgl.config :as conf]
    [fgl.contracts.battlefield :as battlefield]
    [fgl.contracts.bfproxy :as bfproxy]
+   [fgl.contracts.gold :as gold]
+   [fgl.contracts.glory :as glory]
    [fgl.contracts.gamenft :as nft]
    [fgl.re-frame]
    [fgl.utils :refer [->display-token ->token-ids]]
@@ -24,6 +27,7 @@
     #(do
        ;; get staked info
        (rf/dispatch [::battlefield/init])
+       (rf/dispatch [::bfproxy/init])
        ;; get unstaked info
        (rf/dispatch [::nft/init]))
     :stop  identity}])
@@ -39,7 +43,7 @@
  [(rf/inject-cofx :inject/sub [::data])]
  (fn [{::keys [data] :keys [db]} [_ select?]]
    (if select?
-     (let [[_ items] data]
+     (let [{items :data} data]
        {:db (assoc db ::selected (->> items (map :id) (into #{})))})
      {:db (assoc db ::selected #{})})))
 
@@ -60,8 +64,9 @@
 
 (rf/reg-sub
  ::data
- (fn [db _]
-   (let [type (or (::type db) :staked)
+ (fn [db [_ route-name]]
+   (let [council? (= route-name :route/council)
+         type     (or (::type db) :staked)
 
          {::w/keys [addr]} db
          addr-db           (get db addr)
@@ -76,41 +81,60 @@
 
          bf-approved (::nft/bf-approved addr-db)
 
+         to-reveal (::bfproxy/to-reveal addr-db)
+
          selected (::selected db)
 
+         filter-by (if council? :is-lord #(not (:is-lord %)))
+
          data (get
-               {:staked   (map (fn [id]
-                                 (let [id (.toString id)]
-                                   (-> {:id id}
-                                       (merge (get traits id))
-                                       (merge (get reward id)))))
-                               staked-token-ids)
-                :unstaked (map (fn [id]
-                                 (let [id (.toString id)]
-                                   (-> {:id id}
-                                       (merge (get traits id)))))
-                               unstaked-token-ids)}
+               {:staked   (->> staked-token-ids
+                               (map (fn [id]
+                                      (let [id (.toString id)]
+                                        (-> {:id id}
+                                            (merge (get traits id))
+                                            (merge (get reward id))))))
+                               (filter filter-by))
+                :unstaked (->> unstaked-token-ids
+                               (map (fn [id]
+                                      (let [id (.toString id)]
+                                        (-> {:id id}
+                                            (merge (get traits id))))))
+                               (filter filter-by))}
                type)
 
          all-selected (= (count selected) (count data))]
 
-     [type
-      data
-      bf-approved
-      all-selected])))
+     {:type         type
+      :addr         addr
+      :to-reveal    to-reveal
+      :data         data
+      :bf-approved  bf-approved
+      :all-selected all-selected})))
 
-(defn- to-home []
-  (rf/dispatch [:navigate :route/home]))
+(defn- reveal [addr]
+  (rf/dispatch
+   [::bfproxy/send
+    {:method :revealUnstake
+     :params [addr]}]))
 
-(defn close []
-  (let [to-home #(rf/dispatch [:navigate :route/home])]
-    (fn []
-      [:button.cs4.ce5.rs1.re2 {:on-click to-home} "x"])))
+(defn maybe-show-reveal-dialog []
+  (let [{:keys [addr to-reveal]} @(rf/subscribe [::data])]
+    (when to-reveal
+      (rf/dispatch
+       [::dialog/set
+        :open true
+        :title "Reveal Unstake Commits"
+        :desc [:<>
+               [:p "Found pending commits"]
+               [:br]
+               [:p "Click the REVEAL button below to reveal them"]]
+        :actions [btn/ui {:t :bsm :on-click (partial reveal addr)} "REVEAL"]]))))
 
 (defn select []
   (let [set-type #(rf/dispatch [::set-type (keyword %)])]
     (fn []
-      (let [[type] @(rf/subscribe [::data])]
+      (let [{:keys [type]} @(rf/subscribe [::data])]
         [:> S/Root
          {:name          "Token Type"
           :defaultValue  "Staked"
@@ -158,8 +182,8 @@
      {:className "mr-4"
       :style     {:flexShrink 0}}]))
 
-(defn cards []
-  (let [!cards (r/atom nil)
+(defn cards [route-name]
+  (let [!cards   (r/atom nil)
         on-wheel
         (fn [e]
           (when-let [!cards-div @!cards]
@@ -180,9 +204,9 @@
           (.removeEventListener !cards-div "wheel" on-wheel)))
       :reagent-render
       (fn []
-        (let [[type data] @(rf/subscribe [::data])
-              staked?     (= type :staked)
-              selected    @(rf/subscribe [::selected])]
+        (let [{:keys [type data]} @(rf/subscribe [::data route-name])
+              staked?             (= type :staked)
+              selected            @(rf/subscribe [::selected])]
           (into
            [:div.overflow-x-auto.flex.pb-8.min-h-21rem
             {:ref #(reset! !cards %)}]
@@ -190,10 +214,10 @@
                   ^{:key id} [card id is-lord gold glory staked? (not (nil? (some #{id} selected))) false])
                 data))))})))
 
-(defn select-all []
+(defn select-all [route-name]
   (let [select-all #(rf/dispatch [::select-all %])]
     (fn []
-      (let [[_ _ _ all-selected] @(rf/subscribe [::data])]
+      (let [{:keys [all-selected]} @(rf/subscribe [::data route-name])]
         [checkbox/ui
          {:width "1.5rem"
           :text  [:span.text-xl.ml-2.fb {:style {:color "rgb(213, 228, 232)"}} "SELECT ALL"]}
@@ -205,65 +229,95 @@
   (let [approve
         #(rf/dispatch [::nft/send
                        {:method :setApprovalForAll
-                        :params [conf/contract-addr-battlefield
-                                 true]}])
+                        :params [conf/contract-addr-battlefield true]}
+                       :title "Approve All NFT"
+                       :on-success (fn []
+                                     (dialog/on-success)
+                                     (rf/dispatch [::bfproxy/init-raw]))])
         enter
         (fn [token-ids] #(rf/dispatch [::bfproxy/send {:method :join
-                                                       :params [(->token-ids token-ids)]}]))
+                                                       :params [(->token-ids token-ids)]
+                                                       :title  "Stake"
+                                                       :on-success
+                                                       (fn []
+                                                         (dialog/on-success)
+                                                         (rf/dispatch [::battlefield/init-raw])
+                                                         (rf/dispatch [::nft/init-raw]))}]))
         claim
         (fn [token-ids] #(rf/dispatch [::bfproxy/send
                                        {:method :claim
-                                        :params [(->token-ids token-ids)]}]))
+                                        :params [(->token-ids token-ids)]
+                                        :title  "Claim"
+                                        :on-success
+                                        (fn []
+                                          (dialog/on-success)
+                                          (rf/dispatch [::gold/init-raw])
+                                          (rf/dispatch [::glory/init-raw]))}]))
         unstake-lords
         (fn [token-ids] #(rf/dispatch [::bfproxy/send
                                        {:method :unstakeLords
-                                        :params [(->token-ids token-ids)]}]))
+                                        :params [(->token-ids token-ids)]
+                                        :title  "Unstake"
+                                        :on-success
+                                        (fn []
+                                          (dialog/on-success)
+                                          (rf/dispatch [::battlefield/init-raw])
+                                          (rf/dispatch [::bfproxy/init-raw])
+                                          (rf/dispatch [::nft/init-raw]))}]))
         unstake
         (fn [token-ids] #(rf/dispatch [::bfproxy/send
                                        {:method :commitUnstake
-                                        :params [(->token-ids token-ids)]}]))]
+                                        :params [(->token-ids token-ids)]
+                                        :title  "Unstake"
+                                        :on-success
+                                        (fn []
+                                          (dialog/on-success)
+                                          (rf/dispatch [::battlefield/init-raw])
+                                          (rf/dispatch [::bfproxy/init-raw])
+                                          (rf/dispatch [::nft/init-raw]))}]))]
     (fn []
-      (let [[type data approved?] @(rf/subscribe [::data])
-            selected              @(rf/subscribe [::selected])
-            staked?               (= type :staked)
-            no-selected?          (not (seq selected))
-            className             (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
+      (let [{:keys [type bf-approved]} @(rf/subscribe [::data])
+            selected                   @(rf/subscribe [::selected])
+            staked?                    (= type :staked)
+            no-selected?               (not (seq selected))
+            className                  (if staked? "grid-cols-3 gap-4" "grid-cols-1")]
         [:div.cs3.ce4.rs5.re6.justify-self-end
          {:className className}
-         (and (not approved?)
+         (and (not bf-approved)
               [btn/ui
                {:t         :bsm
-                :disabled  no-selected?
                 :className "mr-4"
                 :on-click  approve}
                "APPROVE"])
-         (and approved?
+         (and bf-approved
+              (not staked?)
               [btn/ui
                {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (enter selected)}
                "ENTER"])
-         (and approved? staked?
+         (and bf-approved staked?
               [btn/ui
                {:t         :bsm
                 :disabled  no-selected?
                 :className "mr-4"
                 :on-click  (unstake selected)}
                "FLEE"])
-         (and approved? staked?
+         (and bf-approved staked?
               [btn/ui
                {:disabled no-selected?
                 :on-click (claim selected)
                 :t        :olg}
                "CLAIM"])]))))
 
-(defn main [_]
+(defn main [route-data]
+  (maybe-show-reveal-dialog)
   [:div.grid.gap-4
    {:style {:padding "2%" :width "98%"}}
    [select]
    [separator/ui {:className "cs1 ce4 rs2 re3 mt-2 mb-4"}]
    [:div.cs1.ce4.rs3.re4.justify-self-stretch.overflow-x-auto
-    [cards]]
-   [select-all]
+    [cards (:name route-data)]]
+   [select-all (:name route-data)]
    [btns]])

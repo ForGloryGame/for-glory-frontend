@@ -2,6 +2,7 @@
   (:require-macros [fgl.contracts :refer [with-provider with-provider-call]])
   (:require
    [fgl.utils :refer [scan-tx-url]]
+   [fgl.app.ui.dialog :as dialog]
    [fgl.wallet.core :as w]
    [re-frame.core :as rf]
    [lambdaisland.glogi :as log]
@@ -43,23 +44,42 @@
 (defn reg-send [c id]
   (rf/reg-event-fx
    id
-   (fn [{:keys [db]} [_ {:keys [method params on-success on-submitted on-failure err-handler]}]]
+   (fn [{:keys [db]} [_ {:keys [method params dialog title submitting on-success on-submitted on-failure err-handler]}]]
      (let [{::w/keys [provider]} db
            params                (or params [])
 
+           title (or title "")
+
+           [submitting
+            on-success
+            on-submitted
+            on-failure]
+           (if (false? dialog)
+             [submitting
+              on-success
+              on-submitted
+              on-failure]
+             [(or submitting true)
+              (or on-success true)
+              (or on-submitted true)
+              (or on-failure true)])
+
+           submitting (cond (true? submitting) dialog/submitting
+                            (fn? submitting)   submitting
+                            :else              identity)
+
            on-success
-           (cond (fn? on-success)                               on-success
-                 (or (nil? on-success) (= on-success :success)) #(rf/dispatch [:toast/success %])
-                 (keyword? on-success)                          #(rf/dispatch [on-success %])
-                 :else                                          identity)
-           on-submitted
-           (cond (fn? on-submitted) on-submitted
+           (cond (fn? on-success)   on-success
+                 (true? on-success) dialog/on-success
                  :else              identity)
+           on-submitted
+           (cond (fn? on-submitted)   on-submitted
+                 (true? on-submitted) dialog/on-submitted
+                 :else                identity)
            on-failure
-           (cond (fn? on-failure)                               on-failure
-                 (or (nil? on-failure) (= on-failure :failure)) #(rf/dispatch [:toast/failure %])
-                 (keyword? on-failure)                          #(rf/dispatch [on-failure %])
-                 :else                                          identity)
+           (cond (fn? on-failure)   on-failure
+                 (true? on-failure) dialog/failed
+                 :else              identity)
            on-failure (if (fn? err-handler) (comp on-failure err-handler) on-failure)]
        (with-provider c provider
          (-> (apply r method params)
@@ -85,5 +105,7 @@
                            (js/console.error %)
                            (on-failure {:title "TX Failed"
                                         :desc  (or (oget % "?.error.message") (oget % "?.reason") (oget % "message"))}))
-                         (on-failure {:title "TX Failed"}))))))
+                         (on-failure {:title "TX Failed"}))))
+         (rf/dispatch [::dialog/set :title title])
+         (submitting)))
      {})))

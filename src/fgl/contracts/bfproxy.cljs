@@ -2,7 +2,6 @@
   (:require
    [fgl.re-frame :refer [reg-event-pfx]]
    [lambdaisland.glogi :as log]
-   [oops.core :refer [oapply+ ocall]]
    [fgl.wallet.core :as w]
    [re-frame.core :as rf]
    [fgl.config :as conf]
@@ -16,6 +15,21 @@
  ::set
  (fn [db [_ v & paths]]
    (assoc-in db paths v)))
+
+(reg-event-pfx
+ ::init
+ 10000
+ [rf/trim-v]
+ (fn [{:keys [db]} _]
+   (let [{::w/keys [provider addr]} db]
+     (when addr
+       (ctc/with-provider c provider
+         (p/let [unrevealed-commits (r :unstakeCommits addr)
+                 height (first unrevealed-commits)]
+           (when-not (-> height .toString (= "0"))
+             (rf/dispatch [::set height addr ::to-reveal]))))))
+
+   {}))
 
 ;; join
 ;; commitUnstake

@@ -24,10 +24,10 @@
    (let [{::w/keys [provider addr]} db]
      (when addr
        (ctc/with-provider c provider
-         (p/let [unrevealed-commits (r :mintCommits addr)]
-           (when (and (js/Array.isArray unrevealed-commits) (number? (nth unrevealed-commits 2))
-                      (pos? (nth unrevealed-commits 2)))
-             (rf/dispatch [::set (nth unrevealed-commits 2) addr ::to-reveal]))))))
+         (p/let [unrevealed-commits (r :mintCommits addr)
+                 height (-> unrevealed-commits first .toString)]
+           (when-not (= height "0")
+             (rf/dispatch [::set true addr ::to-reveal]))))))
 
    {}))
 

@@ -100,8 +100,8 @@
     ["council"
      {:name        :route/council
       :panel-name  "Council"
-      :view        #(resolve 'fgl.app.views.council/main)
-      :controllers #(resolve 'fgl.app.views.council/controllers)
+      :view        #(resolve 'fgl.app.views.battlefield/main)
+      :controllers #(resolve 'fgl.app.views.battlefield/controllers)
       :lazy        true
       :conflicting true}]
     ["guild/basic"

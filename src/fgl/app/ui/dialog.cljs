@@ -12,50 +12,51 @@
 
 (rf/reg-event-db
  ::set
- (fn [db [_ id & kvs]]
-   (cond
-     (and (= (first kvs) :remove)
-          (true? (second kvs)))
-     (assoc-in db [::data id] (get-in db [::default-data id]))
-     (nil? (get-in db [::default-data id]))
-     (-> db
-         (assoc-in [::data id]
-                   (apply assoc (get-in db [::data id] {}) kvs))
-         (assoc-in [::default-data id]
-                   (apply assoc (get-in db [::data id] {}) kvs)))
-     :else
-     (assoc-in db [::data id]
-               (apply assoc (get-in db [::data id] {}) kvs)))))
+ (fn [db [_ & kvs]]
+   (let [id :gglobal]
+     (cond
+       (and (= (first kvs) :remove)
+            (true? (second kvs)))
+       (assoc-in db [::data id] (get-in db [::default-data id]))
+       (nil? (get-in db [::default-data id]))
+       (-> db
+           (assoc-in [::data id]
+                     (apply assoc (get-in db [::data id] {}) kvs))
+           (assoc-in [::default-data id]
+                     (apply assoc (get-in db [::data id] {}) kvs)))
+       :else
+       (assoc-in db [::data id]
+                 (apply assoc (get-in db [::data id] {}) kvs))))))
 
 (rf/reg-sub
  ::data
- (fn [db [_ id]]
-   (get-in db [::data id] {})))
+ (fn [db _]
+   (get-in db [::data :gglobal] {})))
 
-(defn root [{:keys [id defaultOpen title description close actions] :as opt} trigger]
+(defn root [{:keys [defaultOpen title desc close actions] :as opt} trigger]
   (r/create-class
    {:component-did-mount
     (fn []
       (rf/dispatch
-       [::set id
+       [::set :gglobal
         :open defaultOpen
         :title title
-        :description description
+        :desc desc
         :actions actions
         :close? close]))
     :reagent-render
     (fn []
-      (let [{:keys [open title description close? actions]}
-            @(rf/subscribe [::data id :open])
+      (let [{:keys [open title desc close? actions]}
+            @(rf/subscribe [::data :open])
 
-            close #(rf/dispatch [::set id :remove true])
+            close #(rf/dispatch [::set :remove true])
 
             opt
-            (-> opt (assoc :id (name id))
+            (-> opt (assoc :id "gglobal")
                 (assoc :open open)
                 (dissoc :actions)
                 (dissoc :title)
-                (dissoc :description))]
+                (dissoc :desc))]
         [:> D/Root opt
          trigger
          [:> D/Portal
@@ -68,12 +69,12 @@
                         :height          "20.4775396rem"}}
            (and title [:> D/Title {:className "flexr text-center text-2xl"} title])
            (and
-            description
+            desc
             [:>
              D/Description
              {:className "px-16 text-lg flex flex-col justify-center h-76% overflow-auto" :asChild true}
              [:div
-              (and description description)]])
+              (and desc desc)]])
            (and actions [:div.w-full.flexr actions])
            (and close?
                 [:> D/Close {:className "absolute top-4 right-4"
@@ -84,17 +85,16 @@
 (defn trigger [& args]
   [into [:> D/Trigger] args])
 
-(defn close [{:keys [id] :as opts} text]
+(defn close [opts text]
   [:>
    D/Close
    {:asChild true}
    [btn/ui
     (-> opts
-        (dissoc :id)
-        (assoc :on-click #(rf/dispatch [::set id :remove true])))
+        (assoc :on-click #(rf/dispatch [::set :remove true])))
     text]])
 
-(defn submitting []
+(defn submitting-desc []
   [ld/text "Waiting For Wallet Confirmation"])
 
 (defn pending []
@@ -109,18 +109,37 @@
    [:br]
    [:span "TX Confirmed"]])
 
-(defn failed [id {:keys [title desc]}]
+(defn on-success []
+  (rf/dispatch [::set
+                :open true
+                :close? true
+                :desc [confirmed]
+                :actions [close {:t :bsm} "OK"]]))
+
+(defn on-submitted []
+  (rf/dispatch [::set :open true :desc [pending]]))
+
+(defn submitting []
+  (rf/dispatch [::set :open true :desc [submitting-desc] :actions nil]))
+
+(defn failed [{:keys [title desc]}]
   (rf/dispatch
    [::set
-    id
-    :title
-    title
-    :description
-    [:<>
-     [:span "Reason:"]
-     [:br]
-     [:p (or desc title)]]
-    :actions
-    (close
-     {:id id :t :bsm}
-     "OK")]))
+    :open true
+    :title title
+    :desc [:<>
+           [:span "Reason:"]
+           [:br]
+           [:p (or desc title)]]
+    :actions (close
+              {:t :bsm}
+              "OK")]))
+
+(defn ui []
+  [root
+   {:id          :gglobal
+    :title       "TX Status"
+    :desc [:div]
+    :modal       true}
+   [trigger
+    {:className "invisible"}]])
