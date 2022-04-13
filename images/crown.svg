@@ -1,0 +1,55 @@
+<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <circle id="path-gnzxscolsr-1" cx="17" cy="17" r="17"></circle>
+        <circle id="path-gnzxscolsr-3" cx="14.0135967" cy="14" r="14"></circle>
+        <filter x="-7.1%" y="-7.1%" width="114.3%" height="114.3%" filterUnits="objectBoundingBox" id="filter-gnzxscolsr-5">
+            <feGaussianBlur stdDeviation="1.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <filter x="-32.5%" y="-38.2%" width="165.0%" height="176.5%" filterUnits="objectBoundingBox" id="filter-gnzxscolsr-6">
+            <feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.890196078   0 0 0 0 0.411764706   0 0 0 0 0.105882353  0 0 0 1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <path d="M0.60005143,8.3740897 L2.40309789,16.0736986 C2.50899471,16.5259133 2.91230937,16.8456931 3.37675771,16.8456931 L16.4719759,16.8456931 C16.9312281,16.8456931 17.3314426,16.5328827 17.442368,16.087228 L19.3658785,8.35932083 C19.4992745,7.82338805 19.172954,7.28078983 18.6370212,7.14739379 C18.3602528,7.07850489 18.0672386,7.13107427 17.8316793,7.29187936 L15.89099,8.61669542 C15.4348544,8.92807743 14.8126584,8.81073147 14.5012764,8.35459587 C14.490156,8.33830598 14.4795201,8.32169065 14.4693825,8.30477169 L10.8441786,2.25456653 C10.5603137,1.78081641 9.94614539,1.62688401 9.47239527,1.9107489 C9.33535905,1.99285921 9.21998924,2.10660592 9.13594568,2.24246507 L5.38167829,8.31136086 C5.09112996,8.78104172 4.47484243,8.92625733 4.00516157,8.635709 C3.98800292,8.62509452 3.97116945,8.61396318 3.95468426,8.60233026 L2.15027285,7.32903042 C1.69902656,7.01060425 1.07508374,7.11827623 0.756657565,7.56952252 C0.591891588,7.80301474 0.534893493,8.09584361 0.60005143,8.3740897 Z" id="path-gnzxscolsr-7"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-Copy" transform="translate(-692.000000, -2572.000000)">
+            <g id="Group-16-Copy-3" transform="translate(689.000000, 2569.000000)">
+                <g id="Path-3-+-Path-+-Path-2-Mask" transform="translate(3.000000, 3.000000)">
+                    <g id="Path-3">
+                        <mask id="mask-gnzxscolsr-2" fill="white">
+                            <use xlink:href="#path-gnzxscolsr-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#FFC92F" xlink:href="#path-gnzxscolsr-1"></use>
+                        <polygon fill="#FAAB10" mask="url(#mask-gnzxscolsr-2)" points="39.0142721 0 1 39.980016 37.2546804 39.980016"></polygon>
+                        <polygon id="Path-4" fill="#FFE87C" opacity="0.481417701" mask="url(#mask-gnzxscolsr-2)" points="34 -7.0880368 -6.04852006 33.5963667 5.32924713 30.5963667 39.1915501 -3"></polygon>
+                    </g>
+                    <g id="Path" transform="translate(2.986403, 2.596367)">
+                        <mask id="mask-gnzxscolsr-4" fill="white">
+                            <use xlink:href="#path-gnzxscolsr-3"></use>
+                        </mask>
+                        <g id="Mask">
+                            <use fill="#FF9A12" fill-rule="evenodd" xlink:href="#path-gnzxscolsr-3"></use>
+                            <use fill="black" fill-opacity="1" filter="url(#filter-gnzxscolsr-5)" xlink:href="#path-gnzxscolsr-3"></use>
+                        </g>
+                        <polygon fill="#F78C2F" opacity="0.303963797" mask="url(#mask-gnzxscolsr-4)" points="26.1846256 -7.09154957e-15 -1 28 5.02280003 34.3836493 38.2969139 19.8743733"></polygon>
+                    </g>
+                    <g id="Path-2" filter="url(#filter-gnzxscolsr-6)" transform="translate(6.933639, 7.265424)">
+                        <mask id="mask-gnzxscolsr-8" fill="white">
+                            <use xlink:href="#path-gnzxscolsr-7"></use>
+                        </mask>
+                        <use id="Mask" fill="#FFE87C" xlink:href="#path-gnzxscolsr-7"></use>
+                        <path d="M1.83845022,13.6497113 C3.02623517,14.6416968 4.52463646,15.1851037 6.07217269,15.1851037 L6.83845022,15.1851037 C8.58452595,15.1851037 10,13.7696297 10,12.0235539 L10,6.88613618 C10,5.69608081 9.57553564,4.54504553 8.8028987,3.63991353 L8.57198323,3.3693997 C7.77750388,2.43867965 7.86979325,1.04429281 8.7800069,0.226400167 L9.75727945,-0.651749726 C11.2170649,-1.96347228 13.452119,-1.88855241 14.8207875,-0.482019003 L17.4265936,2.19587815 C20.3921139,5.24344114 21.4557586,9.66764263 20.1996083,13.7301588 C18.9880195,17.6485588 15.3650194,20.3205497 11.2635798,20.3205497 L4.85867481,20.3205497 C2.52597786,20.3205497 0.578687745,18.5407308 0.369478745,16.2174343 L0.214821094,14.4999385 C0.165693145,13.9543654 0.568141414,13.472265 1.11371446,13.4231371 C1.37578348,13.3995382 1.63648976,13.4810428 1.83845022,13.6497113 Z" fill="#FFC92F" mask="url(#mask-gnzxscolsr-8)"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

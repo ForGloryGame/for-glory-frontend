@@ -1,0 +1,1 @@
+{:module-uris {:main [], :home ["/js/compiled/home.js"], :profile ["/js/compiled/profile.js"], :about ["/js/compiled/about.js"], :login ["/js/compiled/login.js"], :404 ["/js/compiled/404.js"], :500 ["/js/compiled/500.js"]}, :module-infos {:main nil, :home #{:main}, :profile #{:main}, :about #{:main}, :login #{:main}, :404 #{:main}, :500 #{:main}}}

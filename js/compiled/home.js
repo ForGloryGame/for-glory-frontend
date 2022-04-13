@@ -1,0 +1,4 @@
+(function(){
+'use strict';$APP.DT=function(){return new $APP.U(null,1,5,$APP.W,[new $APP.v(null,2,[$APP.Eu,function(){return $APP.TM($APP.$M,"fgl.app.views.home",7,new $APP.nn(function(){return new $APP.U(null,2,5,$APP.W,["start","home controller"],null)}),1882268796)},$APP.Fu,function(){return $APP.TM($APP.$M,"fgl.app.views.home",8,new $APP.nn(function(){return new $APP.U(null,2,5,$APP.W,["stop","home controller"],null)}),2130957704)}],null)],null)};
+$APP.CT=function(){return new $APP.U(null,3,5,$APP.W,[$APP.VP,"Home page",new $APP.U(null,3,5,$APP.W,[$APP.hP,new $APP.v(null,1,[$APP.zt,function(){return $APP.tr(new $APP.U(null,2,5,$APP.W,[$APP.WM,$APP.MQ],null))}],null),"\x3e Front"],null)],null)};$APP.ed("home");$APP.BT={};$APP.cd.Lc();
+}).call(this);

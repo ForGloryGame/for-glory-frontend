@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Cairo", sans-serif;
+}
+
+@font-face {
+  font-family: "old_londonregular";
+  src: url("oldlondon-webfont.woff2") format("woff2"),
+    url("oldlondon-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
