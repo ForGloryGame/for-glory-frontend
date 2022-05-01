@@ -1,3 +1,3 @@
 (function(){
-'use strict';$APP.To("about");$APP.Pt();
+'use strict';$APP.ed("about");$APP.cd.Rc();
 }).call(this);

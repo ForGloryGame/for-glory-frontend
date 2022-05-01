@@ -1,3 +1,3 @@
 (function(){
-'use strict';$APP.To("profile");$APP.Pt();
+'use strict';$APP.ed("profile");$APP.cd.Rc();
 }).call(this);
