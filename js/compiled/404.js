@@ -1,3 +1,3 @@
 (function(){
-'use strict';$APP.mV=function(){return new $APP.U(null,2,5,$APP.V,[$APP.St,"Page not found"],null)};$APP.ed("404");$APP.lV={};$APP.cd.Rc();
+'use strict';$APP.CU=function(){return new $APP.R(null,2,5,$APP.S,[$APP.ay,"Page not found"],null)};$APP.hd("404");$APP.BU={};$APP.fd.od();
 }).call(this);
