@@ -222,6 +222,10 @@ img, video {
   flex-direction: column;
 }
 
+.cs13 {
+  grid-column-start: 13;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -230,6 +234,10 @@ img, video {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.rs1 {
+  grid-row-start: 1;
 }
 
 .m-5px {
@@ -252,10 +260,6 @@ img, video {
   height: 100%;
 }
 
-.col-start-11 {
-  grid-column-start: 11;
-}
-
 .text-center {
   text-align: center;
 }
@@ -276,12 +280,8 @@ img, video {
   flex-direction: row;
 }
 
-.col-end-9 {
-  grid-column-end: 9;
-}
-
-.col-start-7 {
-  grid-column-start: 7;
+.ce5 {
+  grid-column-end: 5;
 }
 
 .rounded-xl {
@@ -296,6 +296,10 @@ img, video {
 .border-rgb-4f3926 {
   --gi-border-opacity: 1;
   border-color: rgba(79,57,38,var(--gi-border-opacity));
+}
+
+.ce9 {
+  grid-column-end: 9;
 }
 
 .grid {
@@ -314,16 +318,12 @@ img, video {
   grid-area: main;
 }
 
-.col-start-9 {
-  grid-column-start: 9;
-}
-
 .bottom-0 {
   bottom: 0;
 }
 
-.row-start-1 {
-  grid-row-start: 1;
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .py-20 {
@@ -343,6 +343,10 @@ img, video {
   height: 36px;
 }
 
+.ce13 {
+  grid-column-end: 13;
+}
+
 .pb-60 {
   padding-bottom: 15rem;
 }
@@ -355,25 +359,37 @@ img, video {
   justify-content: space-between;
 }
 
+.cs2 {
+  grid-column-start: 2;
+}
+
 .py-1\.5 {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
+}
+
+.re2 {
+  grid-row-end: 2;
 }
 
 .mr-20px {
   margin-right: 20px;
 }
 
-.col-end-13 {
-  grid-column-end: 13;
-}
-
 .block {
   display: block;
 }
 
+.rs4 {
+  grid-row-start: 4;
+}
+
 .fixed {
   position: fixed;
+}
+
+.rs3 {
+  grid-row-start: 3;
 }
 
 .font-medium {
@@ -384,8 +400,8 @@ img, video {
   text-align: justify;
 }
 
-.col-start-13 {
-  grid-column-start: 13;
+.cs7 {
+  grid-column-start: 7;
 }
 
 .bg-rgb-f9e19c {
@@ -396,6 +412,10 @@ img, video {
 .bg-rgb-f4e8d5 {
   --gi-bg-opacity: 1;
   background-color: rgba(244,232,213,var(--gi-bg-opacity));
+}
+
+.ce4 {
+  grid-column-end: 4;
 }
 
 .z-2147483647 {
@@ -412,10 +432,6 @@ img, video {
 
 .justify-items-stretch {
   justify-items: stretch;
-}
-
-.col-end-11 {
-  grid-column-end: 11;
 }
 
 .border-white {
@@ -440,9 +456,17 @@ img, video {
   padding-top: 5rem;
 }
 
+.cs1 {
+  grid-column-start: 1;
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.justify-self-end {
+  justify-self: end;
 }
 
 .text-white {
@@ -450,20 +474,24 @@ img, video {
   color: rgba(255,255,255,var(--gi-text-opacity));
 }
 
-.col-end-15 {
+.visible {
+  visibility: visible;
+}
+
+.ce15 {
   grid-column-end: 15;
 }
 
-.visible {
-  visibility: visible;
+.p-1 {
+  padding: 0.25rem;
 }
 
 .w-20 {
   width: 5rem;
 }
 
-.col-end-3 {
-  grid-column-end: 3;
+.h-100vh {
+  height: 100vh;
 }
 
 .text-lg {
@@ -481,6 +509,10 @@ img, video {
 
 .rounded {
   border-radius: 0.25rem;
+}
+
+.cs9 {
+  grid-column-start: 9;
 }
 
 .z-10 {
@@ -511,8 +543,20 @@ img, video {
   line-height: 1.75rem;
 }
 
+.ce11 {
+  grid-column-end: 11;
+}
+
 .max-w-screen-2xl {
   max-width: 1536px;
+}
+
+.cs11 {
+  grid-column-start: 11;
+}
+
+.justify-self-start {
+  justify-self: start;
 }
 
 .px-3\.25rem {
@@ -532,6 +576,10 @@ img, video {
   background-position: top;
 }
 
+.re4 {
+  grid-row-end: 4;
+}
+
 .auto-cols-max {
   grid-auto-columns: max-content;
 }
@@ -543,10 +591,6 @@ img, video {
 
 .bg-center {
   background-position: center;
-}
-
-.row-end-3 {
-  grid-row-end: 3;
 }
 
 .content-center {
@@ -586,12 +630,24 @@ img, video {
   margin-top: 2.5rem;
 }
 
+.re5 {
+  grid-row-end: 5;
+}
+
 .w-36px {
   width: 36px;
 }
 
 .p-3 {
   padding: 0.75rem;
+}
+
+.re3 {
+  grid-row-end: 3;
+}
+
+.cs4 {
+  grid-column-start: 4;
 }
 
 .border-rgb-8f816a {
@@ -642,6 +698,10 @@ img, video {
   width: 6px;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .w-full {
   width: 100%;
 }
@@ -650,16 +710,24 @@ img, video {
   background-attachment: scroll;
 }
 
-.col-start-1 {
-  grid-column-start: 1;
-}
-
 .mr-8 {
   margin-right: 2rem;
 }
 
+.justify-self-stretch {
+  justify-self: stretch;
+}
+
 .absolute {
   position: absolute;
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ce3 {
+  grid-column-end: 3;
 }
 
 .gap-10px {
@@ -681,6 +749,10 @@ img, video {
 
 .auto-rows-max {
   grid-auto-rows: max-content;
+}
+
+.rs2 {
+  grid-row-start: 2;
 }
 
 .btn {
