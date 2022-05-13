@@ -280,11 +280,6 @@ img, video {
   justify-content: center;
 }
 
-.px-12 {
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
-
 .max-w-100vw {
   max-width: 100vw;
 }
@@ -329,6 +324,10 @@ img, video {
 
 .grid {
   display: grid;
+}
+
+.m-auto {
+  margin: auto;
 }
 
 .col-start-2 {
@@ -506,11 +505,6 @@ img, video {
   padding-bottom: 0.25rem;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
 .justify-self-end {
   justify-self: end;
 }
@@ -641,6 +635,10 @@ img, video {
 
 .bg-center {
   background-position: center;
+}
+
+.items-start {
+  align-items: flex-start;
 }
 
 .content-center {
