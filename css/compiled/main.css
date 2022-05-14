@@ -429,10 +429,6 @@ img, video {
   padding-left: 3.5rem;
 }
 
-.rs4 {
-  grid-row-start: 4;
-}
-
 .fixed {
   position: fixed;
 }
@@ -695,6 +691,10 @@ img, video {
   padding-top: 2.5rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .hidden {
   display: none;
 }
@@ -736,10 +736,6 @@ img, video {
   gap: 1rem;
 }
 
-.re5 {
-  grid-row-end: 5;
-}
-
 .w-36px {
   width: 36px;
 }
@@ -767,6 +763,10 @@ img, video {
 
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
 }
 
 .right-0 {
