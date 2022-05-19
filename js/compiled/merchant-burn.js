@@ -1,0 +1,4 @@
+(function(){
+'use strict';var xH,AH,BH,yH;$APP.wH=function(){return new $APP.P(null,1,5,$APP.Q,[new $APP.l(null,2,[$APP.Qp,function(){return $APP.Mq(new $APP.P(null,1,5,$APP.Q,[$APP.Qy],null))},$APP.aA,$APP.ki],null)],null)};$APP.zH=function(){var a=$APP.Uf($APP.Gr(new $APP.P(null,1,5,$APP.Q,[xH],null)));a=$APP.fj(a);$APP.H.j(a,$APP.zA);$APP.H.j(a,yH);return new $APP.P(null,2,5,$APP.Q,[$APP.jw,"my land deeds"],null)};xH=$APP.T("fgl.app.views.merchant-burn","data");AH=$APP.T("fgl.app.views.merchant-burn","payment");
+BH=$APP.T("fgl.app.views.merchant-burn","token-id");yH=$APP.S("token-id");$APP.hd("merchant-burn");$APP.CH={};$APP.vE.j(AH,function(a,b){$APP.G(b,0,null);b=$APP.G(b,1,null);return $APP.R.A(a,AH,b)});$APP.vE.j(BH,function(a,b){$APP.G(b,0,null);b=$APP.G(b,1,null);return $APP.R.A(a,BH,b)});$APP.Er(xH,$APP.D([function(a){return new $APP.l(null,2,[$APP.zA,$APP.H.A(a,AH,$APP.Uv),yH,$APP.H.j(a,BH)],null)}]));$APP.Re();
+}).call(this);
