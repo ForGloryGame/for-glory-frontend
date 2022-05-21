@@ -236,6 +236,10 @@ img, video {
   padding-bottom: 1rem;
 }
 
+.h-1_8rem {
+  height: 1.8rem;
+}
+
 .rs1 {
   grid-row-start: 1;
 }
@@ -260,9 +264,18 @@ img, video {
   width: 10rem;
 }
 
+.min-h-21rem {
+  min-height: 21rem;
+}
+
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+.disabled\:border-Cddd2c6:disabled {
+  --gi-border-opacity: 1;
+  border-color: rgba(221,210,198,var(--gi-border-opacity));
 }
 
 .p-4 {
@@ -282,6 +295,10 @@ img, video {
   width: 1rem;
 }
 
+.h-6 {
+  height: 1.5rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -297,6 +314,10 @@ img, video {
 .py-0\.5 {
   padding-top: 0.125rem;
   padding-bottom: 0.125rem;
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .border-Cffd386 {
@@ -476,6 +497,11 @@ img, video {
   height: 36px;
 }
 
+.active\:bg-Cf8b133:active {
+  --gi-bg-opacity: 1;
+  background-color: rgba(248,177,51,var(--gi-bg-opacity));
+}
+
 .rounded-lg {
   border-radius: 0.5rem;
 }
@@ -532,6 +558,14 @@ img, video {
 
 .items-baseline {
   align-items: baseline;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rounded-2xl {
+  border-radius: 1.0rem;
 }
 
 .w-32 {
@@ -601,6 +635,10 @@ img, video {
   grid-column-start: 7;
 }
 
+.mt-14 {
+  margin-top: 3.5rem;
+}
+
 .bg-rgb-f9e19c {
   --gi-bg-opacity: 1;
   background-color: rgba(249,225,156,var(--gi-bg-opacity));
@@ -627,6 +665,10 @@ img, video {
   z-index: 2147483647;
 }
 
+.w-56 {
+  width: 14rem;
+}
+
 .cs3 {
   grid-column-start: 3;
 }
@@ -649,6 +691,15 @@ img, video {
 
 .justify-items-stretch {
   justify-items: stretch;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.px-24 {
+  padding-left: 6rem;
+  padding-right: 6rem;
 }
 
 .border-white {
@@ -677,9 +728,19 @@ img, video {
   grid-column-start: 1;
 }
 
+.disabled\:bg-C758184:disabled {
+  --gi-bg-opacity: 1;
+  background-color: rgba(117,129,132,var(--gi-bg-opacity));
+}
+
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.disabled\:border-C96a3a7:disabled {
+  --gi-border-opacity: 1;
+  border-color: rgba(150,163,167,var(--gi-border-opacity));
 }
 
 .from-transparent {
@@ -704,6 +765,10 @@ img, video {
   justify-self: end;
 }
 
+.w-48 {
+  width: 12rem;
+}
+
 .bottom-12 {
   bottom: 3rem;
 }
@@ -719,6 +784,10 @@ img, video {
 
 .visible {
   visibility: visible;
+}
+
+.right-13\% {
+  right: 13%;
 }
 
 .ce15 {
@@ -763,6 +832,11 @@ img, video {
   margin-bottom: 1.25rem;
 }
 
+.px-40 {
+  padding-left: 10rem;
+  padding-right: 10rem;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
@@ -773,6 +847,10 @@ img, video {
 
 .z-10 {
   z-index: 10;
+}
+
+.w-30\% {
+  width: 30%;
 }
 
 .px-5 {
@@ -792,6 +870,11 @@ img, video {
 
 .font-bold {
   font-weight: 700;
+}
+
+.bg-C25a1b7 {
+  --gi-bg-opacity: 1;
+  background-color: rgba(37,161,183,var(--gi-bg-opacity));
 }
 
 .pr-12 {
@@ -848,6 +931,15 @@ img, video {
   gap: 1.25rem;
 }
 
+.mt-20 {
+  margin-top: 5rem;
+}
+
+.active\:bg-C29cde1:active {
+  --gi-bg-opacity: 1;
+  background-color: rgba(41,205,225,var(--gi-bg-opacity));
+}
+
 .m-0 {
   margin: 0;
 }
@@ -889,12 +981,21 @@ img, video {
   overflow: auto;
 }
 
+.bottom-10\% {
+  bottom: 10%;
+}
+
 .mr-12 {
   margin-right: 3rem;
 }
 
 .items-start {
   align-items: flex-start;
+}
+
+.active\:border-Cfeeca9:active {
+  --gi-border-opacity: 1;
+  border-color: rgba(254,236,169,var(--gi-border-opacity));
 }
 
 .content-center {
@@ -936,6 +1037,11 @@ img, video {
   padding-bottom: 2rem;
 }
 
+.disabled\:bg-Ca8978e:disabled {
+  --gi-bg-opacity: 1;
+  background-color: rgba(168,151,142,var(--gi-bg-opacity));
+}
+
 .w-11\.25rem {
   width: 11.25rem;
 }
@@ -958,6 +1064,11 @@ img, video {
 
 .self-start {
   align-self: flex-start;
+}
+
+.active\:border-C78e7f7:active {
+  --gi-border-opacity: 1;
+  border-color: rgba(120,231,247,var(--gi-border-opacity));
 }
 
 .gap-4 {
@@ -1026,6 +1137,11 @@ img, video {
 
 .mt-2 {
   margin-top: 0.5rem;
+}
+
+.border-C5ecbe7 {
+  --gi-border-opacity: 1;
+  border-color: rgba(94,203,231,var(--gi-border-opacity));
 }
 
 .pl-11 {
@@ -1123,6 +1239,10 @@ img, video {
 
 .absolute {
   position: absolute;
+}
+
+.w-45\% {
+  width: 45%;
 }
 
 .grid-cols-3 {
