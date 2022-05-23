@@ -518,10 +518,6 @@ img, video {
   background-repeat: no-repeat;
 }
 
-.opacity-0 {
-  opacity: 0;
-}
-
 .h-36px {
   height: 36px;
 }
@@ -562,6 +558,10 @@ img, video {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.bottom-20\% {
+  bottom: 20%;
 }
 
 .justify-between {
@@ -974,10 +974,6 @@ img, video {
 
 .pl-12 {
   padding-left: 3rem;
-}
-
-.hover\:opacity-0:hover {
-  opacity: 0;
 }
 
 .p-8 {
