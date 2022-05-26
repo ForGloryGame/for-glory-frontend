@@ -315,6 +315,11 @@ img, video {
   text-align: center;
 }
 
+.py-1_2rem {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+
 .w-6 {
   width: 1.5rem;
 }
@@ -322,6 +327,10 @@ img, video {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.w-11_2rem {
+  width: 11.2rem;
 }
 
 .justify-center {
@@ -356,6 +365,10 @@ img, video {
 
 .flex-row {
   flex-direction: row;
+}
+
+.w-10 {
+  width: 2.5rem;
 }
 
 .text-C6bc9db {
@@ -1017,15 +1030,15 @@ img, video {
   padding-right: 2.5rem;
 }
 
+.pr-6 {
+  padding-right: 1.5rem;
+}
+
 .inset-0 {
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-}
-
-.pt-12 {
-  padding-top: 3rem;
 }
 
 .justify-items-center {
