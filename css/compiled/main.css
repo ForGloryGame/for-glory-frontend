@@ -1490,6 +1490,11 @@ img, video {
   background-attachment: scroll;
 }
 
+.-my-1 {
+  margin-top: -0.25rem;
+  margin-bottom: -0.25rem;
+}
+
 .to-C50929e3b {
   --gi-gradient-to: #50929e3b;
 }
