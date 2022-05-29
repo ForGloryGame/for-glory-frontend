@@ -1342,6 +1342,11 @@ img, video {
   padding: 1.5rem;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .mr-2\.5 {
   margin-right: 0.625rem;
 }
