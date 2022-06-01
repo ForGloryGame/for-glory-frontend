@@ -1,3 +1,3 @@
 (function(){
-'use strict';$APP.dL=function(){return new $APP.J(null,1,5,$APP.K,[new $APP.h(null,2,[$APP.yq,$APP.Zh,$APP.mv,$APP.Zh],null)],null)};$APP.cL=function(){return new $APP.J(null,2,5,$APP.K,[$APP.Kz,"vote"],null)};$APP.cd("guild-management");$APP.bL={};$APP.Je();
+'use strict';$APP.kL=function(){return new $APP.I(null,1,5,$APP.J,[new $APP.g(null,2,[$APP.zq,$APP.Zh,$APP.mv,$APP.Zh],null)],null)};$APP.jL=function(){return new $APP.I(null,2,5,$APP.J,[$APP.Lz,"vote"],null)};$APP.cd("guild-management");$APP.iL={};$APP.Je();
 }).call(this);
