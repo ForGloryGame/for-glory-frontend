@@ -380,6 +380,11 @@ img, video {
   font-weight: 300;
 }
 
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
 .text-Cababab {
   --gi-text-opacity: 1;
   color: rgba(171,171,171,var(--gi-text-opacity));
@@ -524,6 +529,10 @@ img, video {
   margin-top: 1.75rem;
 }
 
+.border-t-1px {
+  border-top-width: 1px;
+}
+
 .grid {
   display: grid;
 }
@@ -536,8 +545,17 @@ img, video {
   margin: auto;
 }
 
+.h-44 {
+  height: 11rem;
+}
+
 .col-start-2 {
   grid-column-start: 2;
+}
+
+.text-Cd6d6d6 {
+  --gi-text-opacity: 1;
+  color: rgba(214,214,214,var(--gi-text-opacity));
 }
 
 .mr-4 {
@@ -682,6 +700,10 @@ img, video {
   grid-column-start: 2;
 }
 
+.w-2 {
+  width: 0.5rem;
+}
+
 .py-1\.5 {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
@@ -716,6 +738,10 @@ img, video {
   --gi-scale-x: 1;
   --gi-scale-y: 1;
   transform: translateX(var(--gi-translate-x)) translateY(var(--gi-translate-y)) rotate(var(--gi-rotate)) skewX(var(--gi-skew-x)) skewY(var(--gi-skew-y)) scaleX(var(--gi-scale-x)) scaleY(var(--gi-scale-y));
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .re2 {
@@ -1023,6 +1049,10 @@ img, video {
   vertical-align: bottom;
 }
 
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
 .mt-30 {
   margin-top: 7.5rem;
 }
@@ -1138,6 +1168,11 @@ img, video {
   justify-self: start;
 }
 
+.border-C96a1ae {
+  --gi-border-opacity: 1;
+  border-color: rgba(150,161,174,var(--gi-border-opacity));
+}
+
 .pr-10 {
   padding-right: 2.5rem;
 }
@@ -1211,6 +1246,10 @@ img, video {
 
 .bg-top {
   background-position: top;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .bg-Cffffff26 {
@@ -1287,6 +1326,10 @@ img, video {
   width: 100vw;
 }
 
+.p-1_5 {
+  padding: 0.375rem;
+}
+
 .mt-24 {
   margin-top: 6rem;
 }
@@ -1356,6 +1399,11 @@ img, video {
   align-self: flex-start;
 }
 
+.px-2_5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
 .active\:border-C78e7f7:active {
   --gi-border-opacity: 1;
   border-color: rgba(120,231,247,var(--gi-border-opacity));
@@ -1407,6 +1455,10 @@ img, video {
   flex: 1 1 0%;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .leading-5 {
   line-height: 1.25rem;
 }
@@ -1440,6 +1492,11 @@ img, video {
 .mx-2 {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .border-solid {
@@ -1563,6 +1620,11 @@ img, video {
 }
 
 .mr-8 {
+  margin-right: 2rem;
+}
+
+.mx-8 {
+  margin-left: 2rem;
   margin-right: 2rem;
 }
 
