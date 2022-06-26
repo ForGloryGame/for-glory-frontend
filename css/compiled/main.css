@@ -264,6 +264,10 @@ img, video {
   grid-column: span 2 / span 2;
 }
 
+.bottom-4 {
+  bottom: 1rem;
+}
+
 .p-2 {
   padding: 0.5rem;
 }
@@ -1657,10 +1661,6 @@ img, video {
   background-size: cover;
 }
 
-.bottom-24 {
-  bottom: 6rem;
-}
-
 .my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -1842,6 +1842,10 @@ img, video {
 .bg-rgb-f4e8d4 {
   --gi-bg-opacity: 1;
   background-color: rgba(244,232,212,var(--gi-bg-opacity));
+}
+
+.right-10\% {
+  right: 10%;
 }
 
 .w-1\/2 {
