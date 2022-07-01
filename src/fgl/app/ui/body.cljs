@@ -10,7 +10,10 @@
    [re-frame.core :as rf]
    [taoensso.encore :as enc]))
 
-(defn- to-home [] (rf/dispatch [:navigate :route/home]))
+(defn- back [guild?]
+  (if guild?
+    #(rf/dispatch [:navigate :route/kingdom-map])
+    #(rf/dispatch [:navigate :route/map])))
 
 (defn wrapper [children]
   [:div.cs2.ce3 {:style {:minWidth "64vw"}} children])
@@ -36,7 +39,7 @@
 
         panel-wrapper
         (if panel-name
-          #(vector panel/ui cur-route panel-name 80 to-home %)
+          #(vector panel/ui cur-route panel-name 80 (back guild?) %)
           identity)
 
         outer-wrapper (if global? identity wrapper)

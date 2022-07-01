@@ -41,6 +41,13 @@
               .toLowerCase)]
     (str "/images/kingdom-" n ".png")))
 
+(def img-class
+  {1 "w-42"
+   2 "w-40 -translate-y-5%"
+   3 "w-38 translate-y-5%"
+   4 "w-40 -translate-y-1%"
+   5 "w-50 translate-y-5%"})
+
 (def imgr
   {1 [:img.w-48 {:src "/images/kingdom-rank-1.png"}]
    2 [:img.w-40 {:src "/images/kingdom-rank-2.png"}]
@@ -53,6 +60,7 @@
    3 [:p.text-Cd5e4e8.text-xl.tracking-wider "RANK 3"]
    4 [:p.text-Cd5e4e8.tracking-wider "RANK 4"]
    5 [:p.text-Cd5e4e8.tracking-wider "RANK 5"]})
+
 (def imgk
   {1 :img.w-28.inline-block.mt-7.mb-12
    2 :img.w-24.inline-block.mt-5.mb-8

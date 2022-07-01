@@ -12,5 +12,5 @@
     ["Mint" :route/merchant-mint]
     ["Land Deeds" :route/merchant-landeeds]
     ["Burn Land Deeds" :route/merchant-burn]
-    ["$GLORY for $GOLD" :route/merchant-swap]]
+    ["$Virtue for $Glory" :route/merchant-swap]]
    body])

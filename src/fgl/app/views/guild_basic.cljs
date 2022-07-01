@@ -5,9 +5,7 @@
    [fgl.app.ui.btn :as btn]
    [fgl.app.ui.checkbox :as checkbox]
    [fgl.app.ui.dialog :as dialog]
-   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.separator :as separator]
-   [fgl.app.ui.sgold-img :as sgoldimg]
    [fgl.contracts.bfproxy :as bfproxy]
    [fgl.contracts.gamenft :as nft]
    [fgl.contracts.kingdoms :as kingdom]
@@ -174,7 +172,7 @@
        {:style {:gridTemplateColumns "1fr 3fr 1fr"}}
        [:span "ROLE"]
        [:span "ADDRESS"]
-       [:span "RUNE LOCKED"]]
+       [:span "sGLORY LOCKED"]]
       [into
        [:div.overflow-auto
         {:style {:height "calc(100% - 1.625rem)"}}]

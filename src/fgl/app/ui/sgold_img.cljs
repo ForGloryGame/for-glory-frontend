@@ -11,6 +11,5 @@
        opts
        {:style {:width  width
                 :height width
-                ;; :transform "translateY(5%)"
-                }
+                :transform "translateY(5%)"}
         :src   "/images/rune-token.png"})])))

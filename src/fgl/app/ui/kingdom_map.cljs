@@ -36,9 +36,9 @@
             :style {:width  "1000vw"
                     :height "calc(1000vw * 0.5625)"}}]
           [:img.absolute
-           {:src "/images/kingdom-map-btm-shadow.png"
-            :style        {:width "1000vw"
-                           :top   "calc(1000vw * 0.5625 * 2260 / 2880)"}}]
+           {:src   "/images/kingdom-map-btm-shadow.png"
+            :style {:width "1000vw"
+                    :top   "calc(1000vw * 0.5625 * 2275 / 2880)"}}]
 
           ;; basic
           [:button.absolute

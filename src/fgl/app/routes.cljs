@@ -127,21 +127,21 @@
       :conflicting   true}]
     ["guild/basic"
      {:name        :route/guild-basic
-      :panel-name  "Guild"
+      :panel-name  "Kingdom"
       :view        #(resolve 'fgl.app.views.guild-basic/main)
       :controllers #(resolve 'fgl.app.views.guild-basic/controllers)
       :lazy        true
       :conflicting true}]
     ["guild/alter"
      {:name        :route/guild-alter
-      :panel-name  "Guild"
+      :panel-name  "Kingdom"
       :view        #(resolve 'fgl.app.views.guild-alter/main)
       :controllers #(resolve 'fgl.app.views.guild-alter/controllers)
       :lazy        true
       :conflicting true}]
     ["guild/vote/proposals"
      {:name        :route/guild-vote
-      :panel-name  "Guild"
+      :panel-name  "Kingdom"
       :view        #(resolve 'fgl.app.views.guild-vote/main)
       :controllers #(resolve 'fgl.app.views.guild-vote/controllers)
       :lazy        true
@@ -149,7 +149,7 @@
     ["guild/vote/:proposal-id"
      {:name          :route/guild-vote-proposal
       :shadow-module "guild-vote"
-      :panel-name    "Guild"
+      :panel-name    "Kingdom"
       :view          #(resolve 'fgl.app.views.guild-vote/main)
       :controllers   #(resolve 'fgl.app.views.guild-vote/controllers)
       ;; :parameters    {:path [:map [:proposal-id string?]]}
@@ -157,14 +157,14 @@
       :conflicting   true}]
     ["guild/management"
      {:name        :route/guild-management
-      :panel-name  "Guild"
+      :panel-name  "Kingdom"
       :view        #(resolve 'fgl.app.views.guild-management/main)
       :controllers #(resolve 'fgl.app.views.guild-management/controllers)
       :lazy        true
       :conflicting true}]
     ["guild/allocation"
      {:name        :route/guild-allocation
-      :panel-name  "Guild"
+      :panel-name  "Kingdom"
       :view        #(resolve 'fgl.app.views.guild-allocation/main)
       :controllers #(resolve 'fgl.app.views.guild-allocation/controllers)
       :lazy        true
@@ -200,7 +200,7 @@
     ["rank/personal"
      {:name          :route/rank-personal
       :shadow-module "personal-rank"
-      :panel-name    "Rank"
+      :panel-name    "Runes"
       :view          #(resolve 'fgl.app.views.personal-rank/main)
       :controllers   #(resolve 'fgl.app.views.personal-rank/controllers)
       :lazy          true
@@ -208,7 +208,7 @@
     ["rank/kingdom"
      {:name          :route/rank-kingdom
       :shadow-module "kingdom-rank"
-      :panel-name    "Rank"
+      :panel-name    "Runes"
       :view          #(resolve 'fgl.app.views.kingdom-rank/main)
       :controllers   #(resolve 'fgl.app.views.kingdom-rank/controllers)
       :lazy          true

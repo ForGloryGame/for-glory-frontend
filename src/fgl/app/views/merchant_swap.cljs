@@ -108,7 +108,7 @@
   (let [{:keys [input-str]} @(rf/subscribe [::data])]
     [:<>
      [:div.w-full.text-base.mt-4.mb-3.ffd.flexrs.text-C6bc9db
-      "Amount of $GLORY to exchange:"]
+      "Amount of $Virtue to exchange:"]
      [:input.w-full.text-4xl.bg-C0d293180.py-3_5.text-center
       {:on-change #(rf/dispatch [::input (-> % .-target .-value)])
        :value     input-str
@@ -129,7 +129,7 @@
          :style {:maxWidth "20rem"}}]]]
      [:div
       [:div.text-base.mt-4.mb-3.ffd.flexrs.text-C6bc9db
-       "You $GOLD Balance will be:"]
+       "You $Glory Balance will be:"]
       [:div.flexr.w-full.bg-C81c6dd1a.py-3.text-4xl
        [goldimg/ui "2.5rem"]
        [balance/ui

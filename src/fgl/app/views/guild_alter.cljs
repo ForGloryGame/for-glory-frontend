@@ -8,6 +8,7 @@
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
    [fgl.app.ui.separator :as separator]
+   [fgl.app.ui.sgold-img :as sgoldimg]
    [fgl.contracts.gold :as gold]
    [fgl.contracts.kingdoms :as kingdom]
    [fgl.contracts.sgold :as sgold]
@@ -113,7 +114,7 @@
       [week-btn 32]]
      [separator/ui {:className "my-12"}]
      [:div.w-full.mb-2.ffd.text-C6bc9db "Your sGLORY in return will be:"]
-     [:div.flexr.w-full.bg-C81c6dd1a.py-3.text-4xl [gloryimg/ui "2.5rem"] [balance/ui output {:style {:maxWidth "40rem"}}]]
+     [:div.flexr.w-full.bg-C81c6dd1a.py-3.text-4xl [sgoldimg/ui "2.5rem"] [balance/ui output {:style {:maxWidth "40rem"}}]]
      [btn/ui
       {:className "absolute bottom-12 transform left-1/2 -translate-x-1/2 bg-Ced8e28 border-Cffd386 w-14rem text-xl"
        :t         :olg

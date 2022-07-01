@@ -5,7 +5,6 @@
    [fgl.app.ui.btn :as btn]
    [fgl.app.ui.checkbox :as checkbox]
    [fgl.app.ui.nft-card :as nftc]
-   [fgl.app.ui.panel :as panel]
    [fgl.app.ui.separator :as separator]
    [fgl.config :as conf]
    [fgl.contracts.battlefield :as battlefield]
