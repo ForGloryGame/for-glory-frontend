@@ -16,6 +16,21 @@
 (glogi-console/install!)
 (log/set-levels {:glogi/root (if goog.DEBUG :all :info)})
 
+(rf/reg-event-db
+ :all-image-loaded
+ (fn [db _]
+   (if (some? (:all-image-loaded db))
+     (update db :all-image-loaded inc)
+     (assoc db :all-image-loaded 1))))
+
+(def all-images (preload/images #(rf/dispatch [:all-image-loaded])))
+
+(rf/reg-sub
+ :all-image-loaded
+ (fn [db _]
+   (when-let [all-image-loaded (db :all-image-loaded)]
+     (>= all-image-loaded (first all-images)))))
+
 (defn dev-setup []
   (when config/debug?
     (log/debug :mode :dev-mode)))
@@ -24,8 +39,9 @@
   (rf/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
-    (when (not config/debug?)
-      (js/setTimeout #(rdom/render (preload/images) (.getElementById js/document "extra")) 3000))
+    (js/setTimeout #(rdom/render (second all-images) (.getElementById js/document "extra")) 0)
+    ;; (when (not config/debug?)
+    ;;   (js/setTimeout #(rdom/render (second all-images) (.getElementById js/document "extra")) 0))
     (rdom/render [views/main-panel] root-el))
   (routes/init!))
 

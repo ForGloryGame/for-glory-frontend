@@ -17,6 +17,7 @@
   (let [state                                     (rf/subscribe [::w/state])
         wrong-network?                            (rf/subscribe [::w/wrong-network])
         current-route                             @(rf/subscribe [::routes/current-route])
+        all-image-loaded                          @(rf/subscribe [:all-image-loaded])
         {:keys [view] rname :name :as route-data} (get current-route :data)
         guild?                                    (and (keyword? rname)
                                                        (or (-> rname name (.startsWith "guild-"))
@@ -34,10 +35,12 @@
                    (rf/dispatch [::w/switch-to-target-chain!])
                    [:div]))
           500))
-    [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
-     {:style {:gridTemplate "\"header\" min-content \"main\""}}
-     [header/ui]
-     (and guild? [uikmap/ui])
-     (and (not guild?) [uimap/ui])
-     [body/ui current-route (if view [view current-route] [:div])]
-     [:link {:rel "stylesheet" :href "/fonts/family.css"}]]))
+    (if all-image-loaded
+      [:div.grid.h-100vh.bg-cover.bg-no-repeat.bg-center
+       {:style {:gridTemplate "\"header\" min-content \"main\""}}
+       [header/ui]
+       (and guild? [uikmap/ui])
+       (and (not guild?) [uimap/ui])
+       [body/ui current-route (if view [view current-route] [:div])]
+       [:link {:rel "stylesheet" :href "/fonts/family.css"}]]
+      [:div "Loading..."])))

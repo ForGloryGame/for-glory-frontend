@@ -43,11 +43,11 @@
    5 "/images/select-kingdom-phoenix.png"})
 
 (def img-class
-  {1 "w-42"
-   2 "w-40 -translate-y-5%"
-   3 "w-38 translate-y-5%"
-   4 "w-40 -translate-y-1%"
-   5 "w-50 translate-y-5%"})
+  {1 "w-34"
+   2 "w-32 -translate-y-5%"
+   3 "w-30 translate-y-5%"
+   4 "w-32 -translate-y-1%"
+   5 "w-42 translate-y-5%"})
 
 (def img-lg-class
   {1 "w-48"
@@ -87,11 +87,15 @@
                         :backgroundSize  "100% 100%"}}
       [:img {:className (str "inline-block mt-16 mb-12 transform " (get img-lg-class current))
              :src       (get img current)}]
-      [:div {:className "absolute top-50% transform -translate-y-70% w-92"}
-       [:p {:className "text-2xl tracking-widest mb-4 "}
-        (get kingdom/kingdoms-name current)]
-       [:div {:className "text-xs text-C97979a text-left ffd px-9 section"}
-        (get desc1 current)]]]]))
+      ;; [:div {:className "absolute top-50% transform -translate-y-70% w-92"}
+      ;;  [:p {:className "text-2xl tracking-widest mb-4 "}
+      ;;   (get kingdom/kingdoms-name current)]
+      ;;  [:div {:className "text-xs text-C97979a text-left ffd px-9 section"}
+      ;;   (get desc1 current)]]
+      [:p {:className "text-2xl tracking-widest mb-4 "}
+       (get kingdom/kingdoms-name current)]
+      [:div {:className "text-xs text-C97979a text-left ffd px-9 section"}
+       (get desc1 current)]]]))
 
 (def img-flag
   {1 "/images/select-kingdom-woff-flag.png"
@@ -152,7 +156,8 @@
            :style     {:paddingTop "10%"}}
      [:p {:className "text-Cd5e4e8 text-3xl tracking-wider"}
       "Choose Your Kingdom"]
-     [:div {:className "ffd text-sm my-2"}
+     [:div {:className "ffd text-sm my-1"
+            :style     {:minHeight "6.75rem"}}
       (get desc2 current)]
      [:p {:className "text-sm text-Cababab ffd font-bold italic"}
       "You can modify the kingdom after selection"]

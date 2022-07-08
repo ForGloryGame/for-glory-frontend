@@ -14,6 +14,18 @@
    [:img {:src   "/images/square.svg"
           :style {:transform "scale(4)"}}]])
 
+(rf/reg-event-db
+ ::img-loaded
+ (fn [db _]
+   (if (some? (::img-loaded db))
+     (update db ::img-loaded inc)
+     (assoc db ::img-loaded 1))))
+
+(rf/reg-sub
+ ::img-loaded
+ (fn [db]
+   (>= (get db ::img-loaded) 5)))
+
 (defn ui
   ([] (ui false))
   ([fg?]
@@ -24,7 +36,8 @@
              council?     (= @hover :council)
              ruins?       (= @hover :ruins)
              merchant?    (= @hover :merchant)
-             battlefield? (= @hover :battlefield)]
+             battlefield? (= @hover :battlefield)
+             img-loaded?  @(rf/subscribe [::img-loaded])]
          [:div.fixed.top-50%.left-50%.overflow-clip.fi
           {:style {:minWidth  "1000vw"
                    :minHeight "calc(1000vw * 0.5625)"
@@ -37,16 +50,18 @@
 
           ;; kingdom
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/kingdom-map])
+           {:className    (if img-loaded? "visible" "hidden")
+            :on-click     #(rf/dispatch [:navigate :route/kingdom-map])
             :onMouseEnter #(fg-reset! :kingdom)
             :onMouseLeave #(fg-reset! nil)
             :style        {:width "calc(1000vw * 1377 / 5120)"
                            :left  "calc(1000vw * 2541 / 5120)"
                            :top   "calc(1000vw * 0.5625 * 358 / 2880)"}}
            [:img
-            {:src   "/images/map-kingdom.png"
-             :style {:width      "calc(1000vw * 1377 / 5120)"
-                     :visibility (if kingdom? "hidden" "visible")}}]
+            {:src    "/images/map-kingdom.png"
+             :onLoad #(rf/dispatch [::img-loaded])
+             :style  {:width      "calc(1000vw * 1377 / 5120)"
+                      :visibility (if kingdom? "hidden" "visible")}}]
            [:img.absolute.top-0
             {:src   "/images/map-kingdom-active.png"
              :style {:width      "calc(1000vw * 1377 / 5120)"
@@ -56,15 +71,17 @@
 
           ;; council
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/council])
+           {:className    (if img-loaded? "visible" "hidden")
+            :on-click     #(rf/dispatch [:navigate :route/council])
             :onMouseEnter #(fg-reset! :council)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 4341 / 5120)"
                            :top  "calc(1000vw * 0.5625 * 983 / 2880)"}}
            [:img
-            {:src   "/images/map-council.png"
-             :style {:width      "calc(1000vw * 466 / 5120)"
-                     :visibility (if council? "hidden" "visible")}}]
+            {:onLoad #(rf/dispatch [::img-loaded])
+             :src    "/images/map-council.png"
+             :style  {:width      "calc(1000vw * 466 / 5120)"
+                      :visibility (if council? "hidden" "visible")}}]
            [:img.absolute.top-0
             {:className "hover:opacity-100"
              :src       "/images/map-council-active.png"
@@ -75,16 +92,18 @@
 
           ;; ruins
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/rank-personal])
+           {:className    (if img-loaded? "visible" "hidden")
+            :on-click     #(rf/dispatch [:navigate :route/rank-personal])
             :onMouseEnter #(fg-reset! :ruins)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 3810 / 5120)"
                            :top  "calc(1000vw * 0.5625 * 1824 / 2880)"}}
            [:img
-            {:src   "/images/map-ruins.png"
-             :style {:width      "calc(1000vw * 862 / 5120)"
-                     :visibility (if ruins? "hidden" "visible")
-                     :transform  "translate(2%,1%)"}}]
+            {:onLoad #(rf/dispatch [::img-loaded])
+             :src    "/images/map-ruins.png"
+             :style  {:width      "calc(1000vw * 862 / 5120)"
+                      :visibility (if ruins? "hidden" "visible")
+                      :transform  "translate(2%,1%)"}}]
            [:img.absolute..top-0
             {:src   "/images/map-ruins-active.png"
              :style {:width      "calc(1000vw * 862 / 5120)"
@@ -94,14 +113,16 @@
 
           ;; merchant
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/merchant-mint])
+           {:className    (if img-loaded? "visible" "hidden")
+            :on-click     #(rf/dispatch [:navigate :route/merchant-mint])
             :onMouseEnter #(fg-reset! :merchant)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 2356 / 5120)"
                            :top  "calc(1000vw * 0.5625 * 1606 / 2880)"}}
            [:img
-            {:src   "/images/map-merchant.png"
-             :style {:width "calc(1000vw * 950 / 5120)"}}]
+            {:onLoad #(rf/dispatch [::img-loaded])
+             :src    "/images/map-merchant.png"
+             :style  {:width "calc(1000vw * 950 / 5120)"}}]
            :visibility (if merchant? "hidden" "visible")
            [:img.absolute.top-0
             {:src   "/images/map-merchant-active.png"
@@ -112,14 +133,16 @@
 
           ;; battlefield
           [:button.absolute
-           {:on-click     #(rf/dispatch [:navigate :route/battlefield])
+           {:className    (if img-loaded? "visible" "hidden")
+            :on-click     #(rf/dispatch [:navigate :route/battlefield])
             :onMouseEnter #(fg-reset! :battlefield)
             :onMouseLeave #(fg-reset! nil)
             :style        {:left "calc(1000vw * 523 / 5120)"
                            :top  "calc(1000vw * 0.5625 * 845 / 2880)"}}
            [:img
-            {:src   "/images/map-battlefield.png"
-             :style {:width "calc(1000vw * 899 / 5120)"}}]
+            {:onLoad #(rf/dispatch [::img-loaded])
+             :src    "/images/map-battlefield.png"
+             :style  {:width "calc(1000vw * 899 / 5120)"}}]
            :visibility (if battlefield? "hidden" "visible")
            [:img.absolute..top-0
             {:src   "/images/map-battlefield-active.png"
