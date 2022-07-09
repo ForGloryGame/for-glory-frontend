@@ -17,7 +17,7 @@
       read-string))
 
 (defn- get-shadow-cljs-command [args]
-  (let [command "npx shadow-cljs"]
+  (let [command "bun run shadow-cljs"]
     (if (= (first args) "server")
       (let [command
             (str
