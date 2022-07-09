@@ -47,6 +47,10 @@
            {:src   "/images/map-division-bg.png"
             :style {:width  "1000vw"
                     :height "calc(1000vw * 0.5625)"}}]
+          [:div.absolute.top-0.left-0.overflow-auto
+           {:style {:background "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,0.2) 95%)"
+                    :width  "1000vw"
+                    :height "calc(1000vw * 0.5625)"}}]
 
           ;; kingdom
           [:button.absolute

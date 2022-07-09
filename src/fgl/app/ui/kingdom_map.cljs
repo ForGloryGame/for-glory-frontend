@@ -42,7 +42,7 @@
          [:div.fixed.top-50%.left-50%.overflow-clip.fi
           {:style {:minWidth  "1000vw"
                    :minHeight "calc(1000vw * 0.5625)"
-                   :transform "translate(-50%,-50%) scale(0.1)"
+                   :transform "translate(-50%,-50%) scale(0.11)"
                    :zIndex    (if fg? "unset" -10)}}
           [:img.absolute.top-0.left-0.overflow-auto
            {:src   "/images/kingdom-bg.png"
@@ -52,6 +52,10 @@
            {:src   "/images/kingdom-map-btm-shadow.png"
             :style {:width "1000vw"
                     :top   "calc(1000vw * 0.5625 * 2275 / 2880)"}}]
+          [:div.absolute.top-0.left-0.overflow-auto
+           {:style {:background "radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(0,0,0,0.2) 95%)"
+                    :width  "1000vw"
+                    :height "calc(1000vw * 0.5625)"}}]
 
           ;; basic
           [:button.absolute
@@ -166,7 +170,7 @@
                  :onMouseEnter #(fg-reset! :back)
                  :onMouseLeave #(fg-reset! nil)
                  :style        {:width "calc(1000vw * 473 / 5120)"
-                                :left  "calc(1000vw * 209 / 5120)"
+                                :left  "calc(1000vw * 409 / 5120)"
                                 :top   "calc(1000vw * 0.5625 * 2550 / 2880)"}}
                 [:img
                  {:onLoad #(rf/dispatch [::img-loaded])

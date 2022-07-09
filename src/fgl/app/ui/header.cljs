@@ -21,7 +21,8 @@
   [:> Nav/Root
    {:style {;; :height "6.625rem"
             :backgroundColor "rgba(29, 51, 70, 0.17)"
-            :boxShadow       "0px 3px 62px 0px rgba(0, 0, 0, 0.53)"}}
+            ;; :boxShadow       "0px 3px 62px 0px rgba(0, 0, 0, 0.53)"
+            }}
    x])
 
 (rf/reg-sub
