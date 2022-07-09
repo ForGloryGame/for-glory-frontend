@@ -1,1 +1,0 @@
-{:module-uris {:shared ["/js/compiled/shared.js"], :main []}, :module-infos {:shared nil, :main #{:shared}}}
