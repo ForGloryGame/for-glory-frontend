@@ -8,16 +8,16 @@ on:
 jobs:
   deploy-sites:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.5]
+    # strategy:
+    #   matrix:
+    #     node-version: [16.5]
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
 
       - uses: actions/setup-java@v3
         with:
@@ -32,6 +32,7 @@ jobs:
           bb: latest
       # - run: sudo apt install rlwrap -y
 
+      - run: .github/scripts/install-bun.sh
       - uses: actions/cache@v3
         id: maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
         with:
@@ -39,12 +40,11 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('./deps.edn') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - run: curl -fsSL https://bun.sh/install | bash
-      - run: ~/.bun/bin/bun install
       - run: cp .env.example .env
       - name: Load .env file
         uses: xom9ikk/dotenv@v1.0.2
-      - run: npx shadow-cljs release app front app-ssr front-ssr
+      - run: bun install
+      - run: bun run shadow-cljs release app front app-ssr front-ssr
       - run: mkdir -p test
       - run: clojure -X:css-prod
       - run: clojure -X:css-front-prod

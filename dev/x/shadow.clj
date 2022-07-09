@@ -47,7 +47,7 @@
                 read-string)
             deps
             jack-in-deps
-            ;; => "npx shadow-cljs -d nrepl/nrepl:0.9.0-beta5
+            ;; => "bun run shadow-cljs -d nrepl/nrepl:0.9.0-beta5
             ;;                     -d refactor-nrepl/refactor-nrepl:3.0.0-alpha13
             ;;                     -d cider/cider-nrepl:0.27.2 "
             command
