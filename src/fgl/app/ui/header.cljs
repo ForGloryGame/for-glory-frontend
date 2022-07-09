@@ -5,8 +5,6 @@
    [fgl.app.ui.connect-btn :as cbtn]
    [fgl.app.ui.glory-img :as gloryimg]
    [fgl.app.ui.gold-img :as goldimg]
-   [fgl.app.ui.header-tag :as header-tag]
-   [fgl.app.ui.logo :as logo]
    [fgl.config :as conf]
    [fgl.contracts.exchange :as exchange]
    [fgl.contracts.glory :as glory]
@@ -21,12 +19,9 @@
 
 (defn nav-root [x]
   [:> Nav/Root
-   {:className "bg-no-repeat"
-    :style     {:backgroundImage     "url(\"/images/header-bg.svg\")"
-                :backgroundBlendMode "multiply"
-                :backgroundPosition  "-1rem -0.5rem"
-                :height              "6.625rem"
-                :backgroundSize      "100%"}}
+   {:style {;; :height "6.625rem"
+            :backgroundColor "rgba(29, 51, 70, 0.17)"
+            :boxShadow       "0px 3px 62px 0px rgba(0, 0, 0, 0.53)"}}
    x])
 
 (rf/reg-sub
@@ -45,61 +40,64 @@
     [:header.w-100vw.grid-area-header.fixed.z-10
      [nav-root
       [:> Nav/List
-       {:className "grid justify-items-stretch justify-between items-center content-center"}
+       {:className "flex items-stretch justify-between"}
        ^{:key 'logo}
-       [:> Nav/Item {:className "cs1 ce3"}
-        [:> Nav/Link {:className "cursor-pointer block p-2"
+       [:> Nav/Item
+        [:> Nav/Link {:className "cursor-pointer block px-20 py-1"
+                      :style     {:backgroundColor "rgba(52,73,81,0.6)"}
                       :on-click  #(rf/dispatch [:navigate :route/home])}
-         [logo/ui {:style {:width "7rem"
-                           :marginTop "-0.5rem"
-                           :marginBottom "-2rem"}}]]]
+         [:img.w-20
+          {:src "/images/header-logo.png"}]]]
 
-       ^{:key 'glory}
-       [:> Nav/Item {:className "cs6 ce8"}
-        [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
-          {:on-click #(w/request
+       [:> Nav/List
+        {:className "flex items-stretch justify-between h-full"}
+        ^{:key 'virtue}
+        [:> Nav/Item
+         [:button.flex.justify-between.items-center.text-xl.cursor-pointer.h-full.px-16.py-1
+          {:style    {:backgroundColor "rgba(0, 0, 0, 0.19111)"}
+           :on-click #(w/request
                        "wallet_watchAsset"
                        {:type    :ERC20
                         :options {:address  (.-address glory/c)
-                                  :symbol   "GLORY"
+                                  :symbol   "VIRTUE"
                                   :decimals 18
                                   :image    "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/glory-token.png"}}
                        identity
                        js/console.log)}
-          [gloryimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
-          [balance/ui glory-balance {:className "fi mr-1"}]]]]
+          [gloryimg/ui "3rem" {:className "mr-4"}]
+          [balance/ui glory-balance]]]
 
-       ^{:key 'gold}
-       [:> Nav/Item {:className "cs8 ce10"}
-        [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl.cursor-pointer
-          {:on-click #(w/request
+        ^{:key 'glory}
+        [:> Nav/Item
+         [:button.flex.justify-between.items-center.text-xl.cursor-pointer.h-full.px-16.py-1
+          {:style    {:backgroundColor "rgba(0, 0, 0, 0.19111)"}
+           :on-click #(w/request
                        "wallet_watchAsset"
                        {:type    :ERC20
                         :options {:address  (.-address gold/c)
-                                  :symbol   "GOLD"
+                                  :symbol   "GLORY"
                                   :decimals 18
                                   :image    "https://cdn.jsdelivr.net/gh/ForGloryGame/for-glory-frontend@dev/resources/app/public/images/gold-token.png"}}
                        identity
                        js/console.log)}
-          [goldimg/ui "3rem" {:style {:margin "-1.4rem 0 -1.4rem -1.4rem"}}]
-          [balance/ui gold-balance {:className "fi mr-1"}]]]]
+          [goldimg/ui "3rem" {:className "mr-4"}]
+          [balance/ui gold-balance]]]
 
-       ^{:key 'ratio}
-       [:> Nav/Item {:className "cs10 ce12"}
-        [header-tag/ui
-         [:div.flex.flex-row.justify-between.items-center.text-xl.fi
-          [goldimg/ui "2rem"]
-          [:span.mx-2 "1"]
-          [:div.flex.flex-col
+        ^{:key 'ratio}
+        [:> Nav/Item
+         [:div.flex.justify-between.items-center.text-xl.h-full.px-12.py-1
+          {:style {:backgroundColor "rgba(0, 0, 0, 0.19111)"}}
+          [goldimg/ui "3rem"]
+          [:span.mx-4 "1"]
+          [:div.flex.flex-col.mx-4
            [:img.w-6 {:src "/images/ratio.svg"}]
            [:img.w-6 {:style {:transform "rotate(180deg)"} :src "/images/ratio.svg"}]]
-          ratio
-          [gloryimg/ui "2rem" {:className "mx-1"}]]]]
+          [:span.mx-4 ratio]
+          [gloryimg/ui "3rem"]]]
 
-       ^{:key 'connect-btn}
-       [:> Nav/Item {:className "cs12 ce14"}
-        [fgl.app.ui.connect-btn/ui conf/target-chain-id]]
-       ^{:key 'placeholder}
-       [:> Nav/Item {:className "cs14"}]]]]))
+        ^{:key 'connect-btn}
+        [:> Nav/Item
+         {:className "h-full"}
+         [fgl.app.ui.connect-btn/ui conf/target-chain-id]]
+        ^{:key 'placeholder}
+        [:> Nav/Item {:className "cs14"}]]]]]))

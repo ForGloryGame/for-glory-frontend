@@ -33,11 +33,11 @@
     :reagent-render
     (fn []
       (let [[text name disabled on-click] @(rf/subscribe [::text])]
-        (cond (not disabled)
-              [btn/ui {:id       "connect-btn"
-                       :t        :blg
-                       :name     name
-                       :on-click on-click}
-               [:span text]]
-              disabled
-              [:span text])))}))
+        [:button.block.bg-C25a1b7.h-full.px-8.fb.text-xl.py-1
+         {:style {:textShadow "1.364px 1.463px 1px rgba(0, 0, 0, 0.64)"
+                  :textAlign "justifyCenter"}
+          :disabled disabled
+          :on-click on-click
+          :id       "connect-btn"
+          :name     name}
+         text]))}))
