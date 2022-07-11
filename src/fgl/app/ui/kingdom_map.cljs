@@ -42,7 +42,7 @@
          [:div.fixed.top-50%.left-50%.overflow-clip.fi
           {:style {:minWidth  "1000vw"
                    :minHeight "calc(1000vw * 0.5625)"
-                   :transform "translate(-50%,-50%) scale(0.11)"
+                   :transform "translate(-50%,-50%) scale(0.112)"
                    :zIndex    (if fg? "unset" -10)}}
           [:img.absolute.top-0.left-0.overflow-auto
            {:src   "/images/kingdom-bg.png"
