@@ -1878,6 +1878,10 @@ img, video {
   --gi-translate-y: -5%;
 }
 
+.-translate-y-10\% {
+  --gi-translate-y: -10%;
+}
+
 .flexb {
   display: flex;
   flex-direction: row;
