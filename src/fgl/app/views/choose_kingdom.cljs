@@ -44,7 +44,7 @@
 
 (def img-class
   {1 "w-34"
-   2 "w-32 -translate-y-5%"
+   2 "w-30 -translate-y-10%"
    3 "w-30 translate-y-5%"
    4 "w-32 -translate-y-1%"
    5 "w-42 translate-y-5%"})
