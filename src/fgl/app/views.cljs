@@ -19,6 +19,7 @@
         current-route                             @(rf/subscribe [::routes/current-route])
         all-image-loaded                          @(rf/subscribe [:all-image-loaded])
         {:keys [view] rname :name :as route-data} (get current-route :data)
+        home?                                     (= rname :route/home)
         guild?                                    (and (keyword? rname)
                                                        (or (-> rname name (.startsWith "guild-"))
                                                            (-> rname name (.startsWith "kingdom-"))))]
@@ -40,7 +41,7 @@
        {:style {:gridTemplate "\"header\" min-content \"main\""}}
        [header/ui]
        (and guild? [uikmap/ui])
-       (and (not guild?) [uimap/ui])
+       (and (not home?) (not guild?) [uimap/ui])
        [body/ui current-route (if view [view current-route] [:div])]
        [:link {:rel "stylesheet" :href "/fonts/family.css"}]]
       [:div "Loading..."])))
