@@ -403,6 +403,10 @@ img, video {
   border-color: rgba(255,211,134,var(--gi-border-opacity));
 }
 
+.top-4\% {
+  top: 4%;
+}
+
 .px-9 {
   padding-left: 2.25rem;
   padding-right: 2.25rem;
@@ -514,6 +518,10 @@ img, video {
 
 .w-14rem {
   width: 14rem;
+}
+
+.z-100000 {
+  z-index: 100000;
 }
 
 .bg-C25376f {
@@ -989,6 +997,10 @@ img, video {
 
 .re6 {
   grid-row-end: 6;
+}
+
+.left-4\% {
+  left: 4%;
 }
 
 .mt-12 {
