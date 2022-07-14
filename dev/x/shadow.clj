@@ -63,6 +63,7 @@
     (println (s/join " " (concat [">" shadow-cljs-command] args)))
     (apply shell shadow-cljs-command args)))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn release-all []
   (let [{:keys [builds]} (shadow-edn)
         ids              (remove #{:cards :browser-test :karma-test} (keys builds))]

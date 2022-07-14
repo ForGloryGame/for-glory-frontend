@@ -249,9 +249,11 @@
    {;; :data    {:coercion m/coercion}
     ;; :compile coercion/compile-request-coercers
     :conflicts
-    (fn [conflicts]
-      ;; (warn (exception/format-exception :path-conflicts nil conflicts))
-      )}))
+    identity
+    ;; (fn [conflicts]
+    ;;   (warn (exception/format-exception :path-conflicts nil conflicts))
+    ;;   )
+    }))
 
 (defn- fetch-router-view!
   "Load lazy route with pages-conf"

@@ -1,4 +1,5 @@
 (ns fgl.app.ui.kingdom-map
+  #_{:clj-kondo/ignore [:unused-namespace]}
   (:require
    [fgl.app.ui.animation :refer [anim! anim?]]
    [lambdaisland.glogi :as log]

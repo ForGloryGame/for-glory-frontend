@@ -1,4 +1,5 @@
 (ns fgl.app.views.start
+  #_{:clj-kondo/ignore [:unused-namespace]}
   (:require
    [fgl.app.ui.animation :refer [anim! anim?]]
    [fgl.app.ui.logo :as logo]

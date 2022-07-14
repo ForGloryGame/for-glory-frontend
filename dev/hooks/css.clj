@@ -35,6 +35,7 @@
       :output-dir
       (str/replace "/js/compiled" "/css/compiled/main.css")))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn build
   {:shadow.build/stage :configure}
   [build-state & _]

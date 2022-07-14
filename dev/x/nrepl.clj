@@ -3,6 +3,7 @@
             [babashka.process :as p :refer [process]]
             [babashka.wait :as wait]))
 
+#_{:clj-kondo/ignore [:clojure-lsp/unused-public-var]}
 (defn run []
   (let [port (with-open [sock (java.net.ServerSocket. 0)] (.getLocalPort sock))
         proc (process (str "bb nrepl-server " port) {:inherit true})]
