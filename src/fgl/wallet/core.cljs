@@ -1,10 +1,11 @@
 (ns fgl.wallet.core
   (:require
-   [lambdaisland.glogi :as log]
    ["ethers" :as ethers]
+   [lambdaisland.glogi :as log]
    [oops.core :refer [ocall]]
    [promesa.core :as p]
-   [re-frame.core :as rf]))
+   [re-frame.core :as rf]
+   [taoensso.encore :as enc]))
 
 (declare connect!)
 (defonce provider (atom nil))
@@ -80,14 +81,10 @@
  [rf/trim-v]
  (fn [{:keys [db]} [chainId]]
    (reinit-provider)
-   (let [target-chain (::target-chain db)]
-     ;; (when-not (and target-chain (not (= target-chain chainId)))
-     ;;   (log/debug :right-network chainId))
-     {:db (assoc db
-                 ::current-chain chainId
-                 ::provider @provider
-                 ::wrong-network (and target-chain (not (= target-chain chainId))))
-      :fx (mapv #(vector :dispatch [%]) @network-cache)})))
+   {:db (assoc db
+               ::current-chain chainId
+               ::provider @provider)
+    :fx (mapv #(vector :dispatch [%]) @network-cache)}))
 
 (rf/reg-event-db
  ::installed
@@ -102,13 +99,11 @@
  [rf/trim-v
   (rf/after check-installation)]
  (fn [{:keys [db]} [target-chain-id]]
-   (if-not (::state db)
-     {:db (assoc db
-                 ::state :uninstalled
-                 ::addr nil
-                 ::provider nil
-                 ::target-chain target-chain-id)}
-     {})))
+   {:db (enc/assoc-nx db
+                      ::state :uninstalled
+                      ::addr nil
+                      ::provider nil
+                      ::target-chain target-chain-id)}))
 
 (rf/reg-sub
  ::state
@@ -127,8 +122,9 @@
 
 (rf/reg-sub
  ::wrong-network
- (fn [db _]
-   (get db ::wrong-network)))
+ (fn [{::keys [current-chain target-chain] :as db} _]
+   db
+   (and target-chain (not (= target-chain current-chain)))))
 
 (rf/reg-sub
  ::addr
